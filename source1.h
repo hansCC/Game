@@ -134,6 +134,29 @@ public:
 		return name + " is " + age;
 	}
 };
+ class Teacher(){
 
+private:
+     string name; 
+     string question;
+     int answer;
+     int attack;
+
+public: 
+   
+     Teacher(){
+          cout<< "I am yout Teacher"<<std::endl;
+          string name =" Clarissa";
+          string question= " What is 2+2?";
+          int answer =4;
+          int attack;
+     }
+
+     void setName(string name){
+          return name;
+  
+     }
+
+};
 
 #endif
