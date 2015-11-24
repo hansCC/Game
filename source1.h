@@ -77,6 +77,43 @@ public:
 		health -= x;
 	}
 
+class Merchant {
+private: 
+	string name;
+	string weapon;
+	int potion;
+	int cost;
+public:
+	void setName(string x)
+	{
+		name = x;	
+	}
+	string getName()
+	{
+		return name;
+	}
+	void setWeapon(string x)
+	{
+		name = x;	
+	}
+	string getWeapon()
+	{
+		return weapon;
+	}
+	void setCost(int x)
+	{
+		cost = x;
+	}
+	int getCost()
+	{
+		return cost;
+	}
+	void getInventory()
+	{
+		return potion; //need more
+	}
+
+}
 
 
 };
