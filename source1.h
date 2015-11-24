@@ -81,5 +81,22 @@ public:
 
 };
 
+class BobRoss {
+private:
+	string name = "Bob Ross";
+	string show = "The Joy of Painting";
+	string age = "dead";
+public:
+	string getName() {
+		return name;
+	}
+	string show() {
+		return show;
+	}
+	string age() {
+		return name + " is " + age;
+	}
+};
+
 
 #endif
