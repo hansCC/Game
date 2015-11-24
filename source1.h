@@ -120,7 +120,7 @@ public:
 
 class BobRoss {
 private:
-	string name = "Bob Ross";
+	string name = "Mr. Makay";
 	string show = "The Joy of Painting";
 	string age = "dead";
 public:
