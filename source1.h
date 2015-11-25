@@ -120,11 +120,9 @@ public:
 
 class BobRoss {
 private:
-<<<<<<< HEAD
-	string name = "Mr. Makay";
-=======
+
 	string name = "Hans is Illuminati";
->>>>>>> f37acdf52dab4daddfb0c92a00977b3f8d95a186
+
 	string show = "The Joy of Painting";
 	string age = "dead";
 public:
