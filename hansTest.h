@@ -1,6 +1,6 @@
 #pragma once
-#ifndef hansTest_h
-#define hansTest_h
+#ifndef source1_h
+#define source1_h
 
 #include <string>
 using namespace std;
@@ -72,9 +72,7 @@ public:
 	void takeDamage(int x){
 		health -= x;
 	}
-
 };
-	
 	
 class Merchant {
 private: 
@@ -107,14 +105,14 @@ public:
 	{
 		return cost;
 	}
-	void getInventory()
+	int getInventory()
 	{
 		return potion; //need more
 	}
 
 };
 
-
+/*
 
 class BobRoss {
 private:
@@ -134,7 +132,8 @@ public:
 		return name + " is " + age;
 	}
 };
- class Teacher(){
+*/
+class Teacher{
 
 private:
      string name; 
@@ -152,11 +151,20 @@ public:
           int attack;
      }
 
-     void setName(string name){
-          return name;
+     void setName(string x){
+          name = x;
   
      }
 
 };
+
+void characterCreation(Hero& x){
+	cout << " -------------- Welcome to *insert game name here* --------------" << endl;
+	
+	x.setHealth(20);
+	cout << "The hero's health is " << x.getHealth() << endl;
+}
+
+
 
 #endif

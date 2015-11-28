@@ -14,8 +14,8 @@
 int main(){
 	
 	Hero Stoner;
-	cout << Stoner.getGender() << " BEFORE" << endl;
-	Stoner.setGender("male");
-	cout << Stoner.getGender() << " AFTER" << endl;
+	characterCreation(Stoner);
+	cout << "Check outside the function" << endl;
+	cout << "Hero's health " << Stoner.getHealth() << endl;
 	return 0;
 }
