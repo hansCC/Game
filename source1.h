@@ -17,13 +17,13 @@ private:
 public:
 	Hero() {
 		cout << "I'm a hero" << endl;
-		int health = 10;
-		int attack = 10;
-		string name = "Gyro";
-		string gender = "female";
-		string weapon = "cheese stick";
-		int potion = 0;
-		int gold = 3;
+		health = 10;
+		attack = 10;
+		name = "Gyro";
+		gender = "female";
+		weapon = "cheese stick";
+		potion = 0;
+		gold = 3;
 	}
 
 	void setGender(string x) {
@@ -71,6 +71,16 @@ public:
 
 	void takeDamage(int x){
 		health -= x;
+	}
+	void printAll(){ //THIS FUNCTION IS FOR TESTING
+		cout << "\nHero's current parameters" << endl;
+		cout << "Name: " << name << endl;
+		cout << "Gender: " << gender << endl;
+		cout << "Weapon: " << weapon << endl;
+		cout << "Health: " << health << endl;
+		cout << "Potions: " << potion << endl;
+		cout << "Gold: " << gold << endl;
+		cout << "Attack: " << attack << endl;
 	}
 };
 	
@@ -157,5 +167,35 @@ public:
      }
 
 };
+
+void characterCreation(Hero& x){
+	string tempString;
+	string input = "no";
+	while(input == "no" && input != "yes"){
+		cout << " -------------- Welcome to *insert game name here* --------------" << endl;
+		cout << "It is time to customize your character and begin your journey!" << endl;
+		
+		cout << "Please enter yor characters name: ";
+		cin >> tempString;
+		x.setName(tempString);
+		
+		cout << "Set gender: ";
+		cin >> tempString;
+		x.setGender(tempString);
+		
+		cout << "Select your starting weapon " << endl;
+		cin >> tempString;
+		x.setGender(tempString);
+		cout << "Your current character is: " << endl;
+		cout << "Name: " << x.getName() << endl;
+		cout << "Gender: " << x.getGender() << endl;
+		cout << "Weapon: " << x.getWeapon() << endl;
+		cout << "If this is correct enter 'yes', otherwise enter 'no' " << endl;
+		cin >> input;
+	}
+}
+
+
+
 
 #endif

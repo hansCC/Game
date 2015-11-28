@@ -16,6 +16,6 @@ int main(){
 	Hero Stoner;
 	characterCreation(Stoner);
 	cout << "Check outside the function" << endl;
-	cout << "Hero's health " << Stoner.getHealth() << endl;
+	Stoner.printAll();
 	return 0;
 }
