@@ -4,13 +4,6 @@
 #include <limits>
 #include "source1.h"
 
-
-
-
-
-
-
-
 int main(){
 	
 	Hero Stoner;
@@ -19,3 +12,6 @@ int main(){
 	Stoner.printAll();
 	return 0;
 }
+
+
+

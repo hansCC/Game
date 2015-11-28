@@ -8,6 +8,7 @@ using namespace std;
 class Hero {
 private:
 	int health;
+	int maxHealth;
 	int attack;
 	string name;
 	string gender;
@@ -25,7 +26,12 @@ public:
 		potion = 0;
 		gold = 3;
 	}
-
+	void setMaxHealth(int x){
+		maxHealth = x;
+	}
+	int getMaxHealth(){
+		return maxHealth;
+	}
 	void setGender(string x) {
 		gender = x;
 	}
@@ -195,6 +201,20 @@ void characterCreation(Hero& x){
 	}
 }
 
+void HUB(Hero& x){ //this is incomplete
+	int input;
+	cout << "---------- Welcome to the city of Anvil ----------" << endl;
+	cout << "Where would you like to go?" << endl;
+	cout << "1: Inn" << endl;
+	cin >> input;
+	if (input == 1){
+		
+	}
+}
+
+void inn(Hero& x){
+	
+}
 
 
 
