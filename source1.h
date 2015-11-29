@@ -355,4 +355,26 @@ public:
 
 };
 
+
+class Enemy{
+private:
+	
+public:
+	
+};
+
+
+
+class Monster: public Enemy {
+private:
+
+public:
+
+};
+
+
+
+
+
+
 #endif
