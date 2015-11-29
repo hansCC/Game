@@ -2,6 +2,7 @@
 #ifndef source1_h
 #define source1_h
 
+#include <cstdlib>
 #include <string>
 using namespace std;
 
@@ -18,8 +19,8 @@ private:
 public:
 	Hero() {
 		cout << "I'm a hero" << endl;
-		maxHealth = 10;
-		health = 10;
+		maxHealth = 100;
+		health = 100;
 		attack = 10;
 		name = "Spencer";
 		gender = "male";
@@ -308,25 +309,32 @@ void visitEnchanter(Hero& x, Enchanter& y){
 
 class FinalBoss {
 private: 
-	string name
-	int attack1
-	int attack2
-	int attack3
-	int health
-	int regainHealth
+	string name;
+	int health;
+	int regainHealth;
+	int temp;
 
 public:
-	void setName()
+	FinalBoss()
 	{
-		name = "Mithralda";
+		name = "Mithaldra";
+		health = 15;
+	}
+	int dodgeChance()
+	{
+		return rand() % 100 + 1;
+	}
+	int attackNum()
+	{
+		return rand() % 3 + 1;
 	}
 	string getName()
 	{
 		return name;
 	}
-	void setHealth()
+	void setHealth(int x)
 	{
-		health = 15;
+		health = x;
 	}
 	int getHealth()
 	{
@@ -334,15 +342,73 @@ public:
 	}
 	void Attack1(Hero& x)
 	{
-		x.takeDamage(3);
+		cout << "The dragon roars and its mouth begins to fill with fire.\n";
+		cout << "The dragon shoots a fireball and it hurls in your direction.\n";
+		cout << "\n";
+		cout << "To dodge this, you must calculate how far you must move to dodge the fireball! \n";
+		//Here ... you solve math
+		cout << "What, my lord, is two plus two?\n";
+		try
+		{
+			cin >> temp;
+		}
+		catch(exception e)
+		{
+			cout << "Invalid input. Please enter a number.\n";
+		}
+		if(temp == 4)
+		{
+			cout << "Good job, you dodged the fireball with your quick thinking.\n";
+		}
+		else
+		{
+			cout << "WRONG, you did not move quickly enough away from the fireball. \n";
+			cout << "You take " << temp << " damage.\n";
+			x.takeDamage(25);
+			cout << "You now have " << x.getHealth() << " health. \n";
+		}
 	}
 	void Attack2(Hero& x)
 	{
-		x.takeDamage(2);
+		cout << "The dragon swings its mighty tail at you.\n";
+		cout << "You must use your combat skills to deflect the attack.\n";
+		x.takeDamage(25);
+		//need combat training 
 	}
 	void Attack3(Hero& x)
 	{
-		x.takeDamage(1);
+		cout << "The dragon looks up and screeches, and undead skeletons start to rise from the ground.\n";
+		cout << "You reach into your satchel and grab the Horn of Gilgamesh to call your reinforcements.\n";
+		cout << "You hear cheers and the townsfolk you aided come rushing to your side.\n";
+		cout << "How would you like to use these reinforcements?\n";
+		cout << "1. Defend you from the undead army.\n";
+		cout << "2. Attack the dragon.\n";
+		cout << endl;
+		try
+		{
+			cin >> temp;
+		}
+		catch(exception e)
+		{
+			cout << "Invalid input. Please enter a number.\n";
+		}
+		if(temp == 1)
+		{
+			cout << "Your reinforcements proceed to attack the undead army.\n";
+			cout << "They successfully defend you, but sacrifice themselves in your honor.\n";
+		}
+		else if(temp == 2)
+		{
+			cout << "Your reinforcements proceed to attack the dragon.\n";
+			temp = x.getAttack() + attackNum();
+			setHealth(getHealth() - temp);
+			cout << "They deal " << temp << " damage to the dragon, but sacrifice themselves in your honor.\n";
+			cout << "However, the undead army attacks you, dealing 20 damage, and then collapse back into the ground.\n";
+			temp = x.getHealth();
+			x.setHealth(temp - 20);
+		}
+		temp = attackNum();
+		x.takeDamage(temp);
 	}	
 	void HeroDeath(Hero& x) 
 	{
@@ -378,3 +444,4 @@ public:
 
 
 #endif
+
