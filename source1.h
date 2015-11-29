@@ -306,4 +306,53 @@ void visitEnchanter(Hero& x, Enchanter& y){
 	y.provideEnchantment(x);
 }
 
+class FinalBoss {
+private: 
+	string name
+	int attack1
+	int attack2
+	int attack3
+	int health
+	int regainHealth
+
+public:
+	void setName()
+	{
+		name = "Mithralda";
+	}
+	string getName()
+	{
+		return name;
+	}
+	void setHealth()
+	{
+		health = 15;
+	}
+	int getHealth()
+	{
+		return health;
+	}
+	void Attack1(Hero& x)
+	{
+		x.takeDamage(3);
+	}
+	void Attack2(Hero& x)
+	{
+		x.takeDamage(2);
+	}
+	void Attack3(Hero& x)
+	{
+		x.takeDamage(1);
+	}	
+	void HeroDeath(Hero& x) 
+	{
+		//return to HUB
+	}
+	void GameEnd()
+	{
+		//dialogue
+	}
+
+};
+
 #endif
