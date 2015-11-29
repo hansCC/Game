@@ -7,8 +7,17 @@
 int main(){
 	
 	Hero Stoner;
-	characterCreation(Stoner);
+	InnKeeper Will;
+	
+	//characterCreation(Stoner);
 	cout << "Check outside the function" << endl;
+	Stoner.printAll();
+	
+	cout << "Do damage to hero" << endl;
+	Stoner.setHealth(5);
+	Stoner.printAll();
+	cout << "Go to the Inn" << endl;
+	visitInn(Stoner, Will);
 	Stoner.printAll();
 	return 0;
 }

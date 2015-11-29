@@ -18,13 +18,23 @@ private:
 public:
 	Hero() {
 		cout << "I'm a hero" << endl;
+		maxHealth = 10;
 		health = 10;
 		attack = 10;
-		name = "Gyro";
-		gender = "female";
-		weapon = "cheese stick";
+		name = "Spencer";
+		gender = "male";
+		weapon = "knife";
 		potion = 0;
 		gold = 3;
+	}
+	bool decreaseGold(int x){ //untested
+		if(x > gold){
+			cout << "You cannot afford this" << endl;
+			return false;
+		} else {
+			gold = gold - x;
+			return true;
+		}
 	}
 	void setMaxHealth(int x){
 		maxHealth = x;
@@ -97,6 +107,10 @@ private:
 	int potion;
 	int cost;
 public:
+	Merchant(){
+		name = "Polyeuctus";
+		
+	}
 	void setName(string x)
 	{
 		name = x;	
@@ -129,7 +143,6 @@ public:
 };
 
 /*
-
 class BobRoss {
 private:
 
@@ -212,7 +225,35 @@ void HUB(Hero& x){ //this is incomplete
 	}
 }
 
-void inn(Hero& x){
+
+class InnKeeper{
+private:
+	string name;
+	
+public:
+	InnKeeper(){
+		name = "Will";
+	}
+	void healPlayer(Hero& x){
+		x.setHealth(x.getMaxHealth());
+	}
+	void greeting(){
+		cout << "Hello Hero!, the Merchant bellows from behind the bar." << endl;
+		cout << "Come and spend the night, free of charge for helping our city." << endl;
+	}
+};
+
+
+
+void visitInn(Hero& x, InnKeeper& y){
+	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----\n";
+	y.greeting();
+	y.healPlayer(x);
+	cout << "After a quite night of rest you feel refreshed!" << endl;
+	cout << "Your health is now full" << endl;
+}
+
+void visitMerchant(Hero& x, Merchant& y){
 	
 }
 
