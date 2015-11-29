@@ -27,7 +27,7 @@ public:
 		potion = 0;
 		gold = 100;
 	}
-	bool decreaseGold(int x){ //untested
+	bool decreaseGold(int x){ //Checks to see if the hero can afford to buy something.
 		if(x > gold){
 			cout << "You cannot afford this" << endl;
 			return false;
@@ -78,7 +78,7 @@ public:
 	int getPotion(){
 		return potion;
 	}
-	void incrementPotion(){
+	void incPotion(){
 		potion++;
 	}
 	void setGold(int x){
@@ -133,9 +133,9 @@ public:
 		return cost;
 	}
 	void sellPotion(Hero& x){
-		x.incrementPotion();
+		x.incPotion();
 	}
-	void sellWeapon(Hero& x){ //incomplete
+	void sellWeapon(Hero& x){ 
 		int input;
 		cout << "Which weapon would you like hero?" << endl;
 		if(x.decreaseGold(25)==true){
@@ -179,26 +179,21 @@ void visitMerchant(Hero& x, Merchant& y){
 class Teacher{
 
 private:
-     string name; 
-     string question;
-     int answer;
-     int attack;
-
+    string name; 
+    string question;
+    int answer;
+    int attack;
 public: 
-   
-     Teacher(){
-          cout<< "I am yout Teacher"<<std::endl;
-          string name =" Clarissa";
-          string question= " What is 2+2?";
-          int answer =4;
-          int attack;
-     }
-
-     void setName(string x){
-          name = x;
-  
-     }
-
+    Teacher(){
+       cout<< "I am yout Teacher"<<std::endl;
+       string name =" Clarissa";
+       string question= " What is 2+2?";
+       int answer =4;
+       int attack;
+    }
+    void setName(string x){
+       name = x;
+    }
 };
 
 void characterCreation(Hero& x){
@@ -243,7 +238,6 @@ void HUB(Hero& x){ //this is incomplete
 class InnKeeper{
 private:
 	string name;
-	
 public:
 	InnKeeper(){
 		name = "Will";
@@ -258,7 +252,6 @@ public:
 };
 
 
-
 void visitInn(Hero& x, InnKeeper& y){
 	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----\n";
 	y.greeting();
@@ -267,7 +260,50 @@ void visitInn(Hero& x, InnKeeper& y){
 	cout << "Your health is now full" << endl;
 }
 
+class Enchanter{
+private:
+	string name;
+public:
+	Enchanter(){
+		name = "Catlyn";
+	}
+	void greeting(){
+		cout << "Care to buy an enchantment hero?" << endl;
+	}
+	void provideEnchantment(Hero& x){//untested
+		int input;
+		int currentAttack = x.getAttack();
+		cout << "I can empower your weapon, for a price" << endl;
+		cout << "1: Add 5 to your weapon's attack" << endl;
+		cout << "2: Add 10 to your weapon's attack" << endl;
+		cout << "3: Add 15 to your weapon's attack" << endl;
+		cout << "4: Add 20 to your weapon's attack" << endl;
+		cout << "5: Add 25 to your weapon's attack" << endl;
+		cin >> input;
+		if(input == 1 && x.decreaseGold(500) == true){
+			x.setAttack(currentAttack+5);
+		}else if (input == 2 && x.decreaseGold(1000) == true){
+			x.setAttack(currentAttack+10);
+		}else if (input == 3 && x.decreaseGold(1500) == true){
+			x.setAttack(currentAttack+15);
+		}else if (input == 4 && x.decreaseGold(2000) == true){
+			x.setAttack(currentAttack+20);
+		}else if(input == 5 && x.decreaseGold(2500) == true){
+			x.setAttack(currentAttack+25);
+		}else if(input > 5){
+			cout << "That is an invalid input" << endl;
+		} else {
+			
+		}
+	}
+};
 
-
+void visitEnchanter(Hero& x, Enchanter& y){
+	cout << "You walk over to a small tent near the outskirts of town" << endl;
+	cout << "An intense aroma of incense washes over you as you pull aside the entrance flap." << endl;
+	cout << "From the depths of the tent you hear a soft ominous voice" << endl;
+	y.greeting();
+	y.provideEnchantment(x);
+}
 
 #endif

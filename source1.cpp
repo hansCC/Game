@@ -9,6 +9,7 @@ int main(){
 	Hero Stoner;
 	InnKeeper Will;
 	Merchant Frank;
+	Enchanter Catlyn;
 	
 	//characterCreation(Stoner);
 	cout << "Check outside the function" << endl;
@@ -23,6 +24,7 @@ int main(){
 	cout << "Visiting the merchant" << endl;
 	visitMerchant(Stoner, Frank);
 	Stoner.printAll();
+	visitEnchanter(Stoner, Catlyn);
 	return 0;
 }
 
