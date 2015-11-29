@@ -25,7 +25,7 @@ public:
 		gender = "male";
 		weapon = "knife";
 		potion = 0;
-		gold = 3;
+		gold = 100;
 	}
 	bool decreaseGold(int x){ //untested
 		if(x > gold){
@@ -78,6 +78,9 @@ public:
 	int getPotion(){
 		return potion;
 	}
+	void incrementPotion(){
+		potion++;
+	}
 	void setGold(int x){
 		gold = x;
 	}
@@ -103,44 +106,44 @@ public:
 class Merchant {
 private: 
 	string name;
-	string weapon;
-	int potion;
+	//string inventory[] = {"Golden Gun", "Grand Battle Axe",
+	//"Bow and Arrow", "Golden Short Sword", "Bronze Pole Arm"};
 	int cost;
 public:
 	Merchant(){
-		name = "Polyeuctus";
-		
+		name = "Frank";
+		cost = 5;
 	}
-	void setName(string x)
-	{
+	void setName(string x){
 		name = x;	
 	}
-	string getName()
-	{
+	string getName(){
 		return name;
 	}
-	void setWeapon(string x)
-	{
-		name = x;	
-	}
-	string getWeapon()
-	{
-		return weapon;
-	}
-	void setCost(int x)
-	{
+	void setCost(int x){
 		cost = x;
 	}
-	int getCost()
-	{
+	int getCost(){
 		return cost;
 	}
-	int getInventory()
-	{
-		return potion; //need more
+	void sellPotion(Hero& x){
+		x.incrementPotion();
 	}
-
 };
+
+void visitMerchant(Hero& x, Merchant& y){
+	int input;
+	cout << "You walk into a small shop by the Inn" << endl;
+	cout << "1: to buy a potion" << endl;
+	cin >> input;
+	if (input == 1){
+		y.sellPotion(x);
+	} else{
+		cout << "That is an invalid input" << endl;
+	}
+}
+
+
 
 /*
 class BobRoss {
@@ -253,9 +256,6 @@ void visitInn(Hero& x, InnKeeper& y){
 	cout << "Your health is now full" << endl;
 }
 
-void visitMerchant(Hero& x, Merchant& y){
-	
-}
 
 
 
