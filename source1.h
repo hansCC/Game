@@ -97,6 +97,7 @@ public:
 		cout << "Gender: " << gender << endl;
 		cout << "Weapon: " << weapon << endl;
 		cout << "Health: " << health << endl;
+		cout << "Max Health" << maxHealth << endl;
 		cout << "Potions: " << potion << endl;
 		cout << "Gold: " << gold << endl;
 		cout << "Attack: " << attack << endl;
@@ -106,13 +107,18 @@ public:
 class Merchant {
 private: 
 	string name;
-	//string inventory[] = {"Golden Gun", "Grand Battle Axe",
-	//"Bow and Arrow", "Golden Short Sword", "Bronze Pole Arm"};
+	string inventory[5];
+	//, "Grand Battle Axe","Bow and Arrow", "Golden Short Sword", "Bronze Pole Arm"
 	int cost;
 public:
 	Merchant(){
 		name = "Frank";
 		cost = 5;
+		inventory[0] = "Golden Gun";
+		inventory[1] = "Grand Battle Axe";
+		inventory[2] = "Bow and Arrow";
+		inventory[3] = "Golden Short Sword";
+		inventory[4] = "Bronze Pole Arm";
 	}
 	void setName(string x){
 		name = x;	
@@ -128,6 +134,24 @@ public:
 	}
 	void sellPotion(Hero& x){
 		x.incrementPotion();
+	}
+	void sellWeapon(Hero& x){ //incomplete
+		int input;
+		cout << "Which weapon would you like hero?" << endl;
+			for (int i = 0; i < 5; i++){
+				cout << i << ": " << inventory[i] << endl;
+			}
+			if(input == 0){
+				x.setWeapon(inventory[0]);
+			} else if(input == 1){
+				x.setWeapon(inventory[0]);
+			} else if(input == 2){
+				x.setWeapon(inventory[0]);
+			} else if(input == 3){
+				x.setWeapon(inventory[0]);
+			} else if(input == 4){
+				x.setWeapon(inventory[0]);
+			}
 	}
 };
 
