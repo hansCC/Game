@@ -192,7 +192,8 @@ public:
        int answer =4;
        int attack;
     }
-    void setName(string x){
+    void setName(string x)
+	{
        name = x;
     }
 };
@@ -200,7 +201,8 @@ public:
 void characterCreation(Hero& x){
 	string tempString;
 	string input = "no";
-	while(input == "no" && input != "yes"){
+	while(input == "no" && input != "yes")
+	{
 		cout << " -------------- Welcome to *insert game name here* --------------" << endl;
 		cout << "It is time to customize your character and begin your journey!" << endl;
 		
@@ -281,17 +283,23 @@ public:
 		cout << "4: Add 20 to your weapon's attack" << endl;
 		cout << "5: Add 25 to your weapon's attack" << endl;
 		cin >> input;
-		if(input == 1 && x.decreaseGold(500) == true){
+		if(input == 1 && x.decreaseGold(500) == true)
+		{
 			x.setAttack(currentAttack+5);
-		}else if (input == 2 && x.decreaseGold(1000) == true){
+		}else if (input == 2 && x.decreaseGold(1000) == true)
+		{
 			x.setAttack(currentAttack+10);
-		}else if (input == 3 && x.decreaseGold(1500) == true){
+		}else if (input == 3 && x.decreaseGold(1500) == true)
+		{
 			x.setAttack(currentAttack+15);
-		}else if (input == 4 && x.decreaseGold(2000) == true){
+		}else if (input == 4 && x.decreaseGold(2000) == true)
+		{
 			x.setAttack(currentAttack+20);
-		}else if(input == 5 && x.decreaseGold(2500) == true){
+		}else if(input == 5 && x.decreaseGold(2500) == true)
+		{
 			x.setAttack(currentAttack+25);
-		}else if(input > 5){
+		}else if(input > 5)
+		{
 			cout << "That is an invalid input" << endl;
 		} else {
 			
@@ -422,22 +430,35 @@ public:
 };
 
 
+
+
+
+
 class Enemy{
 private:
+	virtual int health;
+	virtual int maxHealth;
 	
 public:
-	
+	virtual void attack(Hero& x);
 };
 
 
-
-class Monster: public Enemy {
+class Tiger: public Enemy {
 private:
-
+	health = 10;
+	maxHealth = 10;
 public:
-
+	void attack(Hero& x){
+		x.takeDamage(10);
+	}
 };
+/*
 
+		int temp = x.getHealth();
+		x.setHealth(temp-10); //Tiger does 10 damage
+
+*/
 
 
 

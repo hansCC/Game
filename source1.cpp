@@ -14,6 +14,30 @@ int main(){
 	Merchant Frank;
 	Enchanter Catlyn;
 	
+	/*
+	//take in user input to know where to travel.
+	while(a){
+		if(input == 1){
+			visitHUB(Hero..sdaspfafas);
+		}else if(input == 2){
+			visitFinalBost();
+		}
+	
+	}
+	
+	
+	
+	while(hub==true){
+		//menu where you wanna go?
+		//if you want to  go to innkepper
+		visitInnKeeper(Stoner, Will);
+		
+		
+		
+	}
+	
+	*/
+	
 	//characterCreation(Stoner);
 	cout << "Check outside the function" << endl;
 	Stoner.printAll();
