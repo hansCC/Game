@@ -91,6 +91,8 @@ public:
 
 	void takeDamage(int x){
 		health -= x;
+		if(health < 0)
+			health = 0;
 	}
 	void printAll(){ //THIS FUNCTION IS FOR TESTING
 		cout << "\nHero's current parameters" << endl;
@@ -323,10 +325,155 @@ private:
 	int temp;
 
 public:
+	bool end;
 	FinalBoss()
 	{
 		name = "Mithaldra";
-		health = 15;
+		end = false;
+	}
+	void BossBattle(Hero& Stoner)
+	{
+		health = Stoner.getHealth() + 50;
+		bool beak = false;
+		while(true)
+		{
+			int input;
+			int x = Stoner.getGold();
+			int attackOption = 0;
+			int temp = 0;
+			bool healthRegain = false;
+			cout << "Congratulations on completing all 3 stages. Now you are ready to face the ultimate test.\n";
+			cout << Stoner.getName() << " enters the Cave of Destruction. You see a weird inscription on the ground and proceed to investigate.\n";
+			cout << "During investigation of the inscription, you hear a loud roar.\n";
+			cout << "Out of the darkness, a one-eyed creature drops from the ceiling, blocking your escape.\n";
+			cout << "You look for another exit, but there is no way out. You \n";
+			cout << "\n";
+			cout << "1. Play dead.\n";
+			cout << "2. Hide in the shadows.\n";
+			cout << "3. Fight.\n";
+			cout << "\n";
+			try
+			{
+				cin >> input;
+			}
+			catch(exception e)
+			{
+				cout << "Invalid input. Please enter a number.\n";
+			}
+
+			if(input == 1)
+			{
+				cout << "Creature approaches your body, you notice that this creature is a mythical dragon, thought to be extinct.\n";
+				cout << "The creature, not believing you are dead, eats you.\n";
+				cout << "Now, you are dead. Return to the HUB and try again.\n";
+				cout << "You have lost " << x * .05 << " gold.\n"; 
+				Stoner.setGold(x * .95);
+				break;
+			}
+			else if(input == 2)
+			{
+				cout << "Creature looks around and moves deeper into the cave. You notice that this creature is a mythical dragon, thought to be extinct.\n";
+				cout << "The dragon, knowing you are still in the cave, shoots a fireball into the air to create light.\n";
+				cout << "The fireball startles you and you are unable to move. The dragon can now see you and runs at you.\n";
+				cout << "Still paralyzed with fear, you do not move and the dragon crushes you.\n";
+				cout << "Now, you are dead. Return to the HUB and try again.\n";
+				cout << "You have lost " << x * .05 << " gold.\n"; 
+				Stoner.setGold(x * .95);
+				break;
+			}
+			else if(input == 3)
+			{
+				cout << "You draw your weapon. The creature moves towards you, and you notice that it is a mythical dragon, thought to be extinct.\n";
+				cout << "The dragon roars in your direction, and you brace yourself for battle.\n";
+				while(getHealth() != 0 && Stoner.getHealth() != 0)
+				{
+					cout << "Your health is: " << Stoner.getHealth() <<endl;
+					cout << "The dragon's health is: " << getHealth() << endl;
+					cout << "\n";
+					cout << "What would you like to do?\n";
+					cout << "1. Use a potion.\n";
+					cout << "2. Attack.\n";
+					cout << "\n";
+					try
+					{
+						cin >> attackOption;
+					}
+					catch(exception e)
+					{
+						cout << "Invalid input. Please enter a number.\n";
+					}
+
+					if(attackOption == 1)
+					{
+						if(Stoner.getPotion() != 0)
+						{
+							temp = Stoner.getHealth(); 
+							Stoner.setHealth(temp + 1); //check how much potions regain
+							temp = Stoner.getPotion();
+							Stoner.setPotion(temp - 1);
+						}
+					}
+					if(attackOption == 2)
+					{
+						if(dodgeChance() >= 95)
+						{
+							cout << "The dragon dodged your attack.\n";
+						}
+						else{
+							cout << "You do " << Stoner.getAttack() << " damage to the dragon.\n";
+							temp = getHealth();
+							setHealth(temp-Stoner.getAttack());
+							cout << "The dragon's health is now: " << getHealth() << "\n";
+						}
+						if(getHealth() < getHealth() / 2  && !healthRegain){
+							cout << "The dragon flies to the ceiling and eats some kind of glowing berries. These berries restore some of its health \n";
+							temp = getHealth();
+							setHealth(temp + getHealth() / 4);
+							cout << "The dragon's health is now: " << getHealth() << "\n";
+							healthRegain = true;
+						}
+					}
+
+					temp = attackNum();
+
+					if(temp == 1){
+						Attack1(Stoner);
+					}
+					if(temp == 2){
+						Attack2(Stoner);
+					}
+					if(temp == 3){
+						Attack3(Stoner);
+						if(getHealth() < 0)
+							health = 0;
+					}
+
+					if(Stoner.getHealth() == 0)
+					{
+						cout << "Now, you are dead. Return to the HUB and try again.\n";
+						cout << "You have lost " << x * .05 << " gold.\n"; 
+						Stoner.setGold(x * .95);						
+						beak = true;
+						break;
+					}
+					if(getHealth() == 0)
+					{
+						EndGame();
+						beak = true;
+						break;
+					}
+				}
+				if(beak)
+				{
+					break;
+				}
+			}
+			else
+			{
+				cout << "Invalid input. Try again.\n";
+				cin >> input;
+			}
+		}
 	}
 	int dodgeChance()
 	{
@@ -408,27 +555,26 @@ public:
 		else if(temp == 2)
 		{
 			cout << "Your reinforcements proceed to attack the dragon.\n";
-			temp = x.getAttack() + attackNum();
+			temp = x.getAttack() + attackNum() * 4;
 			setHealth(getHealth() - temp);
 			cout << "They deal " << temp << " damage to the dragon, but sacrifice themselves in your honor.\n";
 			cout << "However, the undead army attacks you, dealing 20 damage, and then collapse back into the ground.\n";
 			temp = x.getHealth();
 			x.setHealth(temp - 20);
 		}
-		temp = attackNum();
-		x.takeDamage(temp);
 	}	
-	void HeroDeath(Hero& x) 
+	void EndGame()
 	{
-		//return to HUB
-	}
-	void GameEnd()
-	{
-		//dialogue
+		cout << endl;
+		cout << "You have defeated the dragon! Congratulations " << Stoner.getName() << endl;
+		cout << "In honor of your brave conquest, the townsfolk would like to make you their new king.\n";
+		cout << "All hail King " << Stoner.getName() << "!\n";
+		cout << endl;
+		cout << "Thank you for playing.\n";
+		end = true;
 	}
 
 };
-
 
 
 
@@ -461,8 +607,4 @@ public:
 */
 
 
-
-
-
 #endif
-
