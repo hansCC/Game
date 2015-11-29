@@ -138,9 +138,11 @@ public:
 	void sellWeapon(Hero& x){ //incomplete
 		int input;
 		cout << "Which weapon would you like hero?" << endl;
+		if(x.decreaseGold(25)==true){
 			for (int i = 0; i < 5; i++){
 				cout << i << ": " << inventory[i] << endl;
 			}
+			cin >> input;
 			if(input == 0){
 				x.setWeapon(inventory[0]);
 			} else if(input == 1){
@@ -152,6 +154,9 @@ public:
 			} else if(input == 4){
 				x.setWeapon(inventory[0]);
 			}
+		} else {
+			cout << "I'm afraid you don't have the hold to purchase that item." << endl;
+		}
 	}
 };
 
@@ -159,36 +164,18 @@ void visitMerchant(Hero& x, Merchant& y){
 	int input;
 	cout << "You walk into a small shop by the Inn" << endl;
 	cout << "1: to buy a potion" << endl;
+	cout << "2: to buy a weapon" << endl;
 	cin >> input;
 	if (input == 1){
 		y.sellPotion(x);
-	} else{
+	} else if (input ==  2){
+		y.sellWeapon(x);
+	} else {
 		cout << "That is an invalid input" << endl;
 	}
 }
 
 
-
-/*
-class BobRoss {
-private:
-
-	string name = "Hans is Illuminati";
-
-	string show = "The Joy of Painting";
-	string age = "dead";
-public:
-	string getName() {
-		return name;
-	}
-	string show() {
-		return show;
-	}
-	string age() {
-		return name + " is " + age;
-	}
-};
-*/
 class Teacher{
 
 private:
