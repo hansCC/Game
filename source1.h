@@ -385,6 +385,269 @@ class Teacher {
         
 };
 
+void stage4(Hero* h) {
+	c.out
+			<< "You have now entered Stage 4. Be prepared for anything that goes bump in the night... \n"
+			<< endl;
+	srand(time(0));
+	int numMon = rand() % 3 + 1;
+
+	while (numMon > 0) {
+		cout
+				<< "You are walking in a dimly lit area. Do you turn (1) left or (2) right?"
+				<< endl;
+		int input = 0;
+		cin >> input;
+		while (input != 1 && input != 2) {
+			cout
+					<< "Oh no, you can't move that way! Do you turn (1) left or (2) right?"
+					<< endl;
+			cin >> input;
+		}
+		int chance = rand() % 100;
+		if (chance >= 80) {
+			numMon--;
+			Monster* Troll = new Monster();
+			Troll->setName("Troll");
+			Troll->setHealth(h->getHealth());
+			cout << "I am a " << Troll->getName() << "\n";
+			while (h->getHealth() > 0 && Troll->getHealth() > 0) {
+				cout
+						<< "What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
+						<< endl;
+				cin >> input;
+				while (input < 1 || input > 4) {
+					cout
+							<< "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
+							<< endl;
+					cin >> input;
+				}
+				if (input == 1) {
+					cout << "You attack " << Troll->getName() << ". You do "
+							<< h->getAttack() << " damage! \n";
+					Troll->decreaseHealth(h->getAttack());
+					if (Troll->getHealth() == 0) {
+						break;
+					}
+				} else {
+					if (input == 2) {
+						cout << "You use a potion!" << endl;
+						int potion = h->getPotion();
+						h->setHealth(h->getHealth() + potion);
+						h->setPotion(0);
+
+					} else {
+						if (input == 3) {
+							if (h->getGold() == 0) {
+								cout
+										<< "Uh-oh, you don't have any gold to give..."
+										<< endl;
+							} else {
+								cout << "You want give gold to "
+										<< Troll->getName()
+										<< ". How much gold to you want to give? \n";
+								cin >> input;
+								while (input > h->getGold()) {
+									cout
+											<< "You don't have that much gold! How much do you want to actually give? \n";
+									cin >> input;
+								}
+								if (input >= h->getGold() / 2) {
+									Troll->setHealth(0);
+									cout << Troll->getName()
+											<< " stomps away with your gold. You are alone again. \n";
+									h->setGold(h->getGold() - input);
+									break;
+								}
+								cout << "You give " << Troll->getName() << input
+										<< " pieces of gold. \n";
+								h->setGold(h->getGold() - input);
+							}
+
+						} else {
+							if (input == 4) {
+								srand(time(0));
+								int run = rand() % 7;
+								if (run == 0) {
+									cout << "You successfully run away!"
+											<< endl;
+									break;
+								}
+							}
+						}
+					}
+				}
+				cout << Troll->getName() << " attacks! \n";
+				Troll->Attack(h);
+			}
+		} else {
+			if (chance >= 60) {
+				numMon--;
+				Monster* v = new Monster();
+				v->setName("Velociraptor");
+				v->setHealth(h->getHealth() * 3 / 4);
+				cout << "I am a " << v->getName() << "\n";
+				while (h->getHealth() > 0 && v->getHealth() > 0) {
+					cout
+							<< "What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
+							<< endl;
+					cin >> input;
+					while (input < 1 || input > 4) {
+						cout
+								<< "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
+								<< endl;
+						cin >> input;
+					}
+					if (input == 1) {
+						cout << "You attack " << v->getName() << ". You do "
+								<< h->getAttack() << " damage! \n";
+						v->decreaseHealth(h->getAttack());
+						if (v->getHealth() == 0) {
+							break;
+						}
+					} else {
+						if (input == 2) {
+							cout << "You use a potion!" << endl;
+							int potion = h->getPotion();
+							h->setHealth(h->getHealth() + potion);
+							h->setPotion(0);
+
+						} else {
+							if (input == 3) {
+								cout
+										<< "So silly, why would a velociraptor want gold? Oh well, too bad for you :P"
+										<< endl;
+							} else {
+								if (input == 4) {
+									srand(time(0));
+									int run = rand() % 5;
+									if (run == 0) {
+										cout << "You successfully run away!"
+												<< endl;
+										break;
+									}
+								}
+							}
+						}
+					}
+					cout << v->getName() << " attacks! \n";
+					v->Attack(h);
+				}
+			} else {
+				if (chance >= 30) {
+					numMon--;
+					Monster* g = new Monster();
+					g->setName("Ghost");
+					g->setHealth(h->getHealth() / 2);
+					cout << "I am a " << g->getName() << "\n";
+					while (h->getHealth() > 0 && g->getHealth() > 0) {
+						cout
+								<< "What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
+								<< endl;
+						cin >> input;
+						while (input < 1 || input > 4) {
+							cout
+									<< "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
+									<< endl;
+							cin >> input;
+						}
+						if (input == 1) {
+							cout << "You attack " << g->getName() << ". You do "
+									<< h->getAttack() << " damage! \n";
+							g->decreaseHealth(h->getAttack());
+							if (g->getHealth() == 0) {
+								break;
+							}
+						} else {
+							if (input == 2) {
+								cout << "You use a potion!" << endl;
+								int potion = h->getPotion();
+								h->setHealth(h->getHealth() + potion);
+								h->setPotion(0);
+
+							} else {
+								if (input == 3) {
+									if (h->getGold() == 0) {
+										cout
+												<< "Uh-oh, you don't have any gold to give..."
+												<< endl;
+									} else {
+										cout << "You want give gold to "
+												<< g->getName()
+												<< ". How much gold to you want to give? \n";
+										cin >> input;
+										while (input > h->getGold()) {
+											cout
+													<< "You don't have that much gold! How much do you want to actually give? \n";
+											cin >> input;
+										}
+										if (input >= h->getGold() * 3 / 8) {
+											g->setHealth(0);
+											cout << g->getName()
+													<< " disappears with your gold. You are alone again. \n";
+											h->setGold(h->getGold() - input);
+											break;
+										}
+										cout << "You give " << g->getName()
+												<< input
+												<< " pieces of gold. \n";
+										h->setGold(h->getGold() - input);
+									}
+
+								} else {
+									if (input == 4) {
+										srand(time(0));
+										int run = rand() % 7;
+										if (run == 0) {
+											cout << "You successfully run away!"
+													<< endl;
+											break;
+										}
+									}
+								}
+							}
+						}
+						cout << g->getName() << " attacks! \n";
+						g->Attack(h);
+					}
+				} else {
+					cout << "Phew! You don't see any monsters!" << endl;
+				}
+			}
+		}
+	}
+
+	if (h->getHealth() == 0) {
+		cout << "Oh no, you have died..." << endl;
+	} else {
+		cout
+				<< "Congratulations! You have completed Stage 4! You suddenly see two chests in front of you. Do you choose (1) the left chest or (2) the right chest?"
+				<< endl;
+		int chest = 0;
+		cin >> chest;
+		while (chest != 1 && chest != 2) {
+			cout
+					<< "Ummm, that's not an option...Did you mean (1) the left chest or (2) the right chest?"
+					<< endl;
+			cin >> chest;
+		}
+		if (chest == 1) {
+			int goldGift = rand() % 7 + 1;
+			cout << "You chose the left chest. You open it and find "
+					<< goldGift << " pieces!" << endl;
+			h->setGold(h->getGold() + goldGift);
+		} else {
+			int pGift = rand() % 7 + 1;
+			cout
+					<< "You chose the right chest. You open it and find a potion for "
+					<< pGift << " health!" << endl;
+			h->setPotion(h->getPotion() + pGift);
+		}
+	}
+
+}
+
+
 
 void characterCreation(Hero& x){
 	string tempString;
