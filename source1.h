@@ -579,26 +579,6 @@ public:
 
 
 
-
-class Enemy{
-private:
-	virtual int health;
-	virtual int maxHealth;
-	
-public:
-	virtual void attack(Hero& x);
-};
-
-
-class Tiger: public Enemy {
-private:
-	health = 10;
-	maxHealth = 10;
-public:
-	void attack(Hero& x){
-		x.takeDamage(10);
-	}
-};
 /*
 
 		int temp = x.getHealth();
