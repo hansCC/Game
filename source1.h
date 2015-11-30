@@ -458,7 +458,7 @@ public:
 					}
 					if(getHealth() == 0)
 					{
-						EndGame();
+						EndGame(Stoner);
 						beak = true;
 						break;
 					}
@@ -563,7 +563,7 @@ public:
 			x.setHealth(temp - 20);
 		}
 	}	
-	void EndGame()
+	void EndGame(Hero& Stoner)
 	{
 		cout << endl;
 		cout << "You have defeated the dragon! Congratulations " << Stoner.getName() << endl;
@@ -579,6 +579,32 @@ public:
 
 
 
+
+class Enemy{
+private:
+	virtual int health;
+	virtual int maxHealth;
+	
+public:
+	virtual void attack(Hero& x);
+};
+
+
+class Tiger: public Enemy {
+private:
+	health = 10;
+	maxHealth = 10;
+public:
+	void attack(Hero& x){
+		x.takeDamage(10);
+	}
+};
+/*
+
+		int temp = x.getHealth();
+		x.setHealth(temp-10); //Tiger does 10 damage
+
+*/
 
 
 #endif
