@@ -4,7 +4,16 @@
 
 #include <cstdlib>
 #include <string>
+
+#include <limits>
+#include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
 using namespace std;
+
 
 class Hero {
 private:
@@ -179,26 +188,203 @@ void visitMerchant(Hero& x, Merchant& y){
 }
 
 
-class Teacher{
+class Teacher {
 
-private:
-    string name; 
-    string question;
-    int answer;
-    int attack;
-public: 
-    Teacher(){
-       cout<< "I am yout Teacher"<<std::endl;
-       string name =" Clarissa";
-       string question= " What is 2+2?";
-       int answer =4;
-       int attack;
-    }
-    void setName(string x)
-	{
-       name = x;
-    }
+	private:
+		string name;
+		string answer;
+		int attack;
+                int incorrect_count;
+                
+
+                int calculate_value(int x, int y, int op){
+
+	                 switch(op) {
+		               	case 0: return x + y;
+		               	case 1: return x - y;
+				case 2: return x * y;
+				case 3: return x / y;
+				case 4: return x % y;
+				default: return 0; 
+			}
+		}
+
+		string print_op(int x, int y, int op){ 
+
+      			stringstream convert;
+
+      			switch(op) {
+                		case 0: convert <<  x << "+" << y; break;
+               		 	case 1: convert <<  x << "-" << y; break;
+                		case 2: convert <<  x << "*" << y; break;
+                		case 3: convert <<  x << "/" << y; break;
+                		case 4: convert <<  x << "%" << y; break;
+                		default: convert << "ERROR"; 
+      			}
+
+      			return convert.str();
+		}
+
+		string print_op(int y, int op){
+
+     			stringstream convert;
+
+      			switch(op) {
+                		case 0: convert <<   "+" << y; break;
+                		case 1: convert <<   "-" << y; break;
+                		case 2: convert <<  "*" << y; break;
+                		case 3: convert <<  "/" << y; break;
+                		case 4: convert <<  "%" << y; break;
+                		default: convert << "ERROR";
+      			}
+
+     	 		return convert.str();
+		}
+
+
+	public:
+
+		Teacher():Teacher("Clarissa") { 
+		
+		}
+    
+                Teacher(string name){
+
+                       this.name = name; 
+		       cout << "Hello! I am your Teacher, " <<name<< std::endl;			
+                       incorrect_count=0;
+                }
+
+		void setName(string x) {
+			 name = x;
+
+		}
+                string getName(string name) {
+		       return name;
+	        }
+                bool get_answer(Hero student,string answer){
+ 
+                       if( this->answer==answer) {
+                          
+                          cout<<"Your answer is correct!"<<endl;
+                          incorrect_count=0;
+                          return true;
+                       }
+               
+                       else{
+                          cout<<" Your answer is incorrect!"<<endl;
+                          incorrect_count++;
+                          if(incorrect_count==3){
+                             student.takeDamage(attack);
+                          }
+                          return false;
+                       }
+                       
+                }
+                
+      
+                void set_attack(int attack){
+                       this->attack=attack;
+                }
+
+                int get_attack(){
+                      return attack;
+                }
+
+                string get_question(){
+                      int subject =  rand()%3;
+                      switch(subject){
+                             case 0: return get_question_history();
+                             case 1: return get_question_literature();
+                             default: return get_question_math();
+                      }
+                }
+ 
+                string get_question_history(){
+                       string questions [] = { "Which year did WWI start?",
+                                               " When did Columbus discover America?"};
+                       string answers [] = {"1914",
+                                            "1492"};
+                       int number_of_questions = 2; //formula
+                       // kako se odredjuje koliko ima elemnata u array
+                        //size of questions /size of string = tacno
+                   
+                       int choice = rand()% number_of_questions;
+       
+                       answer = answers[choice];
+
+                       return questions[choice];
+ 
+
+                }
+ 
+                string get_question_literature(){
+
+                       string questions [] = { "What is the name of the author who wrote Brothers Karamazov?",
+                                               " Who was the fater of Transdentalism?"};
+                       string answers [] = {"Fyodor Dostoyevsky.",
+                                            "Ralph Wlado Emerson"};
+                       int number_of_questions = 2;
+                   
+                       int choice = rand()% number_of_questions;
+       
+                       answer = answers[choice];
+
+                       return questions[choice];
+                        
+  
+                }
+                string get_question_math(){
+
+          		string question = "";
+			int int_answer;
+                        
+                        stringstream convert;
+
+			int value_0;
+			int value_1;
+        		int op;
+        		
+			int number_of_nesting = rand() % 2 + 1;
+
+	
+			value_0 = rand() % 10;
+			value_1 = rand() % 10;
+	
+			op = rand() % 5;
+
+			while (op == 3 && value_1 == 0) 
+				value_1 = rand() % 100;
+
+        		question = "(" + print_op(value_0, value_1, op) + ")";
+        		int_answer = calculate_value(value_0, value_1, op);
+
+        		for (int i = 0; i < number_of_nesting; i++) {
+	      			value_1 = rand() % 10;
+
+              			op = rand() % 5;
+
+              			while (op == 3 && value_1 == 0)
+                  			value_1 = rand() % 10;
+
+              			question = "(" + question;
+             		 	question += print_op(value_1, op);
+              			question += ")";
+              			int_answer = calculate_value(int_answer, value_1, op);
+                        
+			}
+        		//cout << question << endl;
+        		//cout << answer << endl;
+                        
+                        convert<<int_answer;
+                        answer = convert.str();
+        		return question;
+	
+		}
+
+        
 };
+
 
 void characterCreation(Hero& x){
 	string tempString;
