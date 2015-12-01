@@ -316,8 +316,6 @@ class Teacher {
                        answer = answers[choice];
 
                        return questions[choice];
- 
-
                 }
  
                 string get_question_literature(){
@@ -392,6 +390,9 @@ class Teacher {
 
 
 //Wei Wei's code commented out
+//Error Checking:
+//what if they don't input an integer
+
 /*
 void stage4(Hero* h) {
 	c.out

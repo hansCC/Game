@@ -15,7 +15,7 @@ int main(){
 	Enchanter Catlyn;
 	FinalBoss Mithaldra;
 	
-	/*
+	
 	//take in user input to know where to travel.
 	while(a){
 		if(input == 1){
@@ -23,20 +23,13 @@ int main(){
 		}else if(input == 2){
 			visitFinalBost();
 		}
-	
 	}
-	
-	
-	
 	while(hub==true){
 		//menu where you wanna go?
 		//if you want to  go to innkepper
-		visitInnKeeper(Stoner, Will);
-		
-		
-		
+		visitInnKeeper(Stoner, Will);	
 	}
-	*/
+	
 	
 	//characterCreation(Stoner);
 	cout << "Check outside the function" << endl;
