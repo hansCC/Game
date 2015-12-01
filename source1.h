@@ -189,7 +189,7 @@ void visitMerchant(Hero& x, Merchant& y){
 
 
 //Ana's code commented out
-/*
+
 class Teacher {
 
 	private:
@@ -388,12 +388,12 @@ class Teacher {
 };
 
 
-*/
+
 
 //Wei Wei's code commented out
 /*
 void stage4(Hero* h) {
-	cout
+	c.out
 			<< "You have now entered Stage 4. Be prepared for anything that goes bump in the night... \n"
 			<< endl;
 	srand(time(0));
