@@ -19,7 +19,7 @@ int main(){
 	//take in user input to know where to travel.
 	while(a){
 		if(input == 1){
-			visitHUB(Hero..sdaspfafas);
+			visitHUB(Hero, W.);
 		}else if(input == 2){
 			visitFinalBost();
 		}
@@ -36,7 +36,6 @@ int main(){
 		
 		
 	}
-	
 	*/
 	
 	//characterCreation(Stoner);

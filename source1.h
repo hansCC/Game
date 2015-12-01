@@ -199,33 +199,30 @@ class Teacher {
                 int incorrect_count;
                 
 
-                int calculate_value(int x, int y, int op){
+    int calculate_value(int x, int y, int op){
 
-	                 switch(op) {
-		               	case 0: return x + y;
-		               	case 1: return x - y;
-				case 2: return x * y;
-				case 3: return x / y;
-				case 4: return x % y;
-				default: return 0; 
-			}
+	switch(op) {
+		case 0: return x + y;
+		case 1: return x - y;
+		case 2: return x * y;
+		case 3: return x / y;
+		case 4: return x % y;
+		default: return 0; 
 		}
+	}
 
-		string print_op(int x, int y, int op){ 
-
-      			stringstream convert;
-
-      			switch(op) {
-                		case 0: convert <<  x << "+" << y; break;
-               		 	case 1: convert <<  x << "-" << y; break;
-                		case 2: convert <<  x << "*" << y; break;
-                		case 3: convert <<  x << "/" << y; break;
-                		case 4: convert <<  x << "%" << y; break;
-                		default: convert << "ERROR"; 
-      			}
-
-      			return convert.str();
+	string print_op(int x, int y, int op){ 
+		stringstream convert;
+		switch(op) {
+			case 0: convert <<  x << "+" << y; break;
+			case 1: convert <<  x << "-" << y; break;
+			case 2: convert <<  x << "*" << y; break;
+			case 3: convert <<  x << "/" << y; break;
+			case 4: convert <<  x << "%" << y; break;
+			default: convert << "ERROR"; 
 		}
+		return convert.str();
+	}
 
 		string print_op(int y, int op){
 
@@ -246,16 +243,19 @@ class Teacher {
 
 	public:
 
-		Teacher():Teacher("Clarissa") { 
-		
+		Teacher(){ 
+			name == "Clarissa";
+			cout << "Hello! I am your Teacher, " << name << endl;
+			incorrect_count=0;
 		}
-    
+				/*
                 Teacher(string name){
 
                        this.name = name; 
 		       cout << "Hello! I am your Teacher, " <<name<< std::endl;			
                        incorrect_count=0;
                 }
+				*/
 
 		void setName(string x) {
 			 name = x;
@@ -386,6 +386,7 @@ class Teacher {
 
         
 };
+
 
 
 
