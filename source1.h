@@ -10,7 +10,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+//------- Prototype classes ------------
+class Hero;
+class Merchant;
+class Teacher;
+class InnKeeper;
+class Enchanter;
+class FinalBoss;
+//------- Prototype functions ----------
+void visitMerchant(Hero& x, Merchant& y);
+void characterCreation(Hero& x);
+void visitEnchanter(Hero& x, Enchanter& y);
+void visitInn(Hero& x, InnKeeper& y);
+void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj);
 
 using namespace std;
 
