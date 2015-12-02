@@ -799,6 +799,7 @@ private:
 	int health;
 	int regainHealth;
 	int temp;
+	string strtemp;
 
 public:
 	bool end;
@@ -863,7 +864,7 @@ public:
 				cout << "The dragon roars in your direction, and you brace yourself for battle.\n";
 				while(getHealth() != 0 && Stoner.getHealth() != 0)
 				{
-					cout << "Your health is: " << Stoner.getHealth() <<endl;
+					cout << "\nYour health is: " << Stoner.getHealth() <<endl;
 					cout << "The dragon's health is: " << getHealth() << endl;
 					cout << "\n";
 					cout << "What would you like to do?\n";
@@ -926,7 +927,7 @@ public:
 
 					if(Stoner.getHealth() == 0)
 					{
-						cout << "Now, you are dead. Return to the HUB and try again.\n";
+						cout << "\nNow, you are dead. Return to the HUB and try again.\n";
 						cout << "You have lost " << x * .05 << " gold.\n"; 
 						Stoner.setGold(x * .95);						
 						beak = true;
@@ -973,44 +974,113 @@ public:
 	}
 	void Attack1(Hero& x)
 	{
+		cout << endl;
 		cout << "The dragon roars and its mouth begins to fill with fire.\n";
 		cout << "The dragon shoots a fireball and it hurls in your direction.\n";
 		cout << "\n";
-		cout << "To dodge this, you must calculate how far you must move to dodge the fireball! \n";
-		//Here ... you solve math
-		cout << "What, my lord, is two plus two?\n";
+		cout << "To dodge this, you must answer some questions.\n";
+		
+		cout << endl;
+		//first question - MATH
+		cout << "What is 5 + 2 * 10?\n";
+		cout << "A. 70\n";
+		cout << "B. 25\n";
+		cout << "C. 52\n";
+		cout << "D. 17\n";
+
 		try
 		{
-			cin >> temp;
+			cin >> strtemp;
 		}
 		catch(exception e)
 		{
 			cout << "Invalid input. Please enter a number.\n";
 		}
-		if(temp == 4)
+		if(strtemp == "B")
 		{
-			cout << "Good job, you dodged the fireball with your quick thinking.\n";
+			cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
 		}
-		else
+		else if(strtemp == "A" || strtemp == "C" || strtemp == "D")
 		{
-			cout << "WRONG, you did not move quickly enough away from the fireball. \n";
-			cout << "You take " << temp << " damage.\n";
+			cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+			cout << "You take " << 25 << " damage.\n";
 			x.takeDamage(25);
 			cout << "You now have " << x.getHealth() << " health. \n";
 		}
+
+		cout << endl;
+		//second question - HISTORY
+		cout << "What century did World War I take place in?\n";
+		cout << "A. 21\n";
+		cout << "B. 19\n";
+		cout << "C. 17\n";
+		cout << "D. 20\n";
+
+		try
+		{
+			cin >> strtemp;
+		}
+		catch(exception e)
+		{
+			cout << "Invalid input. Please enter a number.\n";
+		}
+		if(strtemp == "D")
+		{
+			cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+		}
+		else if(strtemp == "B" || strtemp == "C" || strtemp == "A")
+		{
+			cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+			cout << "You take " << 25 << " damage.\n";
+			x.takeDamage(25);
+			cout << "You now have " << x.getHealth() << " health. \n";
+		}
+
+		cout << endl;
+		//third question - LITERATURE
+		cout << "Who wrote the book '1984'\n";
+		cout << "A. George Orwell\n";
+		cout << "B. Dr. Seuss\n";
+		cout << "C. George Washington\n";
+		cout << "D. Oprah Winfrey\n";
+
+		try
+		{
+			cin >> strtemp;
+		}
+		catch(exception e)
+		{
+			cout << "Invalid input. Please enter a number.\n";
+		}
+		if(strtemp == "A")
+		{
+			cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+		}
+		else if(strtemp == "B" || strtemp == "C" || strtemp == "D")
+		{
+			cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+			cout << "You take " << 25 << " damage.\n";
+			x.takeDamage(25);
+			cout << "You now have " << x.getHealth() << " health. \n";
+		}
+
 	}
 	void Attack2(Hero& x)
 	{
+		cout << endl;
 		cout << "The dragon swings its mighty tail at you.\n";
 		cout << "You must use your combat skills to deflect the attack.\n";
+		cout << endl;
 		x.takeDamage(25);
 		//need combat training 
 	}
 	void Attack3(Hero& x)
 	{
+		cout << endl;
 		cout << "The dragon looks up and screeches, and undead skeletons start to rise from the ground.\n";
 		cout << "You reach into your satchel and grab the Horn of Gilgamesh to call your reinforcements.\n";
 		cout << "You hear cheers and the townsfolk you aided come rushing to your side.\n";
+		cout << endl;
 		cout << "How would you like to use these reinforcements?\n";
 		cout << "1. Defend you from the undead army.\n";
 		cout << "2. Attack the dragon.\n";
