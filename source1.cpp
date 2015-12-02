@@ -10,12 +10,18 @@ using namespace std;
 int main(){
 	
 	Hero Stoner;
-	InnKeeper innKeeper;
-	Merchant merchant;
-	Enchanter enchanter;
+	InnKeeper innKeeperObj;
+	Merchant merchantObj;
+	Enchanter enchanterObj;
 	FinalBoss Mithaldra;
 	
-	
+	while(1){
+		cout << "Welcome to the game" << endl;
+		HUB(Stoner, innKeeperObj, merchantObj, enchanterObj);
+		
+		
+		
+	}
 	//take in user input to know where to travel.
 	/*
 	while(a){
@@ -40,12 +46,12 @@ int main(){
 	Stoner.setHealth(5);
 	Stoner.printAll();
 	cout << "Go to the Inn" << endl;
-	visitInn(Stoner, innKeeper);
+	visitInn(Stoner, innKeeperObj);
 	Stoner.printAll();
 	cout << "Visiting the merchant" << endl;
-	visitMerchant(Stoner, merchant);
+	visitMerchant(Stoner, merchantObj);
 	Stoner.printAll();
-	visitEnchanter(Stoner, enchanter);
+	visitEnchanter(Stoner, enchanterObj);
 
 	Mithaldra.BossBattle(Stoner);
 	return 0;

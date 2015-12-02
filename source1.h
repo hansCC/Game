@@ -686,18 +686,6 @@ void characterCreation(Hero& x){
 	}
 }
 
-void HUB(Hero& hero){ //this is incomplete
-	int input;
-	cout << "---------- Welcome to the city of Anvil ----------" << endl;
-	cout << "Where would you like to go?" << endl;
-	cout << "1: Inn" << endl;
-	cin >> input;
-	if (input == 1){
-		cout << "Inn" << endl;
-	} else if (input == 2) {
-		
-	}
-}
 
 
 class InnKeeper{
@@ -1036,6 +1024,22 @@ public:
 
 };
 
+void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj){ //this is incomplete
+	int input;
+	cout << "---------- Welcome to the city of Anvil ----------" << endl;
+	cout << "Where would you like to go?" << endl;
+	cout << "1: Inn" << endl;
+	cin >> input;
+	if (input == 1){
+		cout << "Inn" << endl;
+	} else if (input == 2) {
+		cout << "Visit Merchant" << endl;
+	} else if (input == 3) {
+		cout << "Visit Enchanter" << endl;
+	} else {
+		cout << "Invalid input" << endl;
+	}
+}
 
 
 #endif
