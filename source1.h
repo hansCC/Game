@@ -705,14 +705,6 @@ public:
 };
 
 
-void visitInn(Hero& x, InnKeeper& y){
-	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----\n";
-	y.greeting();
-	y.healPlayer(x);
-	cout << "After a quite night of rest you feel refreshed!" << endl;
-	cout << "Your health is now full" << endl;
-}
-
 class Enchanter{
 private:
 	string name;
@@ -757,13 +749,6 @@ public:
 	}
 };
 
-void visitEnchanter(Hero& x, Enchanter& y){
-	cout << "You walk over to a small tent near the outskirts of town" << endl;
-	cout << "An intense aroma of incense washes over you as you pull aside the entrance flap." << endl;
-	cout << "From the depths of the tent you hear a soft ominous voice" << endl;
-	y.greeting();
-	y.provideEnchantment(x);
-}
 
 class FinalBoss {
 private: 
@@ -1023,6 +1008,24 @@ public:
 	}
 
 };
+
+
+void visitEnchanter(Hero& x, Enchanter& y){
+	cout << "You walk over to a small tent near the outskirts of town" << endl;
+	cout << "An intense aroma of incense washes over you as you pull aside the entrance flap." << endl;
+	cout << "From the depths of the tent you hear a soft ominous voice" << endl;
+	y.greeting();
+	y.provideEnchantment(x);
+}
+
+void visitInn(Hero& x, InnKeeper& y){
+	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----\n";
+	y.greeting();
+	y.healPlayer(x);
+	cout << "After a quite night of rest you feel refreshed!" << endl;
+	cout << "Your health is now full" << endl;
+}
+
 
 void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj){ //this is incomplete
 	int input;
