@@ -10,13 +10,14 @@ using namespace std;
 int main(){
 	
 	Hero Stoner;
-	InnKeeper Will;
-	Merchant Frank;
-	Enchanter Catlyn;
+	InnKeeper innKeeper;
+	Merchant merchant;
+	Enchanter enchanter;
 	FinalBoss Mithaldra;
 	
 	
 	//take in user input to know where to travel.
+	/*
 	while(a){
 		if(input == 1){
 			visitHUB(Hero, W.);
@@ -27,10 +28,10 @@ int main(){
 	while(hub==true){
 		//menu where you wanna go?
 		//if you want to  go to innkepper
-		visitInnKeeper(Stoner, Will);	
+		visitInnKeeper(Stoner, innKeeper);	
 	}
 	
-	
+	*/
 	//characterCreation(Stoner);
 	cout << "Check outside the function" << endl;
 	Stoner.printAll();
@@ -39,12 +40,12 @@ int main(){
 	Stoner.setHealth(5);
 	Stoner.printAll();
 	cout << "Go to the Inn" << endl;
-	visitInn(Stoner, Will);
+	visitInn(Stoner, innKeeper);
 	Stoner.printAll();
 	cout << "Visiting the merchant" << endl;
-	visitMerchant(Stoner, Frank);
+	visitMerchant(Stoner, merchant);
 	Stoner.printAll();
-	visitEnchanter(Stoner, Catlyn);
+	visitEnchanter(Stoner, enchanter);
 
 	Mithaldra.BossBattle(Stoner);
 	return 0;

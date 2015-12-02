@@ -120,7 +120,6 @@ class Merchant {
 private: 
 	string name;
 	string inventory[5];
-	//, "Grand Battle Axe","Bow and Arrow", "Golden Short Sword", "Bronze Pole Arm"
 	int cost;
 public:
 	Merchant(){
@@ -687,13 +686,15 @@ void characterCreation(Hero& x){
 	}
 }
 
-void HUB(Hero& x){ //this is incomplete
+void HUB(Hero& hero){ //this is incomplete
 	int input;
 	cout << "---------- Welcome to the city of Anvil ----------" << endl;
 	cout << "Where would you like to go?" << endl;
 	cout << "1: Inn" << endl;
 	cin >> input;
 	if (input == 1){
+		cout << "Inn" << endl;
+	} else if (input == 2) {
 		
 	}
 }
@@ -1035,15 +1036,6 @@ public:
 
 };
 
-
-
-
-/*
-
-		int temp = x.getHealth();
-		x.setHealth(temp-10); //Tiger does 10 damage
-
-*/
 
 
 #endif
