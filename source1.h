@@ -158,45 +158,80 @@ public:
 	void sellPotion(Hero& x){
 		x.incPotion();
 	}
-	void sellWeapon(Hero& x){ 
+	void sellWeapon(Hero& x){
 		int input;
 		cout << "Which weapon would you like hero?" << endl;
-		if(x.decreaseGold(25)==true){
 			for (int i = 0; i < 5; i++){
-				cout << i << ": " << inventory[i] << endl;
+					cout << i+1 << ": " << inventory[i] << endl;
 			}
-			cin >> input;
-			if(input == 0){
-				x.setWeapon(inventory[0]);
-			} else if(input == 1){
-				x.setWeapon(inventory[0]);
-			} else if(input == 2){
-				x.setWeapon(inventory[0]);
-			} else if(input == 3){
-				x.setWeapon(inventory[0]);
-			} else if(input == 4){
-				x.setWeapon(inventory[0]);
-			}
-		} else {
-			cout << "I'm afraid you don't have the hold to purchase that item." << endl;
-		}
+			cout << "0: Nevermind" << endl;
+				cin >> input;
+				if(input == 1 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[0]);
+				} else if(input == 2 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[1]);
+				} else if(input == 3 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[2]);
+				} else if(input == 4 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[3]);
+				} else if(input == 5 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[4]);
+				} else {
+					//do nothing
+				}
+		
 	}
 };
 
-void visitMerchant(Hero& x, Merchant& y){
+void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj){ //this is incomplete
 	int input;
-	cout << "You walk into a small shop by the Inn" << endl;
-	cout << "1: to buy a potion" << endl;
-	cout << "2: to buy a weapon" << endl;
-	cin >> input;
-	if (input == 1){
-		y.sellPotion(x);
-	} else if (input ==  2){
-		y.sellWeapon(x);
-	} else {
-		cout << "That is an invalid input" << endl;
+	bool exitFlag = false;
+	cout << "\n---------- Welcome to the city of Anvil ----------" << endl;
+	
+	while (exitFlag == false){
+		cout << "\nWhere in Anvil would you like to go?" << endl;
+		cout << "1: Inn" << endl;
+		cout << "2: Merchant" << endl;
+		cout << "3: Enchanter" << endl;
+		cout << "0: Exit Anvil" << endl;
+		cin >> input;
+		if (input == 1){
+			visitInn(Stoner, innKeeperObj);
+		} else if (input == 2) {
+			visitMerchant(Stoner, merchantObj);
+		} else if (input == 3) {
+			cout << "\nVisit Enchanter" << endl;
+		} else if(input == 0){
+			exitFlag = true;
+			cout << "You venture out into the wilds" << endl;
+		} else {
+			cout << "\nInvalid input" << endl;
+		}
 	}
 }
+
+void visitMerchant(Hero& x, Merchant& y){
+	int input;
+	bool exitFlag = false;
+	cout << "\nYou walk into a small shop by the Inn" << endl;
+	while(exitFlag == false){
+		cout << "How can I help you?, the merchant chirps." << endl;
+		cout << "1: to buy a potion" << endl;
+		cout << "2: to buy a weapon" << endl;
+		cout << "0: Leave merchant" << endl;
+		cin >> input;
+		if (input == 1){
+			y.sellPotion(x);
+		} else if (input ==  2){
+			y.sellWeapon(x);
+		} else if(input == 0){
+			exitFlag = true;
+		} else {
+			cout << "That is an invalid input" << endl;
+		}
+	}
+}
+
 
 
 //Ana's code commented out
@@ -395,9 +430,6 @@ class Teacher {
 
         
 };
-
-
-
 
 
 //Wei Wei's code commented out
@@ -699,7 +731,6 @@ void characterCreation(Hero& x){
 }
 
 
-
 class InnKeeper{
 private:
 	string name;
@@ -711,7 +742,7 @@ public:
 		x.setHealth(x.getMaxHealth());
 	}
 	void greeting(){
-		cout << "Hello Hero!, the Merchant bellows from behind the bar." << endl;
+		cout << "\nHello Hero!, the Merchant bellows from behind the bar." << endl;
 		cout << "Come and spend the night, free of charge for helping our city." << endl;
 	}
 };
@@ -1034,27 +1065,11 @@ void visitInn(Hero& x, InnKeeper& y){
 	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----\n";
 	y.greeting();
 	y.healPlayer(x);
-	cout << "After a quite night of rest you feel refreshed!" << endl;
-	cout << "Your health is now full" << endl;
+	cout << "\nAfter a quite night of rest you feel refreshed!" << endl;
+	cout << "Your health is now at full" << endl;
 }
 
 
-void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj){ //this is incomplete
-	int input;
-	cout << "---------- Welcome to the city of Anvil ----------" << endl;
-	cout << "Where would you like to go?" << endl;
-	cout << "1: Inn" << endl;
-	cin >> input;
-	if (input == 1){
-		cout << "Inn" << endl;
-	} else if (input == 2) {
-		cout << "Visit Merchant" << endl;
-	} else if (input == 3) {
-		cout << "Visit Enchanter" << endl;
-	} else {
-		cout << "Invalid input" << endl;
-	}
-}
 
 
 #endif

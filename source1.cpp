@@ -15,10 +15,10 @@ int main(){
 	Enchanter enchanterObj;
 	FinalBoss Mithaldra;
 	
+	cout << "Welcome to the game" << endl;
 	while(1){
-		cout << "Welcome to the game" << endl;
-		HUB(Stoner, innKeeperObj, merchantObj, enchanterObj);
 		
+		HUB(Stoner, innKeeperObj, merchantObj, enchanterObj);
 		
 		
 	}
