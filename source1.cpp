@@ -20,7 +20,7 @@ int main(){
 		
 		HUB(Stoner, innKeeperObj, merchantObj, enchanterObj);
 		
-		
+		Mithaldra.BossBattle(Stoner);
 	}
 	//take in user input to know where to travel.
 	/*

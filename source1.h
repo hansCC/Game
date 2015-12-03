@@ -26,7 +26,6 @@ void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchante
 
 using namespace std;
 
-
 class Hero {
 private:
 	int health;
@@ -593,7 +592,7 @@ void characterCreation(Hero& x){
 	string input = "no";
 	while(input == "no" && input != "yes")
 	{
-		cout << " -------------- Welcome to *insert game name here* --------------" << endl;
+		cout << " -------------- Welcome to Team 8's Text Based RPG --------------" << endl;
 		cout << "It is time to customize your character and begin your journey!" << endl;
 		
 		cout << "Please enter yor characters name: ";
@@ -629,17 +628,17 @@ public:
 		x.setHealth(x.getMaxHealth());
 	}
 	void greeting(){
-		cout << "Hello Hero!, the Merchant bellows from behind the bar." << endl;
+		cout << "\nHello Hero!, the Merchant bellows from behind the bar." << endl;
 		cout << "Come and spend the night, free of charge for helping our city." << endl;
 	}
 };
 
 
 void visitInn(Hero& x, InnKeeper& y){
-	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----\n";
+	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----" << endl;
 	y.greeting();
 	y.healPlayer(x);
-	cout << "After a quite night of rest you feel refreshed!" << endl;
+	cout << "\nAfter a quite night of rest you feel refreshed!" << endl;
 	cout << "Your health is now full" << endl;
 }
 
@@ -647,13 +646,16 @@ class Enchanter{
 private:
 	string name;
 public:
-	Enchanter(){
+	Enchanter()
+	{
 		name = "Catlyn";
 	}
-	void greeting(){
+	void greeting()
+	{
 		cout << "Care to buy an enchantment hero?" << endl;
 	}
-	void provideEnchantment(Hero& x){//untested
+	void provideEnchantment(Hero& x)
+	{//untested
 		int input;
 		int currentAttack = x.getAttack();
 		cout << "I can empower your weapon, for a price" << endl;
@@ -688,6 +690,7 @@ public:
 };
 
 void visitEnchanter(Hero& x, Enchanter& y){
+	cout << "-----------------------------------------------------------" << endl;
 	cout << "You walk over to a small tent near the outskirts of town" << endl;
 	cout << "An intense aroma of incense washes over you as you pull aside the entrance flap." << endl;
 	cout << "From the depths of the tent you hear a soft ominous voice" << endl;
@@ -1311,7 +1314,7 @@ public:
 		cout << "1. Counterattack" << endl;
 		cout << "2. Fall to the ground" << endl;
 		cout << "3. Attempt to jump over the tail" << endl;
-		cout << "4. Timewarp" << endl;
+		cout << "4.   Timewarp" << endl;
 		cout << endl;
 		
 		try
