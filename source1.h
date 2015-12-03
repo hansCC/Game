@@ -10,19 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//------- Prototype classes ------------
-class Hero;
-class Merchant;
-class Teacher;
-class InnKeeper;
-class Enchanter;
-class FinalBoss;
-//------- Prototype functions ----------
-void visitMerchant(Hero& x, Merchant& y);
-void characterCreation(Hero& x);
-void visitEnchanter(Hero& x, Enchanter& y);
-void visitInn(Hero& x, InnKeeper& y);
-void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj);
+
 
 using namespace std;
 
@@ -132,6 +120,7 @@ class Merchant {
 private: 
 	string name;
 	string inventory[5];
+	//, "Grand Battle Axe","Bow and Arrow", "Golden Short Sword", "Bronze Pole Arm"
 	int cost;
 public:
 	Merchant(){
@@ -158,122 +147,80 @@ public:
 	void sellPotion(Hero& x){
 		x.incPotion();
 	}
-	void sellWeapon(Hero& x){
+	void sellWeapon(Hero& x){ 
 		int input;
 		cout << "Which weapon would you like hero?" << endl;
+		if(x.decreaseGold(25)==true){
 			for (int i = 0; i < 5; i++){
-					cout << i+1 << ": " << inventory[i] << endl;
+				cout << i << ": " << inventory[i] << endl;
 			}
-			cout << "0: Nevermind" << endl;
-				cin >> input;
-				if(input == 1 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[0]);
-				} else if(input == 2 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[1]);
-				} else if(input == 3 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[2]);
-				} else if(input == 4 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[3]);
-				} else if(input == 5 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[4]);
-				} else {
-					//do nothing
-				}
-		
+			cin >> input;
+			if(input == 0){
+				x.setWeapon(inventory[0]);
+			} else if(input == 1){
+				x.setWeapon(inventory[0]);
+			} else if(input == 2){
+				x.setWeapon(inventory[0]);
+			} else if(input == 3){
+				x.setWeapon(inventory[0]);
+			} else if(input == 4){
+				x.setWeapon(inventory[0]);
+			}
+		} else {
+			cout << "I'm afraid you don't have the hold to purchase that item." << endl;
+		}
 	}
 };
 
-void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj){ //this is incomplete
-	int input;
-	bool exitFlag = false;
-	cout << "\n---------- Welcome to the city of Anvil ----------" << endl;
-	
-	while (exitFlag == false){
-		cout << "\nWhere in Anvil would you like to go?" << endl;
-		cout << "1: Inn" << endl;
-		cout << "2: Merchant" << endl;
-		cout << "3: Enchanter" << endl;
-		cout << "0: Exit Anvil" << endl;
-		cin >> input;
-		if (input == 1){
-			visitInn(Stoner, innKeeperObj);
-		} else if (input == 2) {
-			visitMerchant(Stoner, merchantObj);
-		} else if (input == 3) {
-			cout << "\nVisit Enchanter" << endl;
-		} else if(input == 0){
-			exitFlag = true;
-			cout << "You venture out into the wilds" << endl;
-		} else {
-			cout << "\nInvalid input" << endl;
-		}
-	}
-}
-
 void visitMerchant(Hero& x, Merchant& y){
 	int input;
-	bool exitFlag = false;
-	cout << "\nYou walk into a small shop by the Inn" << endl;
-	while(exitFlag == false){
-		cout << "How can I help you?, the merchant chirps." << endl;
-		cout << "1: to buy a potion" << endl;
-		cout << "2: to buy a weapon" << endl;
-		cout << "0: Leave merchant" << endl;
-		cin >> input;
-		if (input == 1){
-			y.sellPotion(x);
-		} else if (input ==  2){
-			y.sellWeapon(x);
-		} else if(input == 0){
-			exitFlag = true;
-		} else {
-			cout << "That is an invalid input" << endl;
-		}
+	cout << "You walk into a small shop by the Inn" << endl;
+	cout << "1: to buy a potion" << endl;
+	cout << "2: to buy a weapon" << endl;
+	cin >> input;
+	if (input == 1){
+		y.sellPotion(x);
+	} else if (input ==  2){
+		y.sellWeapon(x);
+	} else {
+		cout << "That is an invalid input" << endl;
 	}
 }
-
 
 
 //Ana's code commented out
-
+/*
 class Teacher {
-
 	private:
 		string name;
 		string answer;
 		int attack;
                 int incorrect_count;
                 
-
-    int calculate_value(int x, int y, int op){
-
-	switch(op) {
-		case 0: return x + y;
-		case 1: return x - y;
-		case 2: return x * y;
-		case 3: return x / y;
-		case 4: return x % y;
-		default: return 0; 
+                int calculate_value(int x, int y, int op){
+	                 switch(op) {
+		               	case 0: return x + y;
+		               	case 1: return x - y;
+				case 2: return x * y;
+				case 3: return x / y;
+				case 4: return x % y;
+				default: return 0; 
+			}
 		}
-	}
-
-	string print_op(int x, int y, int op){ 
-		stringstream convert;
-		switch(op) {
-			case 0: convert <<  x << "+" << y; break;
-			case 1: convert <<  x << "-" << y; break;
-			case 2: convert <<  x << "*" << y; break;
-			case 3: convert <<  x << "/" << y; break;
-			case 4: convert <<  x << "%" << y; break;
-			default: convert << "ERROR"; 
+		string print_op(int x, int y, int op){ 
+      			stringstream convert;
+      			switch(op) {
+                		case 0: convert <<  x << "+" << y; break;
+               		 	case 1: convert <<  x << "-" << y; break;
+                		case 2: convert <<  x << "*" << y; break;
+                		case 3: convert <<  x << "/" << y; break;
+                		case 4: convert <<  x << "%" << y; break;
+                		default: convert << "ERROR"; 
+      			}
+      			return convert.str();
 		}
-		return convert.str();
-	}
-
 		string print_op(int y, int op){
-
      			stringstream convert;
-
       			switch(op) {
                 		case 0: convert <<   "+" << y; break;
                 		case 1: convert <<   "-" << y; break;
@@ -282,30 +229,20 @@ class Teacher {
                 		case 4: convert <<  "%" << y; break;
                 		default: convert << "ERROR";
       			}
-
      	 		return convert.str();
 		}
-
-
 	public:
-
-		Teacher(){ 
-			name == "Clarissa";
-			cout << "Hello! I am your Teacher, " << name << endl;
-			incorrect_count=0;
+		Teacher():Teacher("Clarissa") { 
+		
 		}
-				/*
+    
                 Teacher(string name){
-
                        this.name = name; 
 		       cout << "Hello! I am your Teacher, " <<name<< std::endl;			
                        incorrect_count=0;
                 }
-				*/
-
 		void setName(string x) {
 			 name = x;
-
 		}
                 string getName(string name) {
 		       return name;
@@ -334,11 +271,9 @@ class Teacher {
                 void set_attack(int attack){
                        this->attack=attack;
                 }
-
                 int get_attack(){
                       return attack;
                 }
-
                 string get_question(){
                       int subject =  rand()%3;
                       switch(subject){
@@ -360,12 +295,11 @@ class Teacher {
                        int choice = rand()% number_of_questions;
        
                        answer = answers[choice];
-
                        return questions[choice];
+ 
                 }
  
                 string get_question_literature(){
-
                        string questions [] = { "What is the name of the author who wrote Brothers Karamazov?",
                                                " Who was the fater of Transdentalism?"};
                        string answers [] = {"Fyodor Dostoyevsky.",
@@ -375,44 +309,34 @@ class Teacher {
                        int choice = rand()% number_of_questions;
        
                        answer = answers[choice];
-
                        return questions[choice];
                         
   
                 }
                 string get_question_math(){
-
           		string question = "";
 			int int_answer;
                         
                         stringstream convert;
-
 			int value_0;
 			int value_1;
         		int op;
         		
 			int number_of_nesting = rand() % 2 + 1;
-
 	
 			value_0 = rand() % 10;
 			value_1 = rand() % 10;
 	
 			op = rand() % 5;
-
 			while (op == 3 && value_1 == 0) 
 				value_1 = rand() % 100;
-
         		question = "(" + print_op(value_0, value_1, op) + ")";
         		int_answer = calculate_value(value_0, value_1, op);
-
         		for (int i = 0; i < number_of_nesting; i++) {
 	      			value_1 = rand() % 10;
-
               			op = rand() % 5;
-
               			while (op == 3 && value_1 == 0)
                   			value_1 = rand() % 10;
-
               			question = "(" + question;
              		 	question += print_op(value_1, op);
               			question += ")";
@@ -427,23 +351,18 @@ class Teacher {
         		return question;
 	
 		}
-
         
 };
-
+*/
 
 //Wei Wei's code commented out
-//Error Checking:
-//what if they don't input an integer
-
 /*
 void stage4(Hero* h) {
-	c.out
+	cout
 			<< "You have now entered Stage 4. Be prepared for anything that goes bump in the night... \n"
 			<< endl;
 	srand(time(0));
 	int numMon = rand() % 3 + 1;
-
 	while (numMon > 0) {
 		cout
 				<< "You are walking in a dimly lit area. Do you turn (1) left or (2) right?"
@@ -487,7 +406,6 @@ void stage4(Hero* h) {
 						int potion = h->getPotion();
 						h->setHealth(h->getHealth() + potion);
 						h->setPotion(0);
-
 					} else {
 						if (input == 3) {
 							if (h->getGold() == 0) {
@@ -515,7 +433,6 @@ void stage4(Hero* h) {
 										<< " pieces of gold. \n";
 								h->setGold(h->getGold() - input);
 							}
-
 						} else {
 							if (input == 4) {
 								srand(time(0));
@@ -563,7 +480,6 @@ void stage4(Hero* h) {
 							int potion = h->getPotion();
 							h->setHealth(h->getHealth() + potion);
 							h->setPotion(0);
-
 						} else {
 							if (input == 3) {
 								cout
@@ -616,7 +532,6 @@ void stage4(Hero* h) {
 								int potion = h->getPotion();
 								h->setHealth(h->getHealth() + potion);
 								h->setPotion(0);
-
 							} else {
 								if (input == 3) {
 									if (h->getGold() == 0) {
@@ -645,7 +560,6 @@ void stage4(Hero* h) {
 												<< " pieces of gold. \n";
 										h->setGold(h->getGold() - input);
 									}
-
 								} else {
 									if (input == 4) {
 										srand(time(0));
@@ -668,7 +582,6 @@ void stage4(Hero* h) {
 			}
 		}
 	}
-
 	if (h->getHealth() == 0) {
 		cout << "Oh no, you have died..." << endl;
 	} else {
@@ -696,9 +609,7 @@ void stage4(Hero* h) {
 			h->setPotion(h->getPotion() + pGift);
 		}
 	}
-
 }
-
 */
 
 
@@ -730,6 +641,17 @@ void characterCreation(Hero& x){
 	}
 }
 
+void HUB(Hero& x){ //this is incomplete
+	int input;
+	cout << "---------- Welcome to the city of Anvil ----------" << endl;
+	cout << "Where would you like to go?" << endl;
+	cout << "1: Inn" << endl;
+	cin >> input;
+	if (input == 1){
+		
+	}
+}
+
 
 class InnKeeper{
 private:
@@ -742,11 +664,19 @@ public:
 		x.setHealth(x.getMaxHealth());
 	}
 	void greeting(){
-		cout << "\nHello Hero!, the Merchant bellows from behind the bar." << endl;
+		cout << "Hello Hero!, the Merchant bellows from behind the bar." << endl;
 		cout << "Come and spend the night, free of charge for helping our city." << endl;
 	}
 };
 
+
+void visitInn(Hero& x, InnKeeper& y){
+	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----\n";
+	y.greeting();
+	y.healPlayer(x);
+	cout << "After a quite night of rest you feel refreshed!" << endl;
+	cout << "Your health is now full" << endl;
+}
 
 class Enchanter{
 private:
@@ -792,6 +722,13 @@ public:
 	}
 };
 
+void visitEnchanter(Hero& x, Enchanter& y){
+	cout << "You walk over to a small tent near the outskirts of town" << endl;
+	cout << "An intense aroma of incense washes over you as you pull aside the entrance flap." << endl;
+	cout << "From the depths of the tent you hear a soft ominous voice" << endl;
+	y.greeting();
+	y.provideEnchantment(x);
+}
 
 class FinalBoss {
 private: 
@@ -799,6 +736,7 @@ private:
 	int health;
 	int regainHealth;
 	int temp;
+	int question;
 	string strtemp;
 
 public:
@@ -819,7 +757,7 @@ public:
 			int attackOption = 0;
 			int temp = 0;
 			bool healthRegain = false;
-			cout << "Congratulations on completing all 3 stages. Now you are ready to face the ultimate test.\n";
+			cout << "\nCongratulations on completing all 3 stages. Now you are ready to face the ultimate test.\n";
 			cout << Stoner.getName() << " enters the Cave of Destruction. You see a weird inscription on the ground and proceed to investigate.\n";
 			cout << "During investigation of the inscription, you hear a loud roar.\n";
 			cout << "Out of the darkness, a one-eyed creature drops from the ceiling, blocking your escape.\n";
@@ -840,7 +778,7 @@ public:
 
 			if(input == 1)
 			{
-				cout << "Creature approaches your body, you notice that this creature is a mythical dragon, thought to be extinct.\n";
+				cout << "\nThe creature approaches your body, you notice that this creature is a mythical dragon, thought to be extinct.\n";
 				cout << "The creature, not believing you are dead, eats you.\n";
 				cout << "Now, you are dead. Return to the HUB and try again.\n";
 				cout << "You have lost " << x * .05 << " gold.\n"; 
@@ -849,7 +787,7 @@ public:
 			}
 			else if(input == 2)
 			{
-				cout << "Creature looks around and moves deeper into the cave. You notice that this creature is a mythical dragon, thought to be extinct.\n";
+				cout << "\nCreature looks around and moves deeper into the cave. You notice that this creature is a mythical dragon, thought to be extinct.\n";
 				cout << "The dragon, knowing you are still in the cave, shoots a fireball into the air to create light.\n";
 				cout << "The fireball startles you and you are unable to move. The dragon can now see you and runs at you.\n";
 				cout << "Still paralyzed with fear, you do not move and the dragon crushes you.\n";
@@ -860,8 +798,9 @@ public:
 			}
 			else if(input == 3)
 			{
-				cout << "You draw your weapon. The creature moves towards you, and you notice that it is a mythical dragon, thought to be extinct.\n";
+				cout << "\nYou draw your weapon. The creature moves towards you, and you notice that it is a mythical dragon, thought to be extinct.\n";
 				cout << "The dragon roars in your direction, and you brace yourself for battle.\n";
+				cout << "You must use everything you have learned thus far to defeat the dragon.\n";
 				while(getHealth() != 0 && Stoner.getHealth() != 0)
 				{
 					cout << "\nYour health is: " << Stoner.getHealth() <<endl;
@@ -890,18 +829,20 @@ public:
 							Stoner.setPotion(temp - 1);
 						}
 					}
-					if(attackOption == 2)
+					else if(attackOption == 2)
 					{
 						if(dodgeChance() >= 95)
 						{
 							cout << "The dragon dodged your attack.\n";
 						}
+						
 						else{
 							cout << "You do " << Stoner.getAttack() << " damage to the dragon.\n";
 							temp = getHealth();
 							setHealth(temp-Stoner.getAttack());
 							cout << "The dragon's health is now: " << getHealth() << "\n";
 						}
+						
 						if(getHealth() < getHealth() / 2  && !healthRegain){
 							cout << "The dragon flies to the ceiling and eats some kind of glowing berries. These berries restore some of its health \n";
 							temp = getHealth();
@@ -910,15 +851,41 @@ public:
 							healthRegain = true;
 						}
 					}
-
+					
+					else
+					{
+						cout << "Invalid input. Try again.\n";
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					}
+					
+					if(Stoner.getHealth() == 0)
+					{
+						cout << "\nYou are now dead. Return to the HUB and try again.\n";
+						cout << "You have lost " << x * .05 << " gold.\n"; 
+						Stoner.setGold(x * .95);						
+						beak = true;
+						break;
+					}
+					if(getHealth() == 0)
+					{
+						EndGame(Stoner);
+						beak = true;
+						break;
+					}
+					
+					cout << endl;
+					
 					temp = attackNum();
 
 					if(temp == 1){
 						Attack1(Stoner);
 					}
+					
 					if(temp == 2){
 						Attack2(Stoner);
 					}
+					
 					if(temp == 3){
 						Attack3(Stoner);
 						if(getHealth() < 0)
@@ -927,7 +894,7 @@ public:
 
 					if(Stoner.getHealth() == 0)
 					{
-						cout << "\nNow, you are dead. Return to the HUB and try again.\n";
+						cout << "\nYou are now dead. Return to the HUB and try again.\n";
 						cout << "You have lost " << x * .05 << " gold.\n"; 
 						Stoner.setGold(x * .95);						
 						beak = true;
@@ -948,167 +915,586 @@ public:
 			else
 			{
 				cout << "Invalid input. Try again.\n";
-				cin >> input;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
 	}
+	
 	int dodgeChance()
 	{
 		return rand() % 100 + 1;
 	}
+	
 	int attackNum()
 	{
 		return rand() % 3 + 1;
 	}
+	
 	string getName()
 	{
 		return name;
 	}
+	
 	void setHealth(int x)
 	{
 		health = x;
 	}
+	
 	int getHealth()
 	{
 		return health;
 	}
+	
+	int questionChance()
+	{
+		return rand() % 10 + 1;
+	}
+	
 	void Attack1(Hero& x)
 	{
 		cout << endl;
 		cout << "The dragon roars and its mouth begins to fill with fire.\n";
 		cout << "The dragon shoots a fireball and it hurls in your direction.\n";
 		cout << "\n";
-		cout << "To dodge this, you must answer some questions.\n";
+		cout << "To dodge this, you must answer a question:\n";
 		
 		cout << endl;
-		//first question - MATH
-		cout << "What is 5 + 2 * 10?\n";
-		cout << "A. 70\n";
-		cout << "B. 25\n";
-		cout << "C. 52\n";
-		cout << "D. 17\n";
-
-		try
+		temp = questionChance();
+		question = 0;
+		while(question == 0)
 		{
-			cin >> strtemp;
+			cout << endl;
+			if(temp == 1)
+			{
+				//first question - MATH
+				cout << "What is 5 + 2 * 10?\n";
+				cout << "A. 70\n";
+				cout << "B. 25\n";
+				cout << "C. 52\n";
+				cout << "D. 17\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				if(strtemp == "B")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				else if(strtemp == "A" || strtemp == "C" || strtemp == "D")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+			}
+			else if(temp == 2)
+			{
+				//second question - HISTORY
+				cout << "What century did World War I take place in?\n";
+				cout << "A. 21\n";
+				cout << "B. 19\n";
+				cout << "C. 17\n";
+				cout << "D. 20\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				if(strtemp == "D")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				else if(strtemp == "A" || strtemp == "B" || strtemp == "C")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			else if(temp == 3)
+			{
+				//third question - LITERATURE
+				cout << "Who wrote the book '1984'?\n";
+				cout << "A. George Orwell\n";
+				cout << "B. Dr. Seuss\n";
+				cout << "C. George Washington\n";
+				cout << "D. Oprah Winfrey\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				if(strtemp == "A")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				else if(strtemp == "B" || strtemp == "C" || strtemp == "D")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			else if(temp == 4)
+			{
+				//fourth question - MATH
+				cout << "What is 8 * 3 - 5 * 4?\n";
+				cout << "A. 76\n";
+				cout << "B. -64\n";
+				cout << "C. 4\n";
+				cout << "D. 0\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				if(strtemp == "C")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				else if(strtemp == "A" || strtemp == "B" || strtemp == "D")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			else if(temp == 5) 
+			{
+				//fifth question - HISTORY
+				cout << "When did Columbus discover America?\n";
+				cout << "A. 1492\n";
+				cout << "B. 1942\n";
+				cout << "C. 1249\n";
+				cout << "D. 1429\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				if(strtemp == "A")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				else if(strtemp == "B" || strtemp == "C" || strtemp == "D")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			else if(temp == 6) 
+			{
+				//sixth question - LITERATURE
+				cout << "Who was the father of Transcendentalism?\n";
+				cout << "A. Barack Obama\n";
+				cout << "B. Edgar Allen Poe\n";
+				cout << "C. Dr. Seuss\n";
+				cout << "D. Ralph Waldo Emerson\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				
+				if(strtemp == "D")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				
+				else if(strtemp == "B" || strtemp == "C" || strtemp == "A")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			else if(temp == 7) 
+			{
+				//seventh question - MATH
+				cout << "How many sides is a pentagon?\n";
+				cout << "A. 10\n";
+				cout << "B. 5\n";
+				cout << "C. 6\n";
+				cout << "D. 4\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				if(strtemp == "B")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				else if(strtemp == "A" || strtemp == "C" || strtemp == "D")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			else if(temp == 8) 
+			{
+				//third question - HISTORY
+				cout << "Who is the current president of the United States?\n";
+				cout << "A. Barack Obama\n";
+				cout << "B. Donald Trump\n";
+				cout << "C. Abraham Lincoln\n";
+				cout << "D. Lebron James\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				
+				if(strtemp == "A")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				
+				else if(strtemp == "B" || strtemp == "C" || strtemp == "D")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			else if(temp == 9) 
+			{
+				//ninth question - CHEMISTRY
+				cout << "What is the first element in the periodic table?\n";
+				cout << "A. Helium\n";
+				cout << "B. Zinc\n";
+				cout << "C. Carbon\n";
+				cout << "D. Hydrogen\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				
+				if(strtemp == "D")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				
+				else if(strtemp == "B" || strtemp == "C" || strtemp == "A")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
+			
+			else if(temp == 10) 
+			{
+				//tenth question - MATH
+				cout << "How many degrees does the angles of a triangle add up to?\n";
+				cout << "A. 360\n";
+				cout << "B. 270\n";
+				cout << "C. 180\n";
+				cout << "D. 90\n";
+				try
+				{
+					cin >> strtemp;
+				}
+				catch(exception e)
+				{
+					cout << "Invalid input. Try again.\n";
+				}
+				
+				if(strtemp == "C")
+				{
+					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
+					question = 1;
+				}
+				
+				else if(strtemp == "B" || strtemp == "A" || strtemp == "D")
+				{
+					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
+					cout << "You take " << 25 << " damage.\n";
+					x.takeDamage(25);
+					cout << "You now have " << x.getHealth() << " health. \n";
+					question = 1;
+				}
+				
+				else
+				{
+					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+			}
 		}
-		catch(exception e)
-		{
-			cout << "Invalid input. Please enter a number.\n";
-		}
-		if(strtemp == "B")
-		{
-			cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
-		}
-		else if(strtemp == "A" || strtemp == "C" || strtemp == "D")
-		{
-			cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
-			cout << "You take " << 25 << " damage.\n";
-			x.takeDamage(25);
-			cout << "You now have " << x.getHealth() << " health. \n";
-		}
-
-		cout << endl;
-		//second question - HISTORY
-		cout << "What century did World War I take place in?\n";
-		cout << "A. 21\n";
-		cout << "B. 19\n";
-		cout << "C. 17\n";
-		cout << "D. 20\n";
-
-		try
-		{
-			cin >> strtemp;
-		}
-		catch(exception e)
-		{
-			cout << "Invalid input. Please enter a number.\n";
-		}
-		if(strtemp == "D")
-		{
-			cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
-		}
-		else if(strtemp == "B" || strtemp == "C" || strtemp == "A")
-		{
-			cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
-			cout << "You take " << 25 << " damage.\n";
-			x.takeDamage(25);
-			cout << "You now have " << x.getHealth() << " health. \n";
-		}
-
-		cout << endl;
-		//third question - LITERATURE
-		cout << "Who wrote the book '1984'\n";
-		cout << "A. George Orwell\n";
-		cout << "B. Dr. Seuss\n";
-		cout << "C. George Washington\n";
-		cout << "D. Oprah Winfrey\n";
-
-		try
-		{
-			cin >> strtemp;
-		}
-		catch(exception e)
-		{
-			cout << "Invalid input. Please enter a number.\n";
-		}
-		if(strtemp == "A")
-		{
-			cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
-		}
-		else if(strtemp == "B" || strtemp == "C" || strtemp == "D")
-		{
-			cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
-			cout << "You take " << 25 << " damage.\n";
-			x.takeDamage(25);
-			cout << "You now have " << x.getHealth() << " health. \n";
-		}
-
 	}
+
 	void Attack2(Hero& x)
 	{
 		cout << endl;
 		cout << "The dragon swings its mighty tail at you.\n";
 		cout << "You must use your combat skills to deflect the attack.\n";
+		cout << "\n";
+		cout << "1. Counterattack" << endl;
+		cout << "2. Fall to the ground" << endl;
+		cout << "3. Attempt to jump over the tail" << endl;
+		cout << "4. Timewarp" << endl;
 		cout << endl;
-		x.takeDamage(25);
-		//need combat training 
-	}
-	void Attack3(Hero& x)
-	{
-		cout << endl;
-		cout << "The dragon looks up and screeches, and undead skeletons start to rise from the ground.\n";
-		cout << "You reach into your satchel and grab the Horn of Gilgamesh to call your reinforcements.\n";
-		cout << "You hear cheers and the townsfolk you aided come rushing to your side.\n";
-		cout << endl;
-		cout << "How would you like to use these reinforcements?\n";
-		cout << "1. Defend you from the undead army.\n";
-		cout << "2. Attack the dragon.\n";
-		cout << endl;
+		
 		try
 		{
 			cin >> temp;
 		}
 		catch(exception e)
 		{
-			cout << "Invalid input. Please enter a number.\n";
+			cout << "Invalid input. Please enter a number" << endl;
 		}
-		if(temp == 1)
+		
+		if(temp ==1)
 		{
-			cout << "Your reinforcements proceed to attack the undead army.\n";
-			cout << "They successfully defend you, but sacrifice themselves in your honor.\n";
+		cout << "You use your " << x.getWeapon() << " to attack the dragon's tail." << endl;
+		cout << "You succefully do " << x.getAttack()/2 << " damage to the dragon's tail." << endl;
+		cout << "But unfortunately during your attack, the dragon's tail hit you.  You suffer " << x.getAttack()/2 << " damage as well." << endl;
+		cout << endl;
+		x.takeDamage(x.getAttack()/2);
+		setHealth(getHealth() - (x.getAttack()/2));
 		}
-		else if(temp == 2)
+		
+		else if(temp ==2)
 		{
-			cout << "Your reinforcements proceed to attack the dragon.\n";
-			temp = x.getAttack() + attackNum() * 4;
-			setHealth(getHealth() - temp);
-			cout << "They deal " << temp << " damage to the dragon, but sacrifice themselves in your honor.\n";
-			cout << "However, the undead army attacks you, dealing 20 damage, and then collapse back into the ground.\n";
-			temp = x.getHealth();
-			x.setHealth(temp - 20);
+		cout << "You fall to the ground in an attempt to dodge the dragon's tail." << endl;
+		cout << "..." << endl;
+		
+			if(dodgeChance() >= 60)
+			{
+				cout << "You hit the ground with a thud and see the tail come swinging over your head." << endl;
+				cout << "You jump back to your feet, ready for your next attack." << endl;
+			}
+			
+			else
+			{
+				cout << "You hit the ground with a thud and looking for where the tail is." << endl;
+				cout << "You feel a scorching pain in your side as the tail rams into you." << endl;
+				cout << "You take 20 damage." << endl;
+				cout << "You painfully rise back to your feet, ready for your next attack." << endl;
+				cout << endl;
+				x.takeDamage(20);
+			}
+		}
+		
+		else if(temp ==3)
+		{
+			cout << "You jump off of the ground in an attempt to dodge the dragon's tail." << endl;
+		cout << "..." << endl;
+		
+			if(dodgeChance() >= 40)
+			{
+				cout << "While in midair you look down and see the dragon's tail come hit the ground, spraying dirt in all directions." << endl;
+				cout << "You land on your feet, ready for your next attack." << endl;
+			}
+			
+			else
+			{
+				cout << "You jump into the air looking for the dragon's tail below you." << endl;
+				cout << "You feel a scorching pain in your legs as the tail comes swinging into your body." << endl;
+				cout << "You take 20 damage." << endl;
+				cout << "You land on your shoulder and feel something crack." << endl;
+				cout << "You painfully rise back to your feet, ready for your next attack." << endl;
+				cout << endl;
+				x.takeDamage(20);
+			}
+		}
+		
+		else if(temp ==4)
+		{
+			if(dodgeChance() <= 20)
+			{
+				cout << "You pull out a magical drink out of your satchel." << endl;
+				cout << "You were told this give a second chance when your in most need of it." << endl;
+				cout << "Drinking the bottle you feel queasy, and lose your balance. " << endl;
+				cout << "You open your eyes to find yourself back on your feet.  The dragon is awaiting your next attack." << endl;
+				cout << endl;
+			}
+			
+			else
+			{
+				cout << "You pull out a magical drink out of your satchel." << endl;
+				cout << "You were told this give a second chance when your in most need of it." << endl;
+				cout << "Drinking the bottle you feel queasy, and lose your balance. " << endl;
+				cout << "Nothing happens. The dragon's tail swoops in to hit you, dealing 20 damage." << endl;
+				cout << endl;
+				x.takeDamage(20);
+			}
+		}
+		
+		else
+		{
+			cout << "Invalid input. Try again.\n";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
+	
+	void Attack3(Hero& x)
+	{
+		cout << endl;
+		cout << "The dragon looks up and screeches, and undead skeletons start to rise from the ground.\n";
+		cout << "You reach into your satchel and grab the Horn of Gilgamesh to call your reinforcements.\n";
+		cout << "You hear cheers and the townsfolk you aided come rushing to your side.\n";
+		question = 0;
+		while(question == 0)
+		{	
+			cout << endl;
+			cout << "How would you like to use these reinforcements?\n";
+			cout << "1. Defend you from the undead army.\n";
+			cout << "2. Attack the dragon.\n";
+			cout << endl;
+			try
+			{
+				cin >> temp;
+			}
+			
+			catch(exception e)
+			{
+				cout << "Invalid input. Please enter a number.\n";
+			}
+			
+			if(temp == 1)
+			{
+				cout << "Your reinforcements proceed to attack the undead army.\n";
+				cout << "They successfully defend you, but sacrifice themselves in your honor.\n";
+				question = 1;
+			}
+			
+			if(temp == 2)
+			{
+				cout << "Your reinforcements proceed to attack the dragon.\n";
+				temp = x.getAttack() + attackNum() * 4;
+				setHealth(getHealth() - temp);
+				cout << "They deal " << temp << " damage to the dragon, but sacrifice themselves in your honor.\n";
+				cout << "However, the undead army attacks you, dealing 20 damage, and then collapse back into the ground.\n";
+				temp = x.getHealth();
+				x.setHealth(temp - 20);
+				question = 1;
+			}
+			
+			else
+			{
+				cout << "Invalid input. Try again.\n";
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
 		}
 	}	
+	
 	void EndGame(Hero& Stoner)
 	{
 		cout << endl;
@@ -1122,24 +1508,9 @@ public:
 
 };
 
-
-void visitEnchanter(Hero& x, Enchanter& y){
-	cout << "You walk over to a small tent near the outskirts of town" << endl;
-	cout << "An intense aroma of incense washes over you as you pull aside the entrance flap." << endl;
-	cout << "From the depths of the tent you hear a soft ominous voice" << endl;
-	y.greeting();
-	y.provideEnchantment(x);
-}
-
-void visitInn(Hero& x, InnKeeper& y){
-	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----\n";
-	y.greeting();
-	y.healPlayer(x);
-	cout << "\nAfter a quite night of rest you feel refreshed!" << endl;
-	cout << "Your health is now at full" << endl;
-}
-
-
-
+/*
+		int temp = x.getHealth();
+		x.setHealth(temp-10); //Tiger does 10 damage
+*/
 
 #endif
