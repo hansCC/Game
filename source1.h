@@ -102,6 +102,9 @@ public:
 	void incPotion(){
 		potion++;
 	}
+	void decPotion(){
+		potion--;
+	}
 	void setGold(int x){
 		gold = x;
 	}
