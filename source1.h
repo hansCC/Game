@@ -750,6 +750,7 @@ public:
 				Stoner.setGold(x * .95);
 				break;
 			}
+			
 			else if(input == 2)
 			{
 				cout << "\nCreature looks around and moves deeper into the cave. You notice that this creature is a mythical dragon, thought to be extinct.\n";
@@ -761,6 +762,7 @@ public:
 				Stoner.setGold(x * .95);
 				break;
 			}
+			
 			else if(input == 3)
 			{
 				cout << "\nYou draw your weapon. The creature moves towards you, and you notice that it is a mythical dragon, thought to be extinct.\n";
@@ -783,7 +785,9 @@ public:
 					{
 						cout << "Invalid input. Please enter a number.\n";
 					}
-
+					
+					cout << endl;
+					
 					if(attackOption == 1)
 					{
 						if(Stoner.getPotion() != 0)
@@ -794,14 +798,17 @@ public:
 							Stoner.setPotion(temp - 1);
 						}
 					}
+					
 					else if(attackOption == 2)
 					{
-						if(dodgeChance() >= 95)
+						if(dodgeChance() >= 90)
 						{
 							cout << "The dragon dodged your attack.\n";
 						}
 						
 						else{
+							cout << "You are attacking!" << endl;
+							cout << endl;
 							cout << "You do " << Stoner.getAttack() << " damage to the dragon.\n";
 							temp = getHealth();
 							setHealth(temp-Stoner.getAttack());
@@ -826,12 +833,13 @@ public:
 					
 					if(Stoner.getHealth() == 0)
 					{
-						cout << "\nYou are now dead. Return to the HUB and try again.\n";
+						cout << "\n You are now dead. Return to the HUB and try again. \n";
 						cout << "You have lost " << x * .05 << " gold.\n"; 
 						Stoner.setGold(x * .95);						
 						beak = true;
 						break;
 					}
+					
 					if(getHealth() == 0)
 					{
 						EndGame(Stoner);
@@ -840,18 +848,22 @@ public:
 					}
 					
 					cout << endl;
+					cout << "The Dragon is attacking!" << endl;
 					
 					temp = attackNum();
 
-					if(temp == 1){
+					if(temp == 1)
+					{
 						Attack1(Stoner);
 					}
 					
-					if(temp == 2){
+					if(temp == 2)
+					{
 						Attack2(Stoner);
 					}
 					
-					if(temp == 3){
+					if(temp == 3)
+					{
 						Attack3(Stoner);
 						if(getHealth() < 0)
 							health = 0;
@@ -938,19 +950,24 @@ public:
 				cout << "B. 25\n";
 				cout << "C. 52\n";
 				cout << "D. 17\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
 				}
+				
 				if(strtemp == "B")
 				{
 					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
 					question = 1;
 				}
+				
 				else if(strtemp == "A" || strtemp == "C" || strtemp == "D")
 				{
 					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
@@ -959,6 +976,7 @@ public:
 					cout << "You now have " << x.getHealth() << " health. \n";
 					question = 1;
 				}
+				
 				else
 				{
 					cout << "Invalid input. Try again.\n";
@@ -972,19 +990,24 @@ public:
 				cout << "B. 19\n";
 				cout << "C. 17\n";
 				cout << "D. 20\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
 				}
+				
 				if(strtemp == "D")
 				{
 					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
 					question = 1;
 				}
+				
 				else if(strtemp == "A" || strtemp == "B" || strtemp == "C")
 				{
 					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
@@ -993,6 +1016,7 @@ public:
 					cout << "You now have " << x.getHealth() << " health. \n";
 					question = 1;
 				}
+				
 				else
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1000,6 +1024,7 @@ public:
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
+			
 			else if(temp == 3)
 			{
 				//third question - LITERATURE
@@ -1008,19 +1033,24 @@ public:
 				cout << "B. Dr. Seuss\n";
 				cout << "C. George Washington\n";
 				cout << "D. Oprah Winfrey\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
 				}
+				
 				if(strtemp == "A")
 				{
 					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
 					question = 1;
 				}
+				
 				else if(strtemp == "B" || strtemp == "C" || strtemp == "D")
 				{
 					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
@@ -1029,6 +1059,7 @@ public:
 					cout << "You now have " << x.getHealth() << " health. \n";
 					question = 1;
 				}
+				
 				else
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1036,6 +1067,7 @@ public:
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
+			
 			else if(temp == 4)
 			{
 				//fourth question - MATH
@@ -1044,19 +1076,24 @@ public:
 				cout << "B. -64\n";
 				cout << "C. 4\n";
 				cout << "D. 0\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
 				}
+				
 				if(strtemp == "C")
 				{
 					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
 					question = 1;
 				}
+				
 				else if(strtemp == "A" || strtemp == "B" || strtemp == "D")
 				{
 					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
@@ -1065,6 +1102,7 @@ public:
 					cout << "You now have " << x.getHealth() << " health. \n";
 					question = 1;
 				}
+				
 				else
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1072,6 +1110,7 @@ public:
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
+			
 			else if(temp == 5) 
 			{
 				//fifth question - HISTORY
@@ -1080,19 +1119,24 @@ public:
 				cout << "B. 1942\n";
 				cout << "C. 1249\n";
 				cout << "D. 1429\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
 				}
+				
 				if(strtemp == "A")
 				{
 					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
 					question = 1;
 				}
+				
 				else if(strtemp == "B" || strtemp == "C" || strtemp == "D")
 				{
 					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
@@ -1101,6 +1145,7 @@ public:
 					cout << "You now have " << x.getHealth() << " health. \n";
 					question = 1;
 				}
+				
 				else
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1108,6 +1153,7 @@ public:
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
+			
 			else if(temp == 6) 
 			{
 				//sixth question - LITERATURE
@@ -1116,10 +1162,13 @@ public:
 				cout << "B. Edgar Allen Poe\n";
 				cout << "C. Dr. Seuss\n";
 				cout << "D. Ralph Waldo Emerson\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1139,6 +1188,7 @@ public:
 					cout << "You now have " << x.getHealth() << " health. \n";
 					question = 1;
 				}
+				
 				else
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1146,6 +1196,7 @@ public:
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
+			
 			else if(temp == 7) 
 			{
 				//seventh question - MATH
@@ -1154,19 +1205,24 @@ public:
 				cout << "B. 5\n";
 				cout << "C. 6\n";
 				cout << "D. 4\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
 				}
+				
 				if(strtemp == "B")
 				{
 					cout << "\nGood job, you dodged the fireball with your quick thinking.\n";
 					question = 1;
 				}
+				
 				else if(strtemp == "A" || strtemp == "C" || strtemp == "D")
 				{
 					cout << "\nWRONG, you did not move quickly enough away from the fireball. \n";
@@ -1175,6 +1231,7 @@ public:
 					cout << "You now have " << x.getHealth() << " health. \n";
 					question = 1;
 				}
+				
 				else
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1182,6 +1239,7 @@ public:
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
+			
 			else if(temp == 8) 
 			{
 				//third question - HISTORY
@@ -1190,10 +1248,13 @@ public:
 				cout << "B. Donald Trump\n";
 				cout << "C. Abraham Lincoln\n";
 				cout << "D. Lebron James\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1213,6 +1274,7 @@ public:
 					cout << "You now have " << x.getHealth() << " health. \n";
 					question = 1;
 				}
+				
 				else
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1220,6 +1282,7 @@ public:
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
+			
 			else if(temp == 9) 
 			{
 				//ninth question - CHEMISTRY
@@ -1228,10 +1291,13 @@ public:
 				cout << "B. Zinc\n";
 				cout << "C. Carbon\n";
 				cout << "D. Hydrogen\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1268,10 +1334,13 @@ public:
 				cout << "B. 270\n";
 				cout << "C. 180\n";
 				cout << "D. 90\n";
+				cout << endl;
+				
 				try
 				{
 					cin >> strtemp;
 				}
+				
 				catch(exception e)
 				{
 					cout << "Invalid input. Try again.\n";
@@ -1318,10 +1387,13 @@ public:
 		{
 			cin >> temp;
 		}
+		
 		catch(exception e)
 		{
 			cout << "Invalid input. Please enter a number" << endl;
 		}
+		
+		cout << endl;
 		
 		if(temp ==1)
 		{
@@ -1432,6 +1504,8 @@ public:
 				cout << "Invalid input. Please enter a number.\n";
 			}
 			
+			cout << endl;
+			
 			if(temp == 1)
 			{
 				cout << "Your reinforcements proceed to attack the undead army.\n";
@@ -1439,7 +1513,7 @@ public:
 				question = 1;
 			}
 			
-			if(temp == 2)
+			else if(temp == 2)
 			{
 				cout << "Your reinforcements proceed to attack the dragon.\n";
 				temp = x.getAttack() + attackNum() * 4;
