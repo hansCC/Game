@@ -10,7 +10,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+//------- Prototype classes ------------
+class Hero;
+class Merchant;
+class Teacher;
+class InnKeeper;
+class Enchanter;
+class FinalBoss;
+//------- Prototype functions ----------
+void visitMerchant(Hero& x, Merchant& y);
+void characterCreation(Hero& x);
+void visitEnchanter(Hero& x, Enchanter& y);
+void visitInn(Hero& x, InnKeeper& y);
+void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj);
 
 using namespace std;
 
@@ -116,111 +128,48 @@ public:
 	}
 };
 	
-class Merchant {
-private: 
-	string name;
-	string inventory[5];
-	//, "Grand Battle Axe","Bow and Arrow", "Golden Short Sword", "Bronze Pole Arm"
-	int cost;
-public:
-	Merchant(){
-		name = "Frank";
-		cost = 5;
-		inventory[0] = "Golden Gun";
-		inventory[1] = "Grand Battle Axe";
-		inventory[2] = "Bow and Arrow";
-		inventory[3] = "Golden Short Sword";
-		inventory[4] = "Bronze Pole Arm";
-	}
-	void setName(string x){
-		name = x;	
-	}
-	string getName(){
-		return name;
-	}
-	void setCost(int x){
-		cost = x;
-	}
-	int getCost(){
-		return cost;
-	}
-	void sellPotion(Hero& x){
-		x.incPotion();
-	}
-	void sellWeapon(Hero& x){ 
-		int input;
-		cout << "Which weapon would you like hero?" << endl;
-		if(x.decreaseGold(25)==true){
-			for (int i = 0; i < 5; i++){
-				cout << i << ": " << inventory[i] << endl;
-			}
-			cin >> input;
-			if(input == 0){
-				x.setWeapon(inventory[0]);
-			} else if(input == 1){
-				x.setWeapon(inventory[0]);
-			} else if(input == 2){
-				x.setWeapon(inventory[0]);
-			} else if(input == 3){
-				x.setWeapon(inventory[0]);
-			} else if(input == 4){
-				x.setWeapon(inventory[0]);
-			}
-		} else {
-			cout << "I'm afraid you don't have the hold to purchase that item." << endl;
-		}
-	}
-};
-
-void visitMerchant(Hero& x, Merchant& y){
-	int input;
-	cout << "You walk into a small shop by the Inn" << endl;
-	cout << "1: to buy a potion" << endl;
-	cout << "2: to buy a weapon" << endl;
-	cin >> input;
-	if (input == 1){
-		y.sellPotion(x);
-	} else if (input ==  2){
-		y.sellWeapon(x);
-	} else {
-		cout << "That is an invalid input" << endl;
-	}
-}
 
 
-//Ana's code commented out
-/*
+//Ana's code START
+
 class Teacher {
+
 	private:
 		string name;
 		string answer;
 		int attack;
                 int incorrect_count;
                 
-                int calculate_value(int x, int y, int op){
-	                 switch(op) {
-		               	case 0: return x + y;
-		               	case 1: return x - y;
-				case 2: return x * y;
-				case 3: return x / y;
-				case 4: return x % y;
-				default: return 0; 
-			}
+
+    int calculate_value(int x, int y, int op){
+
+	switch(op) {
+		case 0: return x + y;
+		case 1: return x - y;
+		case 2: return x * y;
+		case 3: return x / y;
+		case 4: return x % y;
+		default: return 0; 
 		}
-		string print_op(int x, int y, int op){ 
-      			stringstream convert;
-      			switch(op) {
-                		case 0: convert <<  x << "+" << y; break;
-               		 	case 1: convert <<  x << "-" << y; break;
-                		case 2: convert <<  x << "*" << y; break;
-                		case 3: convert <<  x << "/" << y; break;
-                		case 4: convert <<  x << "%" << y; break;
-                		default: convert << "ERROR"; 
-      			}
-      			return convert.str();
+	}
+
+	string print_op(int x, int y, int op){ 
+		stringstream convert;
+		switch(op) {
+			case 0: convert <<  x << "+" << y; break;
+			case 1: convert <<  x << "-" << y; break;
+			case 2: convert <<  x << "*" << y; break;
+			case 3: convert <<  x << "/" << y; break;
+			case 4: convert <<  x << "%" << y; break;
+			default: convert << "ERROR"; 
 		}
+		return convert.str();
+	}
+
 		string print_op(int y, int op){
+
      			stringstream convert;
+
       			switch(op) {
                 		case 0: convert <<   "+" << y; break;
                 		case 1: convert <<   "-" << y; break;
@@ -229,20 +178,30 @@ class Teacher {
                 		case 4: convert <<  "%" << y; break;
                 		default: convert << "ERROR";
       			}
+
      	 		return convert.str();
 		}
+
+
 	public:
-		Teacher():Teacher("Clarissa") { 
-		
+
+		Teacher(){ 
+			name == "Clarissa";
+			cout << "Hello! I am your Teacher, " << name << endl;
+			incorrect_count=0;
 		}
-    
+				/*
                 Teacher(string name){
+
                        this.name = name; 
 		       cout << "Hello! I am your Teacher, " <<name<< std::endl;			
                        incorrect_count=0;
                 }
+				*/
+
 		void setName(string x) {
 			 name = x;
+
 		}
                 string getName(string name) {
 		       return name;
@@ -271,9 +230,11 @@ class Teacher {
                 void set_attack(int attack){
                        this->attack=attack;
                 }
+
                 int get_attack(){
                       return attack;
                 }
+
                 string get_question(){
                       int subject =  rand()%3;
                       switch(subject){
@@ -295,11 +256,12 @@ class Teacher {
                        int choice = rand()% number_of_questions;
        
                        answer = answers[choice];
+
                        return questions[choice];
- 
                 }
  
                 string get_question_literature(){
+
                        string questions [] = { "What is the name of the author who wrote Brothers Karamazov?",
                                                " Who was the fater of Transdentalism?"};
                        string answers [] = {"Fyodor Dostoyevsky.",
@@ -309,34 +271,44 @@ class Teacher {
                        int choice = rand()% number_of_questions;
        
                        answer = answers[choice];
+
                        return questions[choice];
                         
   
                 }
                 string get_question_math(){
+
           		string question = "";
 			int int_answer;
                         
                         stringstream convert;
+
 			int value_0;
 			int value_1;
         		int op;
         		
 			int number_of_nesting = rand() % 2 + 1;
+
 	
 			value_0 = rand() % 10;
 			value_1 = rand() % 10;
 	
 			op = rand() % 5;
+
 			while (op == 3 && value_1 == 0) 
 				value_1 = rand() % 100;
+
         		question = "(" + print_op(value_0, value_1, op) + ")";
         		int_answer = calculate_value(value_0, value_1, op);
+
         		for (int i = 0; i < number_of_nesting; i++) {
 	      			value_1 = rand() % 10;
+
               			op = rand() % 5;
+
               			while (op == 3 && value_1 == 0)
                   			value_1 = rand() % 10;
+
               			question = "(" + question;
              		 	question += print_op(value_1, op);
               			question += ")";
@@ -351,9 +323,12 @@ class Teacher {
         		return question;
 	
 		}
+
         
 };
-*/
+
+
+//Ana's code END
 
 //Wei Wei's code commented out
 /*
@@ -641,16 +616,6 @@ void characterCreation(Hero& x){
 	}
 }
 
-void HUB(Hero& x){ //this is incomplete
-	int input;
-	cout << "---------- Welcome to the city of Anvil ----------" << endl;
-	cout << "Where would you like to go?" << endl;
-	cout << "1: Inn" << endl;
-	cin >> input;
-	if (input == 1){
-		
-	}
-}
 
 
 class InnKeeper{
@@ -1507,6 +1472,117 @@ public:
 	}
 
 };
+
+class Merchant {
+private: 
+	string name;
+	string inventory[5];
+	int cost;
+public:
+	Merchant(){
+		name = "Frank";
+		cost = 5;
+		inventory[0] = "Golden Gun";
+		inventory[1] = "Grand Battle Axe";
+		inventory[2] = "Bow and Arrow";
+		inventory[3] = "Golden Short Sword";
+		inventory[4] = "Bronze Pole Arm";
+	}
+	void setName(string x){
+		name = x;	
+	}
+	string getName(){
+		return name;
+	}
+	void setCost(int x){
+		cost = x;
+	}
+	int getCost(){
+		return cost;
+	}
+	void sellPotion(Hero& x){
+		x.incPotion();
+	}
+	void sellWeapon(Hero& x){
+		int input;
+		cout << "Which weapon would you like hero?" << endl;
+			for (int i = 0; i < 5; i++){
+					cout << i+1 << ": " << inventory[i] << endl;
+			}
+			cout << "0: Nevermind" << endl;
+				cin >> input;
+				if(input == 1 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[0]);
+				} else if(input == 2 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[1]);
+				} else if(input == 3 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[2]);
+				} else if(input == 4 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[3]);
+				} else if(input == 5 && x.decreaseGold(25)==true){
+					x.setWeapon(inventory[4]);
+				} else {
+					//do nothing
+				}
+		
+	}
+};
+
+void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj){ //this is incomplete
+	int input;
+	bool exitFlag = false;
+	cout << "\n---------- Welcome to the city of Anvil ----------" << endl;
+	
+	while (exitFlag == false){
+		cout << "\nWhere in Anvil would you like to go?" << endl;
+		cout << "1: Inn" << endl;
+		cout << "2: Merchant" << endl;
+		cout << "3: Enchanter" << endl;
+		cout << "0: Exit Anvil" << endl;
+		cin >> input;
+		if (input == 1){
+			visitInn(Stoner, innKeeperObj);
+		} else if (input == 2) {
+			visitMerchant(Stoner, merchantObj);
+		} else if (input == 3) {
+			cout << "\nVisit Enchanter" << endl;
+		} else if(input == 0){
+			exitFlag = true;
+			cout << "You venture out into the wilds" << endl;
+		} else {
+			cout << "\nInvalid input" << endl;
+		}
+	}
+}
+
+void visitMerchant(Hero& x, Merchant& y){
+	int input;
+	bool exitFlag = false;
+	cout << "\nYou walk into a small shop by the Inn" << endl;
+	while(exitFlag == false){
+		cout << "How can I help you?, the merchant chirps." << endl;
+		cout << "1: to buy a potion" << endl;
+		cout << "2: to buy a weapon" << endl;
+		cout << "0: Leave merchant" << endl;
+		cin >> input;
+		if (input == 1){
+			y.sellPotion(x);
+		} else if (input ==  2){
+			y.sellWeapon(x);
+		} else if(input == 0){
+			exitFlag = true;
+		} else {
+			cout << "That is an invalid input" << endl;
+		}
+	}
+}
+
+
+
+
+
+
+
 
 /*
 		int temp = x.getHealth();
