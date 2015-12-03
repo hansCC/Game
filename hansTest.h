@@ -5,9 +5,11 @@
 #include <string>
 using namespace std;
 
+
 class Hero {
 private:
 	int health;
+	int maxHealth;
 	int attack;
 	string name;
 	string gender;
@@ -17,15 +19,30 @@ private:
 public:
 	Hero() {
 		cout << "I'm a hero" << endl;
-		health = 10;
+		maxHealth = 100;
+		health = 100;
 		attack = 10;
-		name = "Gyro";
-		gender = "female";
-		weapon = "cheese stick";
+		name = "Spencer";
+		gender = "male";
+		weapon = "knife";
 		potion = 0;
-		gold = 3;
+		gold = 100;
 	}
-
+	bool decreaseGold(int x){ //Checks to see if the hero can afford to buy something.
+		if(x > gold){
+			cout << "You cannot afford this" << endl;
+			return false;
+		} else {
+			gold = gold - x;
+			return true;
+		}
+	}
+	void setMaxHealth(int x){
+		maxHealth = x;
+	}
+	int getMaxHealth(){
+		return maxHealth;
+	}
 	void setGender(string x) {
 		gender = x;
 	}
@@ -62,14 +79,23 @@ public:
 	int getPotion(){
 		return potion;
 	}
+	void incPotion(){
+		potion++;
+	}
+	void decPotion(){
+		potion--;
+	}
 	void setGold(int x){
 		gold = x;
 	}
 	int getGold(){
 		return gold;
 	}
+
 	void takeDamage(int x){
 		health -= x;
+		if(health < 0)
+			health = 0;
 	}
 	void printAll(){ //THIS FUNCTION IS FOR TESTING
 		cout << "\nHero's current parameters" << endl;
@@ -77,94 +103,11 @@ public:
 		cout << "Gender: " << gender << endl;
 		cout << "Weapon: " << weapon << endl;
 		cout << "Health: " << health << endl;
+		cout << "Max Health" << maxHealth << endl;
 		cout << "Potions: " << potion << endl;
 		cout << "Gold: " << gold << endl;
 		cout << "Attack: " << attack << endl;
 	}
-};
-	
-class Merchant {
-private: 
-	string name;
-	string weapon;
-	int potion;
-	int cost;
-public:
-	void setName(string x)
-	{
-		name = x;	
-	}
-	string getName()
-	{
-		return name;
-	}
-	void setWeapon(string x)
-	{
-		name = x;	
-	}
-	string getWeapon()
-	{
-		return weapon;
-	}
-	void setCost(int x)
-	{
-		cost = x;
-	}
-	int getCost()
-	{
-		return cost;
-	}
-	int getInventory()
-	{
-		return potion; //need more
-	}
-
-};
-
-/*
-
-class BobRoss {
-private:
-
-	string name = "Hans is Illuminati";
-
-	string show = "The Joy of Painting";
-	string age = "dead";
-public:
-	string getName() {
-		return name;
-	}
-	string show() {
-		return show;
-	}
-	string age() {
-		return name + " is " + age;
-	}
-};
-*/
-class Teacher{
-
-private:
-     string name; 
-     string question;
-     int answer;
-     int attack;
-
-public: 
-   
-     Teacher(){
-          cout<< "I am yout Teacher"<<std::endl;
-          string name =" Clarissa";
-          string question= " What is 2+2?";
-          int answer =4;
-          int attack;
-     }
-
-     void setName(string x){
-          name = x;
-  
-     }
-
 };
 
 void characterCreation(Hero& x){
@@ -193,7 +136,4 @@ void characterCreation(Hero& x){
 		cin >> input;
 	}
 }
-
- 
-
 #endif
