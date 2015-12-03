@@ -185,7 +185,7 @@ class Teacher {
 	public:
 
 		Teacher(){ 
-			name == "Clarissa";
+			name = "Clarissa";
 			cout << "Hello! I am your Teacher, " << name << endl;
 			incorrect_count=0;
 		}
@@ -701,6 +701,7 @@ void visitEnchanter(Hero& x, Enchanter& y){
 class FinalBoss {
 private: 
 	string name;
+	int maxhealth;
 	int health;
 	int regainHealth;
 	int temp;
@@ -716,15 +717,16 @@ public:
 	}
 	void BossBattle(Hero& Stoner)
 	{
-		health = Stoner.getHealth() + 50;
+		maxhealth = Stoner.getHealth() + 50;
+		health = maxhealth;
 		bool beak = false;
+		int regainHealth = 0;
 		while(true)
 		{
 			int input;
 			int x = Stoner.getGold();
 			int attackOption = 0;
 			int temp = 0;
-			bool healthRegain = false;
 			cout << "\nCongratulations on completing all 3 stages. Now you are ready to face the ultimate test.\n";
 			cout << Stoner.getName() << " enters the Cave of Destruction. You see a weird inscription on the ground and proceed to investigate.\n";
 			cout << "During investigation of the inscription, you hear a loud roar.\n";
@@ -809,21 +811,25 @@ public:
 							cout << "The dragon dodged your attack.\n";
 						}
 						
+<<<<<<< HEAD
 						else{
 							cout << "You are attacking!" << endl;
 							cout << endl;
+=======
+						else
+						{
+>>>>>>> 3137dcc8905e32790b6170994acd9360943b2808
 							cout << "You do " << Stoner.getAttack() << " damage to the dragon.\n";
 							temp = getHealth();
 							setHealth(temp-Stoner.getAttack());
+							if(getHealth() < 0)
+							{
+								health = 0;
+								cout << "The dragon's health is now: " << getHealth() << "\n";
+								EndGame(Stoner);
+								beak = true;
+							}
 							cout << "The dragon's health is now: " << getHealth() << "\n";
-						}
-						
-						if(getHealth() < getHealth() / 2  && !healthRegain){
-							cout << "The dragon flies to the ceiling and eats some kind of glowing berries. These berries restore some of its health \n";
-							temp = getHealth();
-							setHealth(temp + getHealth() / 4);
-							cout << "The dragon's health is now: " << getHealth() << "\n";
-							healthRegain = true;
 						}
 					}
 					
@@ -834,6 +840,15 @@ public:
 						cin.ignore(numeric_limits<streamsize>::max(), '\n');
 					}
 					
+					if(getHealth() <= maxhealth / 2  && healthRegain == 0)
+					{
+						cout << "The dragon flies to the ceiling and eats some kind of glowing berries. These berries restore some of its health \n";
+						temp = getHealth();
+						setHealth(temp + (getHealth() / 4));
+						cout << "The dragon's health is now: " << getHealth() << "\n";
+						healthRegain = 1;
+					}
+						
 					if(Stoner.getHealth() == 0)
 					{
 						cout << "\n You are now dead. Return to the HUB and try again. \n";
@@ -842,9 +857,14 @@ public:
 						beak = true;
 						break;
 					}
+<<<<<<< HEAD
 					
 					if(getHealth() == 0)
+=======
+					if(getHealth() < 0)
+>>>>>>> 3137dcc8905e32790b6170994acd9360943b2808
 					{
+						health = 0;
 						EndGame(Stoner);
 						beak = true;
 						break;
@@ -858,18 +878,28 @@ public:
 					if(temp == 1)
 					{
 						Attack1(Stoner);
+						if(getHealth() < 0)
+						{
+							health = 0;
+						}
 					}
 					
 					if(temp == 2)
 					{
 						Attack2(Stoner);
+						if(getHealth() < 0)
+						{
+							health = 0;
+						}
 					}
 					
 					if(temp == 3)
 					{
 						Attack3(Stoner);
 						if(getHealth() < 0)
+						{
 							health = 0;
+						}
 					}
 
 					if(Stoner.getHealth() == 0)
@@ -880,8 +910,9 @@ public:
 						beak = true;
 						break;
 					}
-					if(getHealth() == 0)
+					if(health == 0)
 					{
+						cout << "The dragon's health is now: " << getHealth() << "\n";					
 						EndGame(Stoner);
 						beak = true;
 						break;
@@ -983,6 +1014,8 @@ public:
 				else
 				{
 					cout << "Invalid input. Try again.\n";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
 			else if(temp == 2)
@@ -1379,6 +1412,7 @@ public:
 		cout << endl;
 		cout << "The dragon swings its mighty tail at you.\n";
 		cout << "You must use your combat skills to deflect the attack.\n";
+<<<<<<< HEAD
 		cout << "\n";
 		cout << "1. Counterattack" << endl;
 		cout << "2. Fall to the ground" << endl;
@@ -1409,78 +1443,118 @@ public:
 		}
 		
 		else if(temp ==2)
+=======
+		question = 0;
+		while(question == 0)
+>>>>>>> 3137dcc8905e32790b6170994acd9360943b2808
 		{
-		cout << "You fall to the ground in an attempt to dodge the dragon's tail." << endl;
-		cout << "..." << endl;
-		
-			if(dodgeChance() >= 60)
+			cout << "\n";
+			cout << "1. Counterattack" << endl;
+			cout << "2. Fall to the ground" << endl;
+			cout << "3. Attempt to jump over the tail" << endl;
+			cout << "4. Timewarp" << endl;
+			cout << endl;
+			
+			try
 			{
-				cout << "You hit the ground with a thud and see the tail come swinging over your head." << endl;
-				cout << "You jump back to your feet, ready for your next attack." << endl;
+				cin >> temp;
+			}
+			catch(exception e)
+			{
+				cout << "Invalid input. Please enter a number" << endl;
+			}
+			
+			if(temp ==1)
+			{
+				cout << "You use your " << x.getWeapon() << " to attack the dragon's tail." << endl;
+				cout << "You succefully do " << x.getAttack()/2 << " damage to the dragon's tail." << endl;
+				cout << "But unfortunately during your attack, the dragon's tail hit you.  You suffer " << x.getAttack()/2 << " damage as well." << endl;
+				cout << endl;
+				x.takeDamage(x.getAttack()/2);
+				setHealth(getHealth() - (x.getAttack()/2));
+				question = 1;
+			}
+			
+			else if(temp ==2)
+			{
+				cout << "You fall to the ground in an attempt to dodge the dragon's tail." << endl;
+				cout << "..." << endl;
+			
+				if(dodgeChance() >= 60)
+				{
+					cout << "You hit the ground with a thud and see the tail come swinging over your head." << endl;
+					cout << "You jump back to your feet, ready for your next attack." << endl;
+					question = 1;
+				}
+				
+				else
+				{
+					cout << "You hit the ground with a thud and looking for where the tail is." << endl;
+					cout << "You feel a scorching pain in your side as the tail rams into you." << endl;
+					cout << "You take 20 damage." << endl;
+					cout << "You painfully rise back to your feet, ready for your next attack." << endl;
+					cout << endl;
+					x.takeDamage(20);
+					question = 1;
+				}
+			}
+			
+			else if(temp ==3)
+			{
+				cout << "You jump off of the ground in an attempt to dodge the dragon's tail." << endl;
+				cout << "..." << endl;
+			
+				if(dodgeChance() >= 40)
+				{
+					cout << "While in midair you look down and see the dragon's tail come hit the ground, spraying dirt in all directions." << endl;
+					cout << "You land on your feet, ready for your next attack." << endl;
+					question = 1;
+				}
+				
+				else
+				{
+					cout << "You jump into the air looking for the dragon's tail below you." << endl;
+					cout << "You feel a scorching pain in your legs as the tail comes swinging into your body." << endl;
+					cout << "You take 20 damage." << endl;
+					cout << "You land on your shoulder and feel something crack." << endl;
+					cout << "You painfully rise back to your feet, ready for your next attack." << endl;
+					cout << endl;
+					x.takeDamage(20);
+					question = 1;
+				}
+			}
+			
+			else if(temp ==4)
+			{
+				if(dodgeChance() <= 20)
+				{
+					cout << "You pull out a magical drink out of your satchel." << endl;
+					cout << "You were told this give a second chance when your in most need of it." << endl;
+					cout << "Drinking the bottle you feel queasy, and lose your balance. " << endl;
+					cout << "You open your eyes to find yourself back on your feet.  The dragon is awaiting your next attack." << endl;
+					cout << endl;
+					question = 1;
+				}
+				
+				else
+				{
+					cout << "You pull out a magical drink out of your satchel." << endl;
+					cout << "You were told this give a second chance when your in most need of it." << endl;
+					cout << "Drinking the bottle you feel queasy, and lose your balance. " << endl;
+					cout << "Nothing happens. The dragon's tail swoops in to hit you, dealing 20 damage." << endl;
+					cout << endl;
+					x.takeDamage(20);
+					question = 1;
+				}
 			}
 			
 			else
 			{
-				cout << "You hit the ground with a thud and looking for where the tail is." << endl;
-				cout << "You feel a scorching pain in your side as the tail rams into you." << endl;
-				cout << "You take 20 damage." << endl;
-				cout << "You painfully rise back to your feet, ready for your next attack." << endl;
-				cout << endl;
-				x.takeDamage(20);
+				cout << "Invalid input. Try again.\n";
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
-		}
-		
-		else if(temp ==3)
-		{
-			cout << "You jump off of the ground in an attempt to dodge the dragon's tail." << endl;
-		cout << "..." << endl;
-		
-			if(dodgeChance() >= 40)
-			{
-				cout << "While in midair you look down and see the dragon's tail come hit the ground, spraying dirt in all directions." << endl;
-				cout << "You land on your feet, ready for your next attack." << endl;
-			}
-			
-			else
-			{
-				cout << "You jump into the air looking for the dragon's tail below you." << endl;
-				cout << "You feel a scorching pain in your legs as the tail comes swinging into your body." << endl;
-				cout << "You take 20 damage." << endl;
-				cout << "You land on your shoulder and feel something crack." << endl;
-				cout << "You painfully rise back to your feet, ready for your next attack." << endl;
-				cout << endl;
-				x.takeDamage(20);
-			}
-		}
-		
-		else if(temp ==4)
-		{
-			if(dodgeChance() <= 20)
-			{
-				cout << "You pull out a magical drink out of your satchel." << endl;
-				cout << "You were told this give a second chance when your in most need of it." << endl;
-				cout << "Drinking the bottle you feel queasy, and lose your balance. " << endl;
-				cout << "You open your eyes to find yourself back on your feet.  The dragon is awaiting your next attack." << endl;
-				cout << endl;
-			}
-			
-			else
-			{
-				cout << "You pull out a magical drink out of your satchel." << endl;
-				cout << "You were told this give a second chance when your in most need of it." << endl;
-				cout << "Drinking the bottle you feel queasy, and lose your balance. " << endl;
-				cout << "Nothing happens. The dragon's tail swoops in to hit you, dealing 20 damage." << endl;
-				cout << endl;
-				x.takeDamage(20);
-			}
-		}
-		
-		else
-		{
-			cout << "Invalid input. Try again.\n";
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		}
+		}	
 	}
 	
 	void Attack3(Hero& x)
