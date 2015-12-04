@@ -1,6 +1,6 @@
 #pragma once
-#ifndef source1_h
-#define source1_h
+#ifndef x1_h
+#define x1_h
 
 #include <cstdlib>
 #include <string>
@@ -761,22 +761,21 @@ public:
 	}
 	void displayHealthBar()
 	{
-		
-		int value = health/10;
+		maxhealth = 100;
+		float value = ((float)health/(float)maxhealth)*10;
 		cout << "Health: " << health << endl;
 		cout << "maxHealth: " << maxhealth << endl;
 		cout << "Value: " << value << endl;
-		cout << "Health: [";
-		for(int i = 1; i <= value; i++)
+		cout << "\nHealth: [";
+		for(int i = 0; i < value; i++)
 		{
-			cout << "=";
+			cout << ">";
 		}
-		for(int i = value; i < maxhealth/10; i++)
+		for(int i = value; i <= 10; i++)
 		{
 			cout << " ";
 		}
-		
-		cout << "]";
+		cout << "]" << endl;
 	}
 	void BossBattle(Hero& Stoner) //Needs to use the Hero class
 	{

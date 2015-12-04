@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <string>
 #include <limits>
-#include "source1.h"
+#include "x1.h"
 #include <exception>
 
 using namespace std;
@@ -20,7 +20,7 @@ int main(){
 		int check = 1;
 		
 		while(check == 1){
-			
+			/*
 			Stoner.setMaxHealth(150);
 			for(int i = 0; i <= Stoner.getMaxHealth()/10; i++)
 			{
@@ -28,15 +28,16 @@ int main(){
 				cout << "\nif health is: " << Stoner.getHealth() << endl;
 				Stoner.displayHealthBar();
 			}
+			*/
 			
-			Mithaldra.setMaxHealth(200);
 			cout << "\n------------------------" << endl;
-			for(int i = 0; i <= Mithaldra.getMaxHealth()/10; i++)
+			for(int i = 0; i <= Mithaldra.getMaxHealth(); i++)
 			{
 				Mithaldra.setHealth(i*10);
 				cout << "\nFor boss health: " << Mithaldra.getHealth() << endl;
 				Mithaldra.displayHealthBar();
 			}
+			
 		cin >> check;
 		}
 		
