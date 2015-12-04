@@ -1624,8 +1624,7 @@ public:
 				setHealth(getHealth() - temp);
 				cout << "They deal " << temp << " damage to the dragon, but sacrifice themselves in your honor.\n";
 				cout << "However, the undead army attacks you, dealing 20 damage, and then collapse back into the ground.\n";
-				temp = x.getHealth();
-				x.setHealth(temp - 20);
+				x.takeDamage(20);
 				question = 1;
 			}
 			
