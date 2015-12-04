@@ -141,12 +141,12 @@ public:
 	}
 	void printAll()//THIS FUNCTION IS FOR TESTING
 	{ 
-		cout << "\nHero's current parameters" << endl;
+		cout << "\n---------- Hero's current parameters ----------" << endl;
 		cout << "Name: " << name << endl;
 		cout << "Gender: " << gender << endl;
 		cout << "Weapon: " << weapon << endl;
 		cout << "Health: " << health << endl;
-		cout << "Max Health" << maxHealth << endl;
+		cout << "Max Health: " << maxHealth << endl;
 		cout << "Potions: " << potion << endl;
 		cout << "Gold: " << gold << endl;
 		cout << "Attack: " << attack << endl;
@@ -684,6 +684,7 @@ void visitInn(Hero& x, InnKeeper& y){
 	y.healPlayer(x);
 	cout << "\nAfter a quite night of rest you feel refreshed!" << endl;
 	cout << "Your health is now full" << endl;
+	x.displayHealthBar();
 }
 
 class Enchanter{
@@ -699,42 +700,73 @@ public:
 		cout << "Care to buy an enchantment hero?" << endl;
 	}
 	void provideEnchantment(Hero& x)
-	{//untested
+	{
 		int input;
-		int currentAttack = x.getAttack();
-		cout << "I can empower your weapon, for a price" << endl;
-		cout << "1: Add 5 to your weapon's attack" << endl;
-		cout << "2: Add 10 to your weapon's attack" << endl;
-		cout << "3: Add 15 to your weapon's attack" << endl;
-		cout << "4: Add 20 to your weapon's attack" << endl;
-		cout << "5: Add 25 to your weapon's attack" << endl;
-		cin >> input;
-		if(input == 1 && x.decreaseGold(500) == true)
-		{
-			x.setAttack(currentAttack+5);
-		}else if (input == 2 && x.decreaseGold(1000) == true)
-		{
-			x.setAttack(currentAttack+10);
-		}else if (input == 3 && x.decreaseGold(1500) == true)
-		{
-			x.setAttack(currentAttack+15);
-		}else if (input == 4 && x.decreaseGold(2000) == true)
-		{
-			x.setAttack(currentAttack+20);
-		}else if(input == 5 && x.decreaseGold(2500) == true)
-		{
-			x.setAttack(currentAttack+25);
-		}else if(input > 5)
-		{
-			cout << "That is an invalid input" << endl;
-		} else {
-			
+		bool exitFlag = false;
+		while(exitFlag == false)
+		{	
+			int currentAttack = x.getAttack();	
+			cout << "\nI can empower your weapon, for a price\n" << endl;
+			cout << "1: Add 5 to your weapon's attack for 500 gold" << endl;
+			cout << "2: Add 10 to your weapon's attack for 1000 gold" << endl;
+			cout << "3: Add 15 to your weapon's attack for 1500 gold" << endl;
+			cout << "4: Add 20 to your weapon's attack for 2000 gold" << endl;
+			cout << "5: Add 25 to your weapon's attack for 2500 gold" << endl;
+			cout << "0: Return to town" << endl;
+			cin >> input;
+			if(input == 1)
+			{
+				if(x.decreaseGold(500) == true)
+				{
+					x.setAttack(currentAttack+5);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if (input == 2)
+			{
+				if(x.decreaseGold(1000) == true)
+				{
+					x.setAttack(currentAttack+10);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if (input == 3)
+			{
+				if(x.decreaseGold(1500) == true)
+				{
+					x.setAttack(currentAttack+15);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if (input == 4)
+			{
+				if(x.decreaseGold(2000) == true)
+				{
+					x.setAttack(currentAttack+20);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if(input == 5)
+			{
+				if(x.decreaseGold(2500) == true)
+				{
+					x.setAttack(currentAttack+25);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if(input == 0)
+			{
+				cout << "\nYou leave the tent" << endl;
+				exitFlag = true;
+			} else {
+				cout << "\nInvalid Input" << endl;
+			}
 		}
 	}
 };
 
 void visitEnchanter(Hero& x, Enchanter& y){
-	cout << "-----------------------------------------------------------" << endl;
+	cout << "---------- The Enchanter's Tent ----------" << endl;
 	cout << "You walk over to a small tent near the outskirts of town" << endl;
 	cout << "An intense aroma of incense washes over you as you pull aside the entrance flap." << endl;
 	cout << "From the depths of the tent you hear a soft ominous voice" << endl;
@@ -1651,6 +1683,7 @@ public:
 
 };
 
+
 class Merchant {
 private: 
 	string name;
@@ -1716,6 +1749,7 @@ void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter
 		cout << "1: Inn" << endl;
 		cout << "2: Merchant" << endl;
 		cout << "3: Enchanter" << endl;
+		cout << "9: Check Inventory" << endl;
 		cout << "0: Exit Anvil" << endl;
 		cin >> input;
 		if (input == 1){
@@ -1724,6 +1758,9 @@ void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter
 			visitMerchant(Stoner, merchantObj);
 		} else if (input == 3) {
 			cout << "\nVisit Enchanter" << endl;
+			visitEnchanter(Stoner, enchanterObj);
+		}else if(input == 9){
+			Stoner.printAll();
 		} else if(input == 0){
 			exitFlag = true;
 			cout << "You venture out into the wilds" << endl;
@@ -1737,26 +1774,90 @@ void visitMerchant(Hero& x, Merchant& y){
 	int input;
 	bool exitFlag = false;
 	cout << "\nYou walk into a small shop by the Inn" << endl;
-	while(exitFlag == false){
+	while(exitFlag == false)
+	{
 		cout << "How can I help you?, the merchant chirps." << endl;
 		cout << "1: to buy a potion" << endl;
 		cout << "2: to buy a weapon" << endl;
 		cout << "0: Leave merchant" << endl;
 		cin >> input;
-		if (input == 1){
+		if (input == 1)
+		{
 			y.sellPotion(x);
-		} else if (input ==  2){
+		} else if (input ==  2)
+		{
 			y.sellWeapon(x);
-		} else if(input == 0){
+		} else if(input == 0)
+		{
 			exitFlag = true;
-		} else {
+		} else 
+		{
 			cout << "That is an invalid input" << endl;
 		}
 	}
 }
 
 
-
+class Dealer{
+	private:
+		string name;
+	public:
+		Dealer()
+		{
+			name = "Simon";
+		}
+		void magicCups(Hero& x){
+			int cupNum = rand() % 3 + 1;
+			bool exitFlag = false;
+			while(exitFlag == false){
+				if(cupNum == 1){
+					
+				}else if(cupNum){
+					
+				}else if(cupNum){
+					
+				}
+			}
+			cout << "";
+			showAllCups();
+			showCup1();
+			showCup2();
+			showCup3();
+		}
+		void showAllCups(){
+			cout << "    _---_  _---_  _---_" << endl;
+			cout << "    |   |  |   |  |   |" << endl;
+			cout << "    |   |  |   |  |   |" << endl;
+		}
+		void showCup1(){
+			cout << "    _---_              " << endl;
+			cout << "    |   |  _---_  _---_" << endl;
+			cout << "    |   |  |   |  |   |" << endl;
+			cout << "      0    |   |  |   |" << endl;
+		}
+		void showCup2(){
+			cout << "           _---_       " << endl;
+			cout << "    _---_  |   |  _---_" << endl;
+			cout << "    |   |  |   |  |   |" << endl;
+			cout << "    |   |    0    |   |" << endl;
+		}
+		void showCup3(){
+			cout << "                  _---_" << endl;
+			cout << "    _---_  _---_  |   |" << endl;
+			cout << "    |   |  |   |  |   |" << endl;
+			cout << "    |   |  |   |    0  " << endl;
+		}
+		
+		
+		void setName(string x)
+		{
+			name = x;
+		}
+		string getName()
+		{
+			return name;
+		}
+};
 
 
 

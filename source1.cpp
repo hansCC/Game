@@ -14,34 +14,16 @@ int main(){
 	Merchant merchantObj;
 	Enchanter enchanterObj;
 	FinalBoss Mithaldra;
+	Dealer dealerObj;
 	
 	cout << "Welcome to the game" << endl;
-	while(1){
-		int check = 1;
-		
-		while(check == 1){
+	Stoner.setGold(500);
+	while(1)
+	{
+		//dealerObj.magicCups(Stoner);
 			
-			Stoner.setMaxHealth(150);
-			for(int i = 0; i <= Stoner.getMaxHealth()/10; i++)
-			{
-				Stoner.setHealth(i*10);
-				cout << "\nif health is: " << Stoner.getHealth() << endl;
-				Stoner.displayHealthBar();
-			}
 			
-			Mithaldra.setMaxHealth(200);
-			cout << "\n------------------------" << endl;
-			for(int i = 0; i <= Mithaldra.getMaxHealth()/10; i++)
-			{
-				Mithaldra.setHealth(i*10);
-				cout << "\nFor boss health: " << Mithaldra.getHealth() << endl;
-				Mithaldra.displayHealthBar();
-			}
-		cin >> check;
-		}
-		
-		
-		
+			
 		HUB(Stoner, innKeeperObj, merchantObj, enchanterObj);
 		
 		Mithaldra.BossBattle(Stoner);
