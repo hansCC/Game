@@ -26,7 +26,8 @@ void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchante
 
 using namespace std;
 
-class Hero {
+class Hero 
+{
 private:
 	int health;
 	int maxHealth;
@@ -37,7 +38,8 @@ private:
 	int potion;
 	int gold;
 public:
-	Hero() {
+	Hero() 
+	{
 		cout << "I'm a hero" << endl;
 		maxHealth = 100;
 		health = 100;
@@ -48,8 +50,10 @@ public:
 		potion = 0;
 		gold = 100;
 	}
-	bool decreaseGold(int x){ //Checks to see if the hero can afford to buy something.
-		if(x > gold){
+	bool decreaseGold(int x)//Checks to see if the hero can afford to buy something.
+	{ 
+		if(x > gold)
+		{
 			cout << "You cannot afford this" << endl;
 			return false;
 		} else {
@@ -57,67 +61,86 @@ public:
 			return true;
 		}
 	}
-	void setMaxHealth(int x){
+	void setMaxHealth(int x)
+	{
 		maxHealth = x;
 	}
 	int getMaxHealth(){
 		return maxHealth;
 	}
-	void setGender(string x) {
+	void setGender(string x) 
+	{
 		gender = x;
 	}
-	string getGender() {
+	string getGender() 
+	{
 		return gender;
 	}
-	void setHealth(int x) {
+	void setHealth(int x) 
+	{
 		health = x;
 	}
-	int getHealth() {
+	int getHealth() 
+	{
 		return health;
 	}
-	void setAttack(int x) {
+	void setAttack(int x) 
+	{
 		attack = x;
 	}
-	int getAttack() {
+	int getAttack() 
+	{
 		return attack;
 	}
-	void setName(string x) {
+	void setName(string x) 
+	{
 		name = x;
 	}
-	string getName() {
+	string getName() 
+	{
 		return name;
 	}
-	void setWeapon(string x) {
+	void setWeapon(string x) 
+	{
 		weapon = x;
 	}
-	string getWeapon() {
+	string getWeapon() 
+	{
 		return weapon;
 	}
-	void setPotion(int x) {
+	void setPotion(int x) 
+	{
 		potion = x;
 	}
-	int getPotion(){
+	int getPotion()
+	{
 		return potion;
 	}
-	void incPotion(){
+	void incPotion()
+	{
 		potion++;
 	}
-	void decPotion(){
+	void decPotion()
+	{
 		potion--;
 	}
-	void setGold(int x){
+	void setGold(int x)
+	{
 		gold = x;
 	}
-	int getGold(){
+	int getGold()
+	{
 		return gold;
 	}
 
-	void takeDamage(int x){
+	void takeDamage(int x)
+	{
 		health -= x;
 		if(health < 0)
 			health = 0;
 	}
-	void printAll(){ //THIS FUNCTION IS FOR TESTING
+	void printAll()//THIS FUNCTION IS FOR TESTING
+	{ 
 		cout << "\nHero's current parameters" << endl;
 		cout << "Name: " << name << endl;
 		cout << "Gender: " << gender << endl;
@@ -127,6 +150,24 @@ public:
 		cout << "Potions: " << potion << endl;
 		cout << "Gold: " << gold << endl;
 		cout << "Attack: " << attack << endl;
+	}
+	void displayHealthBar()
+	{
+		float value = ((float)health/(float)maxHealth)*10;
+		cout << "Health: " << health << endl;
+		cout << "maxHealth: " << maxHealth << endl;
+		cout << "Value: " << value << endl;
+		cout << "Health: [";
+		for(int i = 0; i < value; i++)
+		{
+			cout << "=";
+		}
+		for(int i = value; i < 10; i++)
+		{
+			cout << " ";
+		}
+		
+		cout << "]";
 	}
 };
 	
@@ -717,6 +758,24 @@ public:
 	{
 		name = "Mithaldra";
 		end = false;
+	}
+	void displayHealthBar()
+	{
+		maxhealth = 100;
+		float value = ((float)health/(float)maxhealth)*10;
+		cout << "Health: " << health << endl;
+		cout << "maxHealth: " << maxhealth << endl;
+		cout << "Value: " << value << endl;
+		cout << "\nHealth: [";
+		for(int i = 0; i < value; i++)
+		{
+			cout << ">";
+		}
+		for(int i = value; i <= 10; i++)
+		{
+			cout << " ";
+		}
+		cout << "]" << endl;
 	}
 	void BossBattle(Hero& Stoner) //Needs to use the Hero class
 	{

@@ -17,6 +17,23 @@ int main(){
 	
 	cout << "Welcome to the game" << endl;
 	while(1){
+		int check = 1;
+		
+		while(check == 1){
+			
+			cout << "\n------------------------" << endl;
+			for(int i = 0; i <= 10; i++)
+			{
+				Mithaldra.setHealth(i*10);
+				cout << "\nFor boss health: " << Mithaldra.getHealth() << endl;
+				Mithaldra.displayHealthBar();
+			}
+			
+			
+		cin >> check;
+		}
+		
+		
 		
 		HUB(Stoner, innKeeperObj, merchantObj, enchanterObj);
 		
