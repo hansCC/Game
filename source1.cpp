@@ -16,17 +16,33 @@ int main(){
 	FinalBoss Mithaldra;
 	Dealer dealerObj;
 	
-	cout << "Welcome to the game" << endl;
-	Stoner.setGold(500);
+	Stoner.setGold(0);
+	Stoner.setPotion(200);
+	int input;
 	while(1)
-	{
-		//dealerObj.magicCups(Stoner);
-			
-			
-			
-		HUB(Stoner, innKeeperObj, merchantObj, enchanterObj);
+	{		
+		cout << "You arrive at a mountain top and overlook the land of Gainesville, NOT FL" << endl;
+		cout << "Where do you decide to go?" << endl;
+		cout << "1: Anvil (Local town)" << endl;
+		cout << "2: Deadlands (Stage 1)" << endl;
+		cout << "3: Dragon's Lair (Final Stage)" << endl;
 		
-		Mithaldra.BossBattle(Stoner);
+		cin >> input;
+		if(input == 1)
+		{
+			HUB(Stoner, innKeeperObj, merchantObj, enchanterObj, dealerObj);	
+		} else if(input == 2)
+		{
+			fightMonster(Stoner);
+		} else if(input == 3)
+		{
+			Mithaldra.BossBattle(Stoner);
+		} else {
+			cout << "\nThat is an invalid input, please try again" << endl;
+		}
+		
+		
+		
 	}
 	//take in user input to know where to travel.
 	/*

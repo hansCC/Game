@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include<stdexcept>
+#include<algorithm>
+
 //------- Prototype classes ------------
 class Hero;
 class Merchant;
@@ -17,12 +20,14 @@ class Teacher;
 class InnKeeper;
 class Enchanter;
 class FinalBoss;
+class Dealer;
 //------- Prototype functions ----------
 void visitMerchant(Hero& x, Merchant& y);
 void characterCreation(Hero& x);
 void visitEnchanter(Hero& x, Enchanter& y);
 void visitInn(Hero& x, InnKeeper& y);
 void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj);
+void visitDealer(Hero& Stoner, Dealer& dealerObj);
 
 using namespace std;
 
@@ -40,7 +45,6 @@ private:
 public:
 	Hero() 
 	{
-		cout << "I'm a hero" << endl;
 		maxHealth = 100;
 		health = 100;
 		attack = 10;
@@ -59,6 +63,22 @@ public:
 		} else {
 			gold = gold - x;
 			return true;
+		}
+	}
+	void usePotion()
+	{
+		if(potion > 0)
+		{
+			potion--;
+			health = maxHealth;
+			//cout << "------------------------------------" << endl;
+			cout << "\nYour health has been restored to max" << endl;
+			displayHealthBar();
+			//cout << "------------------------------------\n" << endl;
+		} else {
+			//cout << "\n------------------------------------" << endl;
+			cout << "\nYou are out of potions!" << endl;
+			//cout << "------------------------------------" << endl;
 		}
 	}
 	void setMaxHealth(int x)
@@ -154,10 +174,10 @@ public:
 	void displayHealthBar()
 	{
 		int value = health/10;
-		cout << "Health: " << health << endl;
-		cout << "maxHealth: " << maxHealth << endl;
-		cout << "Value: " << value << endl;
-		cout << "Health: [";
+		//cout << "Health: " << health << endl;
+		//cout << "maxHealth: " << maxHealth << endl;
+		//cout << "Value: " << value << endl;
+		cout << name <<"'s Health: [";
 		for(int i = 1; i <= value; i++)
 		{
 			cout << "=";
@@ -166,12 +186,1079 @@ public:
 		{
 			cout << " ";
 		}
-		
-		cout << "]";
+		cout << "]" << endl;
+		cout << "   " << name << "'s Health: " << health << endl;
 	}
 };
 	
 
+//Wei Wei's code begin
+
+//Monster class - allows creation of different monsters
+class Monster {
+	private:
+		string name;
+		int health;
+		int maxHealth;
+
+	public:
+		//constructor for Monster
+		Monster() {
+			cout << "RAWR! Fear me!" << endl;
+			name = "Monster";
+			health = 6;
+		}
+		void displayHealthBar()
+		{
+			int value = health/10;
+			//cout << name << "'s Health: " << health << endl;
+			//cout << "maxHealth: " << maxHealth << endl;
+			//cout << "Value: " << value << endl;
+			cout << name <<"'s Health: [";
+			for(int i = 1; i <= value; i++)
+			{
+				cout << "~";
+			}
+			for(int i = value; i < maxHealth/10; i++)
+			{
+				cout << " ";
+			
+			}
+			cout << "]" << endl;
+			cout << "   " << name << "'s Health: " << health << endl;
+		}
+
+		//setters and getters for Name and Health
+		void setName(string s) {
+			this->name = s;
+		}
+		string getName() {
+			return this->name;
+		}
+		void setMaxHealth(int x)
+		{
+			this->maxHealth = x;
+			this->health = x;
+		}
+		int getMaxHealth()
+		{
+			return this->maxHealth;
+		}
+		void setHealth(int x) {
+			this->health = x;
+		}
+		int getHealth() {
+			return this->health;
+		}
+		void decreaseHealth(int x) {
+			if (x >= health) {
+				cout << name << " is dead!" << endl;
+				health = 0;
+			} else {
+				health -= x;
+			}
+		}
+
+		//function for Attack, all Attack details located in this function, including attack value
+		void Attack(Hero& h, int KO, int maxAttack) {
+			if(KO > 999 || KO < 0 || maxAttack < 0 || maxAttack > 100)	//check for valid value
+			{
+				throw std::invalid_argument( "received invalid value" );
+			}
+			srand(time(0));	//seed for random number generator
+			int odds = rand() % 1000;	//determines odds of monster killing hero in one shot
+			int max = h.getHealth();
+			if (odds >= KO)
+			{
+				cout << "KO!" << endl;
+				h.setHealth(0);
+			}
+			else
+			{	//use maxAttack to determine max percentae of damage monster can deal
+				max = std::max(maxAttack * max / 100, 2);
+				int damageOdds = rand() % 100;	//use to change probabilities of the amount of damage that can be dealt
+				int damage = 0;
+				if (damageOdds >= 97) {
+					cout << "Critical Hit!" << endl;
+					damage = max;
+				}
+				else
+				{
+					if (damageOdds <= 5)	//monster misses
+					{
+						cout << this->name << "'s attack missed!" << endl;
+						damage = 0;
+					}
+					else
+					{
+						if(damageOdds <= 75)	//monster deals normal amount of damage
+						{
+							damage = rand() % (max / 2) + 1;
+						}
+						else	//monster deals a little more than the normal amount of damage
+						{
+							damage = rand() % (max * 3 / 5) + 1;
+						}
+					}
+				}
+
+				h.takeDamage(damage);	//change hero's health
+				cout << h.getName() << " takes " << damage << " damage! \n" << endl;
+			}
+
+		}
+
+		//display helath bar function
+	};
+
+
+
+//function controls all mechanisms of the level
+void fightMonster(Hero& h)
+{
+	cout << "------ The Deadlands ------" << endl;
+	cout << "You have now entered The Deadlands. Be prepared for anything that goes bump in the night... \n" << endl;
+	srand(time(0));
+	int numMon = rand() % 5 + 1;	//predetermines how many monsters the hero must defeat in order to complete level
+
+	cout << "You find yourself in a dimly lit...forest? You aren't entirely sure where you are, and you wished you had remembered a flashlight/torch. \n";
+	cout << "You suddenly hear something move behind you, but when you turn to look, nothing's there... \n";
+	cout << "Whatever, that doesn't frighten you. You decide to move forward... \n" << endl;
+
+	while (numMon > 0)	//stay in while loop until monsters are all defeated
+	{
+		cout << "\n You are walking in a dimly lit area. Do you turn (1) left or (2) right?" << endl;
+		int input = 0;
+		cin >> input;
+		bool err = true;	//input validation - checks for type and range
+		while (err)
+		{
+			if(!cin)
+			{
+				cout << "Oh no, you can't move that way! Do you turn (1) left or (2) right?" << endl;
+				cin.clear();
+				cin.ignore(256, '\n');
+				cin >> input;
+				err = true;
+			}
+			else
+			{
+				if(input != 1 && input != 2)
+				{
+					cout << "Oh no, you can't move that way! Do you turn (1) left or (2) right?" << endl;
+					cin >> input;
+					err = true;
+				}
+				else
+				{
+					err = false;
+				}
+			}
+		}
+
+		int chance = rand() % 100;	//sets up different probabilities that hero will encounter different scenarios
+		//every monster scenario has same basic format, differences comes in how they/hero reacts in the situation
+		if (chance >= 95)
+		{
+			//Troll scenario - 5% chance
+			numMon--;
+			Monster* t = new Monster();	//initialize troll
+			t->setName("Troll");
+			t->setMaxHealth(std::max(9 * h.getHealth() / 10, 20));
+			cout << "I am a " << t->getName() << "! \n";
+			while (h.getHealth() > 0 && t->getHealth() > 0)	//stop the loop when either the hero or troll dies
+			{
+				cout << "----- " << t->getName() << " vs. " << h.getName() << " -------" << endl;
+				t->displayHealthBar();
+				h.displayHealthBar();
+				cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
+				cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+				cin >> input;
+				err = true;		//input validation - checks type and range
+				while(err)
+				{
+					if(!cin)
+					{
+						cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+						cin.clear();
+						cin.ignore(256, '\n');
+						cin >> input;
+						err = true;
+					}
+					else
+					{
+						if(input < 1 || input > 4)
+						{
+							cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+							cin >> input;
+							err = true;
+						}
+						else
+						{
+							err = false;
+						}
+					}
+				}
+				cout << "----- Result of last action -------" << endl;
+				if (input == 1)
+				{
+					//hero attacks
+					srand(time(0));
+					int hMiss = rand() % 50;	//probability that hero will miss
+					if(hMiss == 0)
+					{
+						cout << "You attack " << t->getName() << ", but your attack misses. Oh no! \n";
+					}
+					else
+					{
+						cout << "You attack " << t->getName() << ". You do " << h.getAttack() << " damage! \n";
+						t->decreaseHealth(h.getAttack());
+						if (t->getHealth() == 0)
+						{
+							break;
+						}
+					}
+
+				}
+				else
+				{
+					if (input == 2)
+					{
+						//hero uses potion
+						h.usePotion();
+						
+					}
+					else
+					{
+						//hero tries to pay off monster
+						if (input == 3)
+						{
+							if (h.getGold() == 0)	//if hero has no gold, hero can't pay off monster
+							{
+								cout << "Uh-oh, you don't have any gold to give..." << endl;
+							}
+							else
+							{
+								cout << "You want give gold to " << t->getName() << ". How much gold to you want to give? \n";
+								cin >> input;
+								err = true;
+								while(err)		//input validation - checks for range and type
+								{
+									if(!cin)
+									{
+										cout << "You can't give that amount of gold! How much d you want to actually give? \n";
+										cin.clear();
+										cin.ignore(256, '\n');
+										cin >> input;
+										err = true;
+									}
+									else
+									{
+										if (input > h.getGold() || input < 0)
+										{
+											cout << "You can't give that amount of gold! How much do you want to actually give? \n";
+											cin >> input;
+											err = true;
+										}
+										else
+										{
+											err = false;
+										}
+									}
+								}
+
+								if (input >= 50)	//troll requires a one time payment of at least 50 gold pieces for this to work
+								{
+									t->setHealth(0);
+									cout << t->getName() << " stomps away with your gold. You are alone again. \n";
+									h.setGold(h.getGold() - input);
+									break;
+								}
+								if(input == 1)
+								{
+									cout << "You give " << t->getName() << " " << input << " piece of gold. \n";
+								}
+								else
+								{
+									cout << "You give " << t->getName() << " " << input << " pieces of gold. \n";
+								}
+								h.setGold(h.getGold() - input);
+							}
+						}
+						else
+						{
+							if (input == 4)
+							{
+								//hero tries to run away
+								srand(time(0));
+								int run = rand() % 8;	//sets up probability of escape
+								if (run == 0)
+								{
+									cout << "You successfully run away!" << endl;
+									numMon++;
+									break;
+								}
+								else
+								{
+									//different scenarios for not getting away
+									int block = rand() % 3;
+									switch(block)
+									{
+									case 0:
+										cout << "You try to run away, but you run into a tree." << endl;
+										break;
+									case 1:
+										cout << "You try to run away, but you trip over a rock." << endl;
+										break;
+									case 2:
+										cout << "You try to run away, but you are blocked by a bush." << endl;
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+				cout << t->getName() << " attacks! \n";		//monster attacks
+				t->Attack(h, 990, 50);
+			}
+		}
+		else
+		{
+			//Zombie scenario - 15% chance
+			if (chance >= 80)
+			{
+				numMon--;
+				Monster* z = new Monster();
+				z->setName("Zombie");
+				z->setMaxHealth(std::max(h.getHealth() * 4 / 5, 13));
+				cout << "I am a " << z->getName() << "! \n";
+				int goldZ = 30;
+				while (h.getHealth() > 0 && z->getHealth() > 0)	//continue loop until zombie or hero dies
+				{
+					cout << "----- " << z->getName() << " vs. " << h.getName() << " -------" << endl;
+					z->displayHealthBar();
+					h.displayHealthBar();
+					cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
+					cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+					cin >> input;
+					err = true;
+					while(err)		//input validation - checks for range and type
+					{
+						if(!cin)
+						{
+							cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+							cin.clear();
+							cin.ignore(256, '\n');
+							cin >> input;
+							err = true;
+						}
+						else
+						{
+							if(input < 1 || input > 4)
+							{
+								cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+								cin >> input;
+								err = true;
+							}
+							else
+							{
+								err = false;
+							}
+						}
+					}
+					cout << "----- Result of last action -------" << endl;
+					if (input == 1)
+					{
+						//hero attacks
+						srand(time(0));
+						int hMiss = rand() % 50;	//probability that hero's attack will miss
+						if(hMiss == 0)
+						{
+							cout << "You attack " << z->getName() << ", but your attack misses. Oh no! \n";
+						}
+						else
+						{
+							cout << "You attack " << z->getName() << ". You do " << h.getAttack() << " damage! \n";
+							z->decreaseHealth(h.getAttack());
+							if (z->getHealth() == 0)
+							{
+								break;
+							}
+						}
+					}
+					else
+					{
+						if (input == 2)
+						{
+							//hero uses potion
+							h.usePotion();
+							
+
+						}
+						else
+						{
+							if (input == 3)
+							{
+								//hero tries to pay off monster
+								if (h.getGold() == 0)		//if hero has no money, then nothing happens
+								{
+									cout << "Uh-oh, you don't have any gold to give..." << endl;
+								}
+								else
+								{
+									cout << "You want give gold to " << z->getName() << ". How much gold to you want to give? \n";
+									cin >> input;
+									err = true;
+									while(err)		//input validation - checks for type and range
+									{
+										if(!cin)
+										{
+											cout << "You can't give that amount of gold! How much d you want to actually give? \n";
+											cin.clear();
+											cin.ignore(256, '\n');
+											cin >> input;
+											err = true;
+										}
+										else
+										{
+											if (input > h.getGold() || input < 0)
+											{
+												cout << "You can't give that amount of gold! How much do you want to actually give? \n";
+												cin >> input;
+												err = true;
+											}
+											else
+											{
+												err = false;
+											}
+										}
+									}
+									if(input == 1)
+									{
+										cout << "You give " << z->getName() << " " << input << " piece of gold. \n";
+									}
+									else
+									{
+										cout << "You give " << z->getName() << " " << input << " pieces of gold. \n";
+									}
+									goldZ -= input;		//must pay zombie at least 30 pieces of gold (cumulative) to escape
+									h.setGold(h.getGold() - input);
+									if (goldZ <= 0)
+									{
+										z->setHealth(0);
+										cout << z->getName() << " becomes distracted by all the gold you gave it. You manage to run away, and you are once again alone. \n";
+										break;
+									}
+								}
+							}
+							else
+							{
+								if (input == 4)
+								{
+									//hero tries to run away
+									srand(time(0));
+									int run = rand() % 5;
+									if (run == 0)
+									{
+										cout << "You successfully run away!" << endl;
+										numMon++;
+										break;
+									}
+									else
+									{
+										int block = rand() % 3;
+										switch(block)
+										{
+										case 0:
+											cout << "You try to run away, but you run into a tree." << endl;
+											break;
+										case 1:
+											cout << "You try to run away, but you trip over a rock." << endl;
+											break;
+										case 2:
+											cout << "You try to run away, but you are blocked by a bush." << endl;
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+					cout << z->getName() << " attacks! \n";		//zombie attacks
+					z->Attack(h, 995, 40);
+				}
+			}
+			else
+			{
+				//velociraptor scenario - 20% chance
+				if (chance >= 60)
+				{
+					numMon--;
+					Monster* v = new Monster();
+					v->setName("Velociraptor");
+					v->setMaxHealth(std::max(h.getHealth() * 11 / 20, 15));
+					int vMax = v->getHealth();
+					cout << "I am a " << v->getName() << "! \n";
+					while (h.getHealth() > 0 && v->getHealth() > 0)		//continue loop until hero or velociraptor dies
+					{
+						cout << "----- " << v->getName() << " vs. " << h.getName() << " -------" << endl;
+						v->displayHealthBar();
+						h.displayHealthBar();
+						cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
+						cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+						cin >> input;
+						err = true;
+						while(err)		//input validation - checks for range and type
+						{
+							if(!cin)
+							{
+								cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+								cin.clear();
+								cin.ignore(256, '\n');
+								cin >> input;
+								err = true;
+							}
+							else
+							{
+								if(input < 1 || input > 4)
+								{
+									cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+									cin >> input;
+									err = true;
+								}
+								else
+								{
+									err = false;
+								}
+							}
+						}
+						cout << "----- Result of last action -------" << endl;
+						if (input == 1)
+						{
+							//hero attacks
+							srand(time(0));
+							int hMiss = rand() % 50;
+							if(hMiss == 0)
+							{
+								cout << "You attack " << v->getName() << ", but your attack misses. Oh no! \n";
+							}
+							else
+							{
+								cout << "You attack " << v->getName() << ". You do " << h.getAttack() << " damage! \n";
+								v->decreaseHealth(h.getAttack());
+								if (v->getHealth() == 0)
+								{
+									break;
+								}
+							}
+						}
+						else
+						{
+							if (input == 2)
+							{
+								//hero uses potion
+								h.usePotion();
+							}
+							else
+							{
+								if (input == 3)
+								{
+									//can't pay off the velociraptors
+									cout << "So silly, why would a velociraptor want gold? Oh well, too bad for you :P" << endl;
+								}
+								else
+								{
+									if (input == 4)
+									{
+										//try to run away
+										srand(time(0));
+										int run = rand() % 7;
+										if (run == 0)
+										{
+											cout << "You successfully run away!" << endl;
+											numMon++;
+											break;
+										}
+										else
+										{
+											int block = rand() % 3;
+											switch(block)
+											{
+											case 0:
+												cout << "You try to run away, but you run into a tree." << endl;
+												break;
+											case 1:
+												cout << "You try to run away, but you trip over a rock." << endl;
+												break;
+											case 2:
+												cout << "You try to run away, but you are blocked by a bush." << endl;
+												break;
+											}
+										}
+									}
+								}
+							}
+						}
+						cout << v->getName() << " attacks! \n";		//velociraptor attacks
+						v->Attack(h, 995, 45);
+					}
+				}
+				else
+				{
+					//vampire scenario - 25% chance
+					if (chance >= 35)
+					{
+						numMon--;
+						int goldE = 20;
+						Monster* e = new Monster();
+						e->setName("Vampire");
+						e->setMaxHealth(std::max(h.getHealth() / 2, 13));
+						cout << "I am a " << e->getName() << "! \n";
+						while (h.getHealth() > 0 && e->getHealth() > 0)	//continue loop until hero or monster dies
+						{
+							cout << "----- " << e->getName() << " vs. " << h.getName() << " -------" << endl;
+							e->displayHealthBar();
+							h.displayHealthBar();
+							cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
+							cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+							cin >> input;
+							err = true;
+							while(err)		//input validation - checks for type and range
+							{
+								if(!cin)
+								{
+									cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+									cin.clear();
+									cin.ignore(256, '\n');
+									cin >> input;
+									err = true;
+								}
+								else
+								{
+									if(input < 1 || input > 4)
+									{
+										cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+										cin >> input;
+										err = true;
+									}
+									else
+									{
+										err = false;
+									}
+								}
+							}
+							cout << "----- Result of last action -------" << endl;
+							if (input == 1)
+							{
+								//hero attacks
+								srand(time(0));
+								int hMiss = rand() % 50;
+								if(hMiss == 0)
+								{
+									cout << "You attack " << e->getName() << ", but your attack misses. Oh no! \n";
+								}
+								else
+								{
+									cout << "You attack " << e->getName() << ". You do " << h.getAttack() << " damage! \n";
+									e->decreaseHealth(h.getAttack());
+									if (e->getHealth() == 0)
+									{
+										break;
+									}
+								}
+							}
+							else
+							{
+								if (input == 2)
+								{
+									//hero uses potion
+									h.usePotion();
+
+								}
+								else
+								{
+									if (input == 3)
+									{
+										//hero tries to pay off monster
+										if (h.getGold() == 0)
+										{
+											cout << "Uh-oh, you don't have any gold to give..." << endl;
+										}
+										else
+										{
+											cout << "You want give gold to " << e->getName() << ". How much gold to you want to give? \n";
+											cin >> input;
+											err = true;
+											while(err)
+											{
+												if(!cin)
+												{
+													cout << "You can't give that amount of gold! How much d you want to actually give? \n";
+													cin.clear();
+													cin.ignore(256, '\n');
+													cin >> input;
+													err = true;
+												}
+												else
+												{
+													if (input > h.getGold() || input < 0)
+													{
+														cout << "You can't give that amount of gold! How much do you want to actually give? \n";
+														cin >> input;
+														err = true;
+													}
+													else
+													{
+														err = false;
+													}
+												}
+											}
+											if(input == 1)
+											{
+												cout << "You give " << e->getName() << " " << input << " piece of gold. \n";
+											}
+											else
+											{
+												cout << "You give " << e->getName() << " " << input << " pieces of gold. \n";
+											}
+											goldE -= input;		//need at least 20 gold pieces (cumulative) to pay off vampire
+											h.setGold(h.getGold() - input);
+											if (goldE <= 0)
+											{
+												e->setHealth(0);
+												cout << e->getName() << " becomes distracted by all the gold you gave it. You manage to run away, and you are once again alone. \n";
+												break;
+											}
+										}
+									}
+									else
+									{
+										if (input == 4)
+										{
+											//tries to run away
+											srand(time(0));
+											int run = rand() % 6;
+											if (run == 0)
+											{
+												cout << "You successfully run away!" << endl;
+												numMon++;
+												break;
+											}
+											else
+											{
+												int block = rand() % 3;
+												switch(block)
+												{
+												case 0:
+													cout << "You try to run away, but you run into a tree." << endl;
+													break;
+												case 1:
+													cout << "You try to run away, but you trip over a rock." << endl;
+													break;
+												case 2:
+													cout << "You try to run away, but you are blocked by a bush." << endl;
+													break;
+												}
+											}
+										}
+									}
+								}
+							}
+							cout << e->getName() << " attacks! \n";		//vampire attacks
+							e->Attack(h, 998, 35);
+						}
+					}
+					else
+					{
+						//ghost scenario - 15% chance
+						if (chance >= 20)
+						{
+							numMon--;
+							Monster* g = new Monster();
+							g->setName("Ghost");
+							g->setMaxHealth(std::max(h.getHealth() * 3 / 8, 7));
+							cout << "I am a " << g->getName() << "! \n";
+							while (h.getHealth() > 0 && g->getHealth() > 0)
+							{
+								cout << "----- " << g->getName() << " vs. " << h.getName() << " -------" << endl;
+								g->displayHealthBar();
+								h.displayHealthBar();
+								cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
+								cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+								cin >> input;
+								err = true;
+								while(err)		//input validation - checks for range and type
+								{
+									if(!cin)
+									{
+										cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+										cin.clear();
+										cin.ignore(256, '\n');
+										cin >> input;
+										err = true;
+									}
+									else
+									{
+										if(input < 1 || input > 4)
+										{
+											cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+											cin >> input;
+											err = true;
+										}
+										else
+										{
+											err = false;
+										}
+									}
+								}
+								cout << "----- Result of last action -------" << endl;
+								if (input == 1)
+								{
+									//hero attacks
+									srand(time(0));
+									int hMiss = rand() % 50;
+									if(hMiss == 0)
+									{
+										cout << "You attack " << g->getName() << ", but your attack misses. Oh no! \n";
+									}
+									else
+									{
+										cout << "You attack " << g->getName() << ". You do " << h.getAttack() << " damage! \n";
+										g->decreaseHealth(h.getAttack());
+										if (g->getHealth() == 0)
+										{
+											break;
+										}
+									}
+								}
+								else
+								{
+									if (input == 2)
+									{
+										//hero uses potion
+										h.usePotion();
+
+									}
+									else
+									{
+										if (input == 3)
+										{
+											//hero tries to pay off monster
+											if (h.getGold() == 0)
+											{
+												cout << "Uh-oh, you don't have any gold to give..." << endl;
+											}
+											else
+											{
+												cout << "You want give gold to " << g->getName() << ". How much gold to you want to give? \n";
+												cin >> input;
+												err = true;
+												while(err)
+												{
+													if(!cin)
+													{
+														cout << "You can't give that amount of gold! How much d you want to actually give? \n";
+														cin.clear();
+														cin.ignore(256, '\n');
+														cin >> input;
+														err = true;
+													}
+													else
+													{
+														if (input > h.getGold() || input < 0)
+														{
+															cout << "You can't give that amount of gold! How much do you want to actually give? \n";
+															cin >> input;
+															err = true;
+														}
+														else
+														{
+															err = false;
+														}
+													}
+												}
+												if (input >= 2) 		//need at least 2 gold pieces at any time to escape
+												{
+													g->setHealth(0);
+													cout << g->getName() << " disappears with your gold. You are alone again. \n";
+													h.setGold(h.getGold() - input);
+													break;
+												}
+												cout << "You give " << g->getName() << " " << input << " pieces of gold. \n";
+												h.setGold(h.getGold() - input);
+											}
+
+										}
+										else
+										{
+											if (input == 4)
+											{
+												//try to run away
+												srand(time(0));
+												int run = rand() % 5;
+												if (run == 0)
+												{
+													cout << "You successfully run away!" << endl;
+													numMon++;
+													break;
+												}
+												else
+												{
+													int block = rand() % 3;
+													switch(block)
+													{
+													case 0:
+														cout << "You try to run away, but you run into a tree." << endl;
+														break;
+													case 1:
+														cout << "You try to run away, but you trip over a rock." << endl;
+														break;
+													case 2:
+														cout << "You try to run away, but you are blocked by a bush." << endl;
+														break;
+													}
+												}
+											}
+										}
+									}
+								}
+								cout << g->getName() << " attacks! \n";		//ghost attacks
+								g->Attack(h, 999, 30);
+							}
+						}
+						else 
+						{
+							//20% not encountering monsters, different scenarios for no monsters
+							srand(time(0));
+							int randItem = rand() % 4;
+							int rand2 = rand() % 3;
+							int rand3 = rand() % 10 + 1;
+							if(randItem == 0 || randItem == 1)
+							{
+								cout << "Phew! You don't see any monsters. You breathe a sigh of relief, then start moving forward." << endl;
+							}
+							else
+							{
+								if(randItem == 2)
+								{
+									//not encountering items
+									if(rand2 == 0)
+									{
+										cout << "You accidentally kick something. You bend down to pick it up... \n" << endl;
+										cout << "..." << endl;
+										cout << "You pick up a stick. You feel silly for being scared of a little twig, so you throw it back into the darkness and move on. \n" << endl;
+									}
+									if(rand2 == 1)
+									{
+										cout << "You accidentally kick something. You bend down to pick it up... \n" << endl;
+										cout << "..." << endl;
+										cout << "You pick up a snAKE OMG WHAT THE-- You throw the snake back into the darkness with a shudder, and you move on. \n" << endl;
+									}
+									if(rand2 == 2)
+									{
+										cout << "You accidentally kick something. You bend down to pick it up... \n" << endl;
+										cout << "..." << endl;
+										cout << "You pick up a sleeping chicken. You put it back down gently, so as to not disturb the chicken, and move on. \n" << endl;
+									}
+								}
+								if(randItem == 3)
+								{
+									//encountering gold or potion
+									if(rand3 <= 4)
+									{
+										cout << "You accidentally kick something. You bend down to pick it up... \n" << endl;
+										cout << "..." << endl;
+										cout << "You pick up " << rand3 << " gold piece(s)! You put them away and move on. \n" << endl;
+										h.setGold(h.getGold() + rand3);
+									}
+									else
+									{
+										cout << "You accidentally kick something. You bend down to pick it up... \n" << endl;
+										cout << "..." << endl;
+										cout << "You pick up a potion! You put it away and move on. \n" << endl;
+										h.incPotion();
+									}
+								}
+							}
+						}
+				}
+			}
+		}
+	}
+		if(h.getHealth() == 0)
+		{
+			break;		//end loop if hero died
+		}
+	}
+
+	//different cases for when loop is over
+	if (h.getHealth() == 0)		//nothing if hero dies
+	{
+		cout << "Oh no, you have died..." << endl;
+		cout << "------ You leave The Deadlands ------" << endl;
+	}
+	else
+	{	//receive reward if completed level
+		cout << "You suddenly see three chests in front of you. Do you choose (1) the left chest, (2) the middle chest, or (3) the right chest?" << endl;
+		int chest = 0;
+		cin >> chest;
+		bool errEnd = true;
+		while(errEnd)
+		{
+			if(!cin)
+			{
+				cout << "Ummm, that's not an option...Did you mean (1) the left chest, (2) the middle chest, or (3) the right chest?" << endl;
+				cin.clear();
+				cin.ignore(256, '\n');
+				cin >> chest;
+				errEnd = true;
+			}
+			else
+			{
+				if (chest < 1 || chest > 3)
+				{
+					cout << "Ummm, that's not an option...Did you mean (1) the left chest, (2) the middle chest, or (3) the right chest?" << endl;
+					cin >> chest;
+					errEnd = true;
+				}
+				else
+				{
+					errEnd = false;
+				}
+			}
+		}
+
+		if (chest == 1)
+		{
+			int goldGift = rand() % 10 + 11;
+			cout << "You chose the left chest. You open it and find " << goldGift << " pieces!" << endl;
+			h.setGold(h.getGold() + goldGift);
+		}
+		else
+		{
+			if(chest == 2)
+			{
+				int pGift = rand() % 3 + 1;
+				cout << "You chose the middle chest. You open it and find " << pGift << " potions!" << endl;
+				h.setPotion(h.getPotion() + pGift);
+			}
+			else
+			{
+				int attGift = rand() % 6 + 5;
+				cout << "You chose the right chest. You open it and see a strange light. You reach for the light, and when you touch it, your attack increases by " << attGift << "!" << endl;
+				h.setAttack(h.getAttack() + attGift);
+			}
+		}
+		cout << "Congratulations! You have clear The Deadlands!" << endl;		//congratulatory statement only if completed level
+		cout << "------ You leave The Deadlands ------" << endl;
+	}
+}
+
+
+//end Wei's code
+	
+	
 
 //Ana's code START
 
@@ -372,263 +1459,6 @@ class Teacher {
 
 
 //Ana's code END
-
-//Wei Wei's code commented out
-/*
-void stage4(Hero* h) {
-	cout
-			<< "You have now entered Stage 4. Be prepared for anything that goes bump in the night... \n"
-			<< endl;
-	srand(time(0));
-	int numMon = rand() % 3 + 1;
-	while (numMon > 0) {
-		cout
-				<< "You are walking in a dimly lit area. Do you turn (1) left or (2) right?"
-				<< endl;
-		int input = 0;
-		cin >> input;
-		while (input != 1 && input != 2) {
-			cout
-					<< "Oh no, you can't move that way! Do you turn (1) left or (2) right?"
-					<< endl;
-			cin >> input;
-		}
-		int chance = rand() % 100;
-		if (chance >= 80) {
-			numMon--;
-			Monster* Troll = new Monster();
-			Troll->setName("Troll");
-			Troll->setHealth(h->getHealth());
-			cout << "I am a " << Troll->getName() << "\n";
-			while (h->getHealth() > 0 && Troll->getHealth() > 0) {
-				cout
-						<< "What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
-						<< endl;
-				cin >> input;
-				while (input < 1 || input > 4) {
-					cout
-							<< "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
-							<< endl;
-					cin >> input;
-				}
-				if (input == 1) {
-					cout << "You attack " << Troll->getName() << ". You do "
-							<< h->getAttack() << " damage! \n";
-					Troll->decreaseHealth(h->getAttack());
-					if (Troll->getHealth() == 0) {
-						break;
-					}
-				} else {
-					if (input == 2) {
-						cout << "You use a potion!" << endl;
-						int potion = h->getPotion();
-						h->setHealth(h->getHealth() + potion);
-						h->setPotion(0);
-					} else {
-						if (input == 3) {
-							if (h->getGold() == 0) {
-								cout
-										<< "Uh-oh, you don't have any gold to give..."
-										<< endl;
-							} else {
-								cout << "You want give gold to "
-										<< Troll->getName()
-										<< ". How much gold to you want to give? \n";
-								cin >> input;
-								while (input > h->getGold()) {
-									cout
-											<< "You don't have that much gold! How much do you want to actually give? \n";
-									cin >> input;
-								}
-								if (input >= h->getGold() / 2) {
-									Troll->setHealth(0);
-									cout << Troll->getName()
-											<< " stomps away with your gold. You are alone again. \n";
-									h->setGold(h->getGold() - input);
-									break;
-								}
-								cout << "You give " << Troll->getName() << input
-										<< " pieces of gold. \n";
-								h->setGold(h->getGold() - input);
-							}
-						} else {
-							if (input == 4) {
-								srand(time(0));
-								int run = rand() % 7;
-								if (run == 0) {
-									cout << "You successfully run away!"
-											<< endl;
-									break;
-								}
-							}
-						}
-					}
-				}
-				cout << Troll->getName() << " attacks! \n";
-				Troll->Attack(h);
-			}
-		} else {
-			if (chance >= 60) {
-				numMon--;
-				Monster* v = new Monster();
-				v->setName("Velociraptor");
-				v->setHealth(h->getHealth() * 3 / 4);
-				cout << "I am a " << v->getName() << "\n";
-				while (h->getHealth() > 0 && v->getHealth() > 0) {
-					cout
-							<< "What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
-							<< endl;
-					cin >> input;
-					while (input < 1 || input > 4) {
-						cout
-								<< "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
-								<< endl;
-						cin >> input;
-					}
-					if (input == 1) {
-						cout << "You attack " << v->getName() << ". You do "
-								<< h->getAttack() << " damage! \n";
-						v->decreaseHealth(h->getAttack());
-						if (v->getHealth() == 0) {
-							break;
-						}
-					} else {
-						if (input == 2) {
-							cout << "You use a potion!" << endl;
-							int potion = h->getPotion();
-							h->setHealth(h->getHealth() + potion);
-							h->setPotion(0);
-						} else {
-							if (input == 3) {
-								cout
-										<< "So silly, why would a velociraptor want gold? Oh well, too bad for you :P"
-										<< endl;
-							} else {
-								if (input == 4) {
-									srand(time(0));
-									int run = rand() % 5;
-									if (run == 0) {
-										cout << "You successfully run away!"
-												<< endl;
-										break;
-									}
-								}
-							}
-						}
-					}
-					cout << v->getName() << " attacks! \n";
-					v->Attack(h);
-				}
-			} else {
-				if (chance >= 30) {
-					numMon--;
-					Monster* g = new Monster();
-					g->setName("Ghost");
-					g->setHealth(h->getHealth() / 2);
-					cout << "I am a " << g->getName() << "\n";
-					while (h->getHealth() > 0 && g->getHealth() > 0) {
-						cout
-								<< "What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
-								<< endl;
-						cin >> input;
-						while (input < 1 || input > 4) {
-							cout
-									<< "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away"
-									<< endl;
-							cin >> input;
-						}
-						if (input == 1) {
-							cout << "You attack " << g->getName() << ". You do "
-									<< h->getAttack() << " damage! \n";
-							g->decreaseHealth(h->getAttack());
-							if (g->getHealth() == 0) {
-								break;
-							}
-						} else {
-							if (input == 2) {
-								cout << "You use a potion!" << endl;
-								int potion = h->getPotion();
-								h->setHealth(h->getHealth() + potion);
-								h->setPotion(0);
-							} else {
-								if (input == 3) {
-									if (h->getGold() == 0) {
-										cout
-												<< "Uh-oh, you don't have any gold to give..."
-												<< endl;
-									} else {
-										cout << "You want give gold to "
-												<< g->getName()
-												<< ". How much gold to you want to give? \n";
-										cin >> input;
-										while (input > h->getGold()) {
-											cout
-													<< "You don't have that much gold! How much do you want to actually give? \n";
-											cin >> input;
-										}
-										if (input >= h->getGold() * 3 / 8) {
-											g->setHealth(0);
-											cout << g->getName()
-													<< " disappears with your gold. You are alone again. \n";
-											h->setGold(h->getGold() - input);
-											break;
-										}
-										cout << "You give " << g->getName()
-												<< input
-												<< " pieces of gold. \n";
-										h->setGold(h->getGold() - input);
-									}
-								} else {
-									if (input == 4) {
-										srand(time(0));
-										int run = rand() % 7;
-										if (run == 0) {
-											cout << "You successfully run away!"
-													<< endl;
-											break;
-										}
-									}
-								}
-							}
-						}
-						cout << g->getName() << " attacks! \n";
-						g->Attack(h);
-					}
-				} else {
-					cout << "Phew! You don't see any monsters!" << endl;
-				}
-			}
-		}
-	}
-	if (h->getHealth() == 0) {
-		cout << "Oh no, you have died..." << endl;
-	} else {
-		cout
-				<< "Congratulations! You have completed Stage 4! You suddenly see two chests in front of you. Do you choose (1) the left chest or (2) the right chest?"
-				<< endl;
-		int chest = 0;
-		cin >> chest;
-		while (chest != 1 && chest != 2) {
-			cout
-					<< "Ummm, that's not an option...Did you mean (1) the left chest or (2) the right chest?"
-					<< endl;
-			cin >> chest;
-		}
-		if (chest == 1) {
-			int goldGift = rand() % 7 + 1;
-			cout << "You chose the left chest. You open it and find "
-					<< goldGift << " pieces!" << endl;
-			h->setGold(h->getGold() + goldGift);
-		} else {
-			int pGift = rand() % 7 + 1;
-			cout
-					<< "You chose the right chest. You open it and find a potion for "
-					<< pGift << " health!" << endl;
-			h->setPotion(h->getPotion() + pGift);
-		}
-	}
-}
-*/
 
 
 void characterCreation(Hero& x){
@@ -1739,7 +2569,152 @@ public:
 	}
 };
 
-void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj){ //this is incomplete
+
+class Dealer{
+private:
+	string name;
+public:
+	Dealer()
+	{
+		name = "Simon";
+	}
+	void magicCups(Hero& Stoner){
+	int cupNum = 0;
+	bool exitFlag = false;
+	bool exitFlag2 = false;
+	int input = 0;
+	int herosBet;
+	cout << "------ Magic Cup Game ------" << endl;
+		while(exitFlag == false)
+		{
+			cout << "You wish to play the magic cup game! How much are you will to gamble?" << endl;
+			while(exitFlag2 == false){
+			cin >> herosBet;
+				if (herosBet > Stoner.getGold()){
+					cout << "You don't have that much gold, try gambling a different amount" << endl;
+				} else {
+					exitFlag2 = true;
+				}
+			}
+			exitFlag2 = false;
+				
+				
+			showAllCups();
+			cout << "1: The ball is beneath cup 1" << endl;
+			cout << "2: The ball is beneath cup 2" << endl;
+			cout << "3: The ball is beneath cup 3" << endl;
+			cout << "0: Quit magic cup game." << endl;
+			
+			cupNum = rand() % 3 + 1;
+			cin >> input;
+			if(input == 1 || input == 2 || input == 3)
+			{
+				if(cupNum == 1)
+				{
+					showCup1();
+					if(input == 1){
+						cout << "\nYou guessed correctly Hero!" << endl;
+						cout << "You have won: " << herosBet*2 << endl;
+						Stoner.setGold(herosBet*2);
+					} else{
+						cout << "\nOh I'm sorry, that's wrong" << endl;
+						cout << "You have lost: " << herosBet << endl;
+						Stoner.setGold(Stoner.getGold()-herosBet);
+					}
+				}else if(cupNum == 2)
+				{
+					showCup2();
+					if(input == 2){
+						cout << "\nYou guessed correctly Hero!" << endl;
+						cout << "You have won: " << herosBet*2 << endl;
+						Stoner.setGold(herosBet*2);
+					} else{
+						cout << "\nOh I'm sorry, that's wrong" << endl;
+						cout << "You have lost: " << herosBet << endl;
+						Stoner.setGold(Stoner.getGold()-herosBet);
+					}
+				}else if(cupNum == 3)
+				{
+					showCup3();
+					if(input == 3){
+						cout << "\nYou guessed correctly Hero!" << endl;
+						cout << "You have won: " << herosBet*2 << endl;
+						Stoner.setGold(herosBet*2);
+					} else{
+						cout << "\nOh I'm sorry, that's wrong" << endl;
+						cout << "You have lost: " << herosBet << endl;
+						Stoner.setGold(Stoner.getGold()-herosBet);
+					}
+				}
+			} else {
+				cout << "\nThat is an invalid input" << endl;
+			}
+			if(input == 0)
+			{
+				exitFlag = true;
+			}
+			cout << "\n Would you like to try again?" << endl;
+			cout << "1: Yes" << endl;
+			cout << "2: No" << endl;
+			bool x = false;
+			while (x == false)
+			{
+				cin >> input;
+				if(input == 1){
+					exitFlag = false;
+					x = true;
+				} else if(input == 2){
+					exitFlag = true;
+					x = true;
+				} else {
+					cout << "That is an invalid input" << endl;
+				}
+			}
+		}
+			showAllCups();
+			showCup1();
+			showCup2();
+			showCup3();
+	}
+	void showAllCups(){
+		cout << "cup:  1      2      3  " << endl;
+		cout << "    _---_  _---_  _---_" << endl;
+		cout << "    |   |  |   |  |   |" << endl;
+		cout << "    |   |  |   |  |   |" << endl;
+	}
+	void showCup1(){
+		cout << "    _---_              " << endl;
+		cout << "    |   |  _---_  _---_" << endl;
+		cout << "    |   |  |   |  |   |" << endl;
+		cout << "      0    |   |  |   |" << endl;
+	}
+	void showCup2(){
+		cout << "           _---_       " << endl;
+		cout << "    _---_  |   |  _---_" << endl;
+		cout << "    |   |  |   |  |   |" << endl;
+		cout << "    |   |    0    |   |" << endl;
+	}
+	void showCup3(){
+		cout << "                  _---_" << endl;
+		cout << "    _---_  _---_  |   |" << endl;
+		cout << "    |   |  |   |  |   |" << endl;
+		cout << "    |   |  |   |    0  " << endl;
+	}
+		
+		
+	void setName(string x)
+	{
+		name = x;
+	}
+	string getName()
+	{
+		return name;
+	}
+};
+
+
+
+void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj, Dealer& dealerObj){ //this is incomplete
 	int input;
 	bool exitFlag = false;
 	cout << "\n---------- Welcome to the city of Anvil ----------" << endl;
@@ -1749,22 +2724,32 @@ void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter
 		cout << "1: Inn" << endl;
 		cout << "2: Merchant" << endl;
 		cout << "3: Enchanter" << endl;
+		cout << "4: Dealer" << endl;
 		cout << "9: Check Inventory" << endl;
 		cout << "0: Exit Anvil" << endl;
 		cin >> input;
-		if (input == 1){
+		if (input == 1)
+		{
 			visitInn(Stoner, innKeeperObj);
-		} else if (input == 2) {
+		} else if (input == 2)
+		{
 			visitMerchant(Stoner, merchantObj);
-		} else if (input == 3) {
+		} else if (input == 3) 
+		{
 			cout << "\nVisit Enchanter" << endl;
 			visitEnchanter(Stoner, enchanterObj);
-		}else if(input == 9){
+		}else if(input == 4)
+		{
+			visitDealer(Stoner, dealerObj);
+		}else if(input == 9)
+		{
 			Stoner.printAll();
-		} else if(input == 0){
+		} else if(input == 0)
+		{
 			exitFlag = true;
 			cout << "You venture out into the wilds" << endl;
-		} else {
+		} else 
+		{
 			cout << "\nInvalid input" << endl;
 		}
 	}
@@ -1798,66 +2783,11 @@ void visitMerchant(Hero& x, Merchant& y){
 }
 
 
-class Dealer{
-	private:
-		string name;
-	public:
-		Dealer()
-		{
-			name = "Simon";
-		}
-		void magicCups(Hero& x){
-			int cupNum = rand() % 3 + 1;
-			bool exitFlag = false;
-			while(exitFlag == false){
-				if(cupNum == 1){
-					
-				}else if(cupNum){
-					
-				}else if(cupNum){
-					
-				}
-			}
-			cout << "";
-			showAllCups();
-			showCup1();
-			showCup2();
-			showCup3();
-		}
-		void showAllCups(){
-			cout << "    _---_  _---_  _---_" << endl;
-			cout << "    |   |  |   |  |   |" << endl;
-			cout << "    |   |  |   |  |   |" << endl;
-		}
-		void showCup1(){
-			cout << "    _---_              " << endl;
-			cout << "    |   |  _---_  _---_" << endl;
-			cout << "    |   |  |   |  |   |" << endl;
-			cout << "      0    |   |  |   |" << endl;
-		}
-		void showCup2(){
-			cout << "           _---_       " << endl;
-			cout << "    _---_  |   |  _---_" << endl;
-			cout << "    |   |  |   |  |   |" << endl;
-			cout << "    |   |    0    |   |" << endl;
-		}
-		void showCup3(){
-			cout << "                  _---_" << endl;
-			cout << "    _---_  _---_  |   |" << endl;
-			cout << "    |   |  |   |  |   |" << endl;
-			cout << "    |   |  |   |    0  " << endl;
-		}
-		
-		
-		void setName(string x)
-		{
-			name = x;
-		}
-		string getName()
-		{
-			return name;
-		}
-};
+void visitDealer(Hero& Stoner, Dealer& dealerObj)
+{
+	dealerObj.magicCups(Stoner);
+}
+
 
 
 
