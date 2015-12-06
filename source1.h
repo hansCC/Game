@@ -31,7 +31,10 @@ void visitDealer(Hero& Stoner, Dealer& dealerObj);
 void visitTeacher(Hero& x, Teacher& y);
 
 using namespace std;
-
+/*
+this is the hero class and will be used to create the object that will
+encapsulate the user's character data.
+*/
 class Hero 
 {
 private:
@@ -44,7 +47,7 @@ private:
 	int potion;
 	int gold;
 public:
-	Hero() 
+	Hero() //constructor to initialize all data safely
 	{
 		maxHealth = 100;
 		health = 100;
@@ -57,15 +60,19 @@ public:
 	}
 	bool decreaseGold(int x)//Checks to see if the hero can afford to buy something.
 	{ 
-		if(x > gold)
+		if(x > gold)//if the hero doesnt have enough gold, return false and print status
 		{
 			cout << "\nYou cannot afford this\n" << endl;
 			return false;
-		} else {
+		} else { //if hero does have enough gold, subtract the ammount from current gold and return true
 			gold = gold - x;
 			return true;
 		}
 	}
+	/*
+	This function handles the use of potions. If the hero has potions, the potion
+	count is decremented and health is set to max. Otherwise, and error message prints
+	*/
 	void usePotion()
 	{
 		if(potion > 0)
@@ -78,85 +85,85 @@ public:
 			cout << "\nYou are out of potions!" << endl;
 		}
 	}
-	void setMaxHealth(int x)
+	void setMaxHealth(int x) //mutator for max health
 	{
 		maxHealth = x;
 	}
-	int getMaxHealth(){
+	int getMaxHealth(){ //accessor for max health
 		return maxHealth;
 	}
-	void setGender(string x) 
+	void setGender(string x) //mutator for gender
 	{
 		gender = x;
 	}
-	string getGender() 
+	string getGender() //accessor  for gender
 	{
 		return gender;
 	}
-	void setHealth(int x) 
+	void setHealth(int x) //mutator for health
 	{
 		health = x;
 	}
-	int getHealth() 
+	int getHealth() //accessor for health
 	{
 		return health;
 	}
-	void setAttack(int x) 
+	void setAttack(int x) //mutator for attack
 	{
 		attack = x;
 	}
-	int getAttack() 
+	int getAttack() //accessor for attack
 	{
 		return attack;
 	}
-	void setName(string x) 
+	void setName(string x) //mutator for name
 	{
 		name = x;
 	}
-	string getName() 
+	string getName() //accessor for name
 	{
 		return name;
 	}
-	void setWeapon(string x) 
+	void setWeapon(string x) //mutator for weapon
 	{
 		weapon = x;
 	}
-	string getWeapon() 
+	string getWeapon() //accessor for weapon
 	{
 		return weapon;
 	}
-	void setPotion(int x) 
+	void setPotion(int x) //mutator for potion count
 	{
 		potion = x;
 	}
-	int getPotion()
+	int getPotion()//accessor for potion count
 	{
 		return potion;
 	}
-	void incPotion()
+	void incPotion()//increases potion count by 1
 	{
 		potion++;
 	}
-	void decPotion()
+	void decPotion()//decreases potion count by 1
 	{
 		potion--;
 	}
-	void setGold(int x)
+	void setGold(int x)//mutator for gold
 	{
 		gold = x;
 	}
-	int getGold()
+	int getGold()//accessor for gold
 	{
 		return gold;
 	}
 
-	void takeDamage(int x)
+	void takeDamage(int x)//reduces damage, and ensures health never drops below 0
 	{
 		health -= x;
 		if(health < 0)
 			health = 0;
 	}
-	void printAll()//THIS FUNCTION IS FOR TESTING
+	void printAll()//This prints the hero's inventory
 	{ 
 		cout << "\n---------- Hero's current parameters ----------" << endl;
 		cout << "Name: " << name << endl;
@@ -168,20 +175,27 @@ public:
 		cout << "Gold: " << gold << endl;
 		cout << "Attack: " << attack << endl;
 	}
-	void displayHealthBar()
+	/*
+	This displays the health bar. it does this by printing an = sign
+	for every 10 HP the entity has, and a space for every 10 HP that
+	the entity doesn't have. This way the size of the health bar
+	stays the same and shows not only how much health the entity has but
+	also how much health has been lost.
+	*/
+	void displayHealthBar() //displays the health bar
 	{
-		int value = health/10;
-		cout << name <<"'s Health: [";
-		for(int i = 1; i <= value; i++)
+		int value = health/10; //each = sign counts for 10 hp
+		cout << name <<"'s Health: ["; //print name and start of health bar
+		for(int i = 1; i <= value; i++) //fill in a = sign for every 10 points of health you have
 		{
 			cout << "=";
 		}
-		for(int i = value; i < maxHealth/10; i++)
+		for(int i = value; i < maxHealth/10; i++) //fill in a space for every 10 points of health you dont have
 		{
 			cout << " ";
 		}
-		cout << "]" << endl;
-		cout << "   " << name << "'s Health: " << health << endl;
+		cout << "]" << endl; //print end of health bar
+		cout << "   " << name << "'s Health: " << health << endl;//print numerical representation of health
 	}
 };
 	
@@ -193,43 +207,50 @@ protected:
 	int attack;
 	string appearance;
 public:
-	Creature() {
+	Creature() { //constructor
 		name="";
 		health = 0;
 		attack = 0;
 		appearance ="";
 	}
-	void setName(string x) {
+	void setName(string x) {  //mutator for name
 		name=x;
 	}
-	string getName() {
+	string getName() {//accessor for name
 		return name;
 	}
-	int getHealth() {
+	int getHealth() { //accessor for health
 		return health;
 	}
-	int getMaxHealth() {
+	int getMaxHealth() {//accessor for max health
 		return maxHealth;
 	}
-	void setHealth(int x) {
+	void setHealth(int x) {//mutator for health and max health
 		health = x;
 		maxHealth = x;
 	}
-	void takeDamage(int x) {
+	void takeDamage(int x) {//reduces entity's health by a specified amount
 		health -= x;
 	}
-	void setAppearance(string x) {
+	void setAppearance(string x) {//mutator for appearance
 		appearance = x;
 	}
-	int Attack() {
+	int Attack() { //entity's attack
 		return rand() % attack + 1;
 	}
-	string getAppearance() {
+	string getAppearance() {//accessor for appearance
 		return appearance;
 	}
-	void setAttack(int x) {
+	void setAttack(int x) {//mutator for attack rating.
 		attack = x;
 	}
+	/*
+	This displays the health bar. it does this by printing an = sign
+	for every 10 HP the entity has, and a space for every 10 HP that
+	the entity doesn't have. This way the size of the health bar
+	stays the same and shows not only how much health the entity has but
+	also how much health has been lost.
+	*/
 	void displayHealthBar()
 	{
 		int value = health/10;
@@ -246,7 +267,7 @@ public:
 		cout << "   " << name << "'s Health: " << health << endl;
 	}
 };
-class Incorperal: public Creature {
+class Incorperal: public Creature { //sub class of creature.
 public:
 	void takeDamage(int x) {
 		health -= x / 2;
@@ -256,7 +277,7 @@ public:
 	}
 };
 
-class Undead : public Creature {
+class Undead : public Creature { //sub class of creature
 public:
 	void takeDamage(int x) {
 		if (health - x <= 0) {
@@ -267,7 +288,7 @@ public:
 	}
 };
 	
-class riddle {
+class riddle { //riddle class.
 private:
 	string answer;
 	string question;
@@ -781,9 +802,6 @@ class Monster {
 		void displayHealthBar()
 		{
 			int value = health/10;
-			//cout << name << "'s Health: " << health << endl;
-			//cout << "maxHealth: " << maxHealth << endl;
-			//cout << "Value: " << value << endl;
 			cout << name <<"'s Health: [";
 			for(int i = 1; i <= value; i++)
 			{
@@ -1831,28 +1849,32 @@ void fightMonster(Hero& h)
 	
 
 
-
+/*
+This function allows the user to customize his/her hero.
+It facilitates the character creation portion of the 
+game.
+*/
 
 void characterCreation(Hero& x){
 	string tempString;
 	string input = "no";
-	while(input == "no" && input != "yes")
+	while(input == "no" && input != "yes") //allows user to repeat creation if desired
 	{
 		cout << " -------------- Welcome to Team 8's Text Based RPG --------------" << endl;
 		cout << "It is time to customize your character and begin your journey!" << endl;
 		
-		cout << "Please enter yor characters name: ";
+		cout << "Please enter yor characters name: "; //set name
 		cin >> tempString;
 		x.setName(tempString);
 		
-		cout << "Set gender: ";
+		cout << "Set gender: "; //set gender
 		cin >> tempString;
 		x.setGender(tempString);
 		
-		cout << "Select your starting weapon " << endl;
+		cout << "Select your starting weapon " << endl; //set starting weapon
 		cin >> tempString;
-		x.setGender(tempString);
-		cout << "Your current character is: " << endl;
+		x.setWeapon(tempString);
+		cout << "Your current character is: " << endl; //prints created hero
 		cout << "Name: " << x.getName() << endl;
 		cout << "Gender: " << x.getGender() << endl;
 		cout << "Weapon: " << x.getWeapon() << endl;
@@ -1861,8 +1883,10 @@ void characterCreation(Hero& x){
 	}
 }
 
-
-
+/*
+This is the inn keeper. He heals the hero and greets the hero when 
+the hero enters the inn
+*/
 class InnKeeper{
 private:
 	string name;
@@ -1870,16 +1894,19 @@ public:
 	InnKeeper(){
 		name = "Will";
 	}
-	void healPlayer(Hero& x){
+	void healPlayer(Hero& x){ //heals hero
 		x.setHealth(x.getMaxHealth());
 	}
-	void greeting(){
+	void greeting(){ //greets hero
 		cout << "\nHello Hero!, the Merchant bellows from behind the bar." << endl;
 		cout << "Come and spend the night, free of charge for helping our city." << endl;
 	}
 };
 
-
+/*
+This facilitates the interaction between the hero and inn keeper
+objects.
+*/
 void visitInn(Hero& x, InnKeeper& y){
 	cout << "\n----- You enter the Leaky Cauldren looking for a place to sleep -----" << endl;
 	y.greeting();
@@ -1889,6 +1916,11 @@ void visitInn(Hero& x, InnKeeper& y){
 	x.displayHealthBar();
 }
 
+
+/*
+This class is the enchanter. She can increase the hero's attack rating
+for a fee
+*/
 class Enchanter{
 private:
 	string name;
@@ -1905,9 +1937,9 @@ public:
 	{
 		int input;
 		bool exitFlag = false;
-		while(exitFlag == false)
+		while(exitFlag == false) //keeps user in menu until they want to leave.
 		{	
-			int currentAttack = x.getAttack();	
+			int currentAttack = x.getAttack();	//saves current attack rating
 			cout << "\nI can empower your weapon, for a price\n" << endl;
 			cout << "1: Add 5 to your weapon's attack for 500 gold" << endl;
 			cout << "2: Add 10 to your weapon's attack for 1000 gold" << endl;
@@ -1916,7 +1948,7 @@ public:
 			cout << "5: Add 25 to your weapon's attack for 2500 gold" << endl;
 			cout << "0: Return to town" << endl;
 			cin >> input;
-			if(input == 1)
+			if(input == 1) //adds 5 attack for 500 gold
 			{
 				if(x.decreaseGold(500) == true)
 				{
@@ -1924,7 +1956,7 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if (input == 2)
+			}else if (input == 2) //adds 10 attack for 1000 gold
 			{
 				if(x.decreaseGold(1000) == true)
 				{
@@ -1932,7 +1964,7 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if (input == 3)
+			}else if (input == 3)//adds 15 attack for 1500 gold
 			{
 				if(x.decreaseGold(1500) == true)
 				{
@@ -1940,7 +1972,7 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if (input == 4)
+			}else if (input == 4) //adds 20 attack for 2000 gold
 			{
 				if(x.decreaseGold(2000) == true)
 				{
@@ -1948,7 +1980,7 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if(input == 5)
+			}else if(input == 5)//adds 25 attack for 2500 gold
 			{
 				if(x.decreaseGold(2500) == true)
 				{
@@ -1956,17 +1988,22 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if(input == 0)
+			}else if(input == 0) //leaves the enchanter
 			{
 				cout << "\nYou leave the tent" << endl;
 				exitFlag = true;
-			} else {
+			} else { //error catching
 				cout << "\nInvalid Input" << endl;
 			}
 		}
 	}
 };
 
+
+
+/*
+This function facilitates the interacting between the hero and enchater objects.
+*/
 void visitEnchanter(Hero& x, Enchanter& y){
 	cout << "\n---------- The Enchanter's Tent ----------\n" << endl;
 	cout << "You walk over to a small tent near the outskirts of town" << endl;
@@ -2889,7 +2926,7 @@ private:
 	string inventory[5];
 	int cost;
 public:
-	Merchant(){
+	Merchant(){ //constructor, creates inventory
 		name = "Frank";
 		cost = 5;
 		inventory[0] = "Golden Gun";
@@ -2898,6 +2935,7 @@ public:
 		inventory[3] = "Golden Short Sword";
 		inventory[4] = "Bronze Pole Arm";
 	}
+	//mutator and accessor methods.
 	void setName(string x){
 		name = x;	
 	}
@@ -2910,7 +2948,7 @@ public:
 	int getCost(){
 		return cost;
 	}
-	void sellPotion(Hero& x){
+	void sellPotion(Hero& x){ //sells a potion by incrementing the potion count if the hero can afford it
 		if(x.decreaseGold(50) == true)
 		{
 			x.incPotion();
@@ -2918,40 +2956,40 @@ public:
 			cout << "you now have " << x.getPotion() << " potion(s)\n" << endl;
 		}
 	}
-	void sellWeapon(Hero& x){
+	void sellWeapon(Hero& x){ //sells weapon
 		int input;
 		cout << "\nWhich weapon would you like hero?" << endl;
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 5; i++) //print inventory
 		{
 			cout << i+1 << ": " << inventory[i] << endl;
 		}
 		cout << "0: Nevermind" << endl;
 		cin >> input;
-		if(input == 1){
+		if(input == 1){ //sell a Golden Gun
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[0]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 2){
+		} else if(input == 2){//sell a Grand Battle Axe
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[1]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 3){
+		} else if(input == 3){//sell a Bow and Arrow
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[2]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 4){
+		} else if(input == 4){ //sell a Golden Short Bow
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[3]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 5){
+		} else if(input == 5){ //sell a Bronze Pole Arm
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[4]);
@@ -2963,7 +3001,7 @@ public:
 			cout << "\nThat is an invalid input\n" << endl;
 		}
 	}
-	void sellHealthTonic(Hero& Stoner)
+	void sellHealthTonic(Hero& Stoner) //increases the hero's health by 20 for 100 gold
 	{
 		if(Stoner.decreaseGold(100) ==  true)
 		{
@@ -2975,7 +3013,12 @@ public:
 	}
 };
 
-
+/*
+This is the Dealer class. This character is in town and give the 
+hero a chance to play a game of chance. It is the game where
+you guess which cup the ball is under. if the hero wins, the bet is
+doubled, otherwise the bet amount is lost.
+*/
 class Dealer{
 private:
 	string name;
@@ -2994,7 +3037,7 @@ public:
 		while(exitFlag == false)
 		{
 			cout << "You wish to play the magic cup game! How much are you will to gamble?" << endl;
-			while(exitFlag2 == false){
+			while(exitFlag2 == false){//takes in a valid bet amount. the hero cannot bet money he doesn't have.
 			cin >> herosBet;
 				if (herosBet > Stoner.getGold()){
 					cout << "You don't have that much gold, try gambling a different amount" << endl;
@@ -3005,58 +3048,58 @@ public:
 			exitFlag2 = false;
 				
 				
-			showAllCups();
+			showAllCups();//displays cups
 			cout << "1: The ball is beneath cup 1" << endl;
 			cout << "2: The ball is beneath cup 2" << endl;
 			cout << "3: The ball is beneath cup 3" << endl;
 			cout << "0: Quit magic cup game." << endl;
 			
-			cupNum = rand() % 3 + 1;
+			cupNum = rand() % 3 + 1; //hides the ball under a random cup
 			cin >> input;
-			if(input == 1 || input == 2 || input == 3)
+			if(input == 1 || input == 2 || input == 3) //takes in Hero's guess.
 			{
-				if(cupNum == 1)
+				if(cupNum == 1) //ball location
 				{
-					showCup1();
-					if(input == 1){
+					showCup1();//show ball location
+					if(input == 1){ //correct guess
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
 						Stoner.setGold(Stoner.getGold()+herosBet*2);
-					} else{
+					} else{//incorrect guess
 						cout << "\nOh I'm sorry, that's wrong" << endl;
 						cout << "You have lost: " << herosBet << endl;
 						Stoner.setGold(Stoner.getGold()-herosBet);
 					}
-				}else if(cupNum == 2)
+				}else if(cupNum == 2)//ball location
 				{
-					showCup2();
-					if(input == 2){
+					showCup2();//show ball location
+					if(input == 2){//correct guess
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
 						Stoner.setGold(Stoner.getGold()+herosBet*2);
-					} else{
+					} else{//incorrect guess
 						cout << "\nOh I'm sorry, that's wrong" << endl;
 						cout << "You have lost: " << herosBet << endl;
 						Stoner.setGold(Stoner.getGold()-herosBet);
 					}
-				}else if(cupNum == 3)
+				}else if(cupNum == 3)//ball location
 				{
-					showCup3();
-					if(input == 3){
+					showCup3();//show ball location
+					if(input == 3){//correct guess
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
 						Stoner.setGold(Stoner.getGold()+herosBet*2);
-					} else{
+					} else{//incorrect guess
 						cout << "\nOh I'm sorry, that's wrong" << endl;
 						cout << "You have lost: " << herosBet << endl;
 						Stoner.setGold(Stoner.getGold()-herosBet);
 					}
 				}
-			} else {
+			} else {//invalid input
 				cout << "\nThat is an invalid input" << endl;
 			}
 			cout << "You have " << Stoner.getGold() << " gold" << endl;
-			if(input == 0)
+			if(input == 0)//breaks back to town if user wishes
 			{
 				exitFlag = true;
 			}
@@ -3064,7 +3107,7 @@ public:
 			cout << "1: Yes" << endl;
 			cout << "2: No" << endl;
 			bool x = false;
-			while (x == false)
+			while (x == false)//allows hero do decide if he wants to play again or not
 			{
 				cin >> input;
 				if(input == 1){
@@ -3080,25 +3123,25 @@ public:
 		}
 			
 	}
-	void showAllCups(){
+	void showAllCups(){//prints all cups.
 		cout << "cup:  1      2      3  " << endl;
 		cout << "    _---_  _---_  _---_" << endl;
 		cout << "    |   |  |   |  |   |" << endl;
 		cout << "    |   |  |   |  |   |" << endl;
 	}
-	void showCup1(){
+	void showCup1(){//prints cup with ball location at cup 1
 		cout << "    _---_              " << endl;
 		cout << "    |   |  _---_  _---_" << endl;
 		cout << "    |   |  |   |  |   |" << endl;
 		cout << "      0    |   |  |   |" << endl;
 	}
-	void showCup2(){
+	void showCup2(){//prints cup with ball location at cup 2
 		cout << "           _---_       " << endl;
 		cout << "    _---_  |   |  _---_" << endl;
 		cout << "    |   |  |   |  |   |" << endl;
 		cout << "    |   |    0    |   |" << endl;
 	}
-	void showCup3(){
+	void showCup3(){//prints cup with ball location at cup 3
 		cout << "                  _---_" << endl;
 		cout << "    _---_  _---_  |   |" << endl;
 		cout << "    |   |  |   |  |   |" << endl;
@@ -3116,14 +3159,16 @@ public:
 	}
 };
 
-
-
-void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj, Dealer& dealerObj){ //this is incomplete
+/*
+This function facilitates the town for the hero. It allows the hero to check his inventory,
+restore his health, visit the merchant, the enchanter, and the dealer.
+*/
+void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj, Dealer& dealerObj){ //Town
 	int input;
 	bool exitFlag = false;
 	cout << "\n---------- Welcome to the city of Anvil ----------" << endl;
 	
-	while (exitFlag == false){
+	while (exitFlag == false){//Stay in town until user wishes to leave
 		cout << "\nWhere in Anvil would you like to go?" << endl;
 		cout << "1: Inn" << endl;
 		cout << "2: Merchant" << endl;
@@ -3132,33 +3177,37 @@ void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter
 		cout << "9: Check Inventory" << endl;
 		cout << "0: Exit Anvil" << endl;
 		cin >> input;
-		if (input == 1)
+		if (input == 1) //visit inn
 		{
 			visitInn(Stoner, innKeeperObj);
-		} else if (input == 2)
+		} else if (input == 2) //visit merchant
 		{
 			visitMerchant(Stoner, merchantObj);
-		} else if (input == 3) 
+		} else if (input == 3)  //visit enchanter
 		{
-			cout << "\nVisit Enchanter" << endl;
 			visitEnchanter(Stoner, enchanterObj);
-		}else if(input == 4)
+		}else if(input == 4) //visit dealer
 		{
 			visitDealer(Stoner, dealerObj);
-		}else if(input == 9)
+		}else if(input == 9) //prints inventory
 		{
 			Stoner.printAll();
-		} else if(input == 0)
+		} else if(input == 0) //exits town
 		{
 			exitFlag = true;
 			cout << "You venture out into the wilds" << endl;
-		} else 
+		} else //invalid input
 		{
 			cout << "\nInvalid input" << endl;
 		}
 	}
 }
 
+/*
+This function facilitates the interaction between the hero and merchant
+It allows the hero to buy potions, weapons, and health tonics to
+increase his max health
+*/
 void visitMerchant(Hero& x, Merchant& y){
 	int input;
 	bool exitFlag = false;
@@ -3171,26 +3220,29 @@ void visitMerchant(Hero& x, Merchant& y){
 		cout << "3: to buy a health tonic to increase max health by 20 (100 gold)" << endl;
 		cout << "0: Leave merchant" << endl;
 		cin >> input;
-		if (input == 1)
+		if (input == 1)//sell potion
 		{
 			y.sellPotion(x);
-		} else if (input ==  2)
+		} else if (input ==  2)//sell weapon
 		{
 			y.sellWeapon(x);
-		} else if (input == 3)
+		} else if (input == 3)//increase max health
 		{
 			y.sellHealthTonic(x);
-		} else if(input == 0)
+		} else if(input == 0)//leave merchant
 		{
 			exitFlag = true;
-		} else 
+		} else //invalid input
 		{
 			cout << "That is an invalid input" << endl;
 		}
 	}
 }
 
-
+/*
+This function facilitates the hero meeting the dealer. It allows the hero to play a game to
+win money.
+*/
 void visitDealer(Hero& Stoner, Dealer& dealerObj)
 {
 	dealerObj.magicCups(Stoner);
