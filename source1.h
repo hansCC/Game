@@ -28,6 +28,7 @@ void visitEnchanter(Hero& x, Enchanter& y);
 void visitInn(Hero& x, InnKeeper& y);
 void HUB(Hero& heroObj, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj);
 void visitDealer(Hero& Stoner, Dealer& dealerObj);
+void visitTeacher(Hero& x, Teacher& y);
 
 using namespace std;
 
@@ -58,7 +59,7 @@ public:
 	{ 
 		if(x > gold)
 		{
-			cout << "You cannot afford this" << endl;
+			cout << "\nYou cannot afford this\n" << endl;
 			return false;
 		} else {
 			gold = gold - x;
@@ -71,14 +72,10 @@ public:
 		{
 			potion--;
 			health = maxHealth;
-			//cout << "------------------------------------" << endl;
 			cout << "\nYour health has been restored to max" << endl;
 			displayHealthBar();
-			//cout << "------------------------------------\n" << endl;
 		} else {
-			//cout << "\n------------------------------------" << endl;
 			cout << "\nYou are out of potions!" << endl;
-			//cout << "------------------------------------" << endl;
 		}
 	}
 	void setMaxHealth(int x)
@@ -174,9 +171,6 @@ public:
 	void displayHealthBar()
 	{
 		int value = health/10;
-		//cout << "Health: " << health << endl;
-		//cout << "maxHealth: " << maxHealth << endl;
-		//cout << "Value: " << value << endl;
 		cout << name <<"'s Health: [";
 		for(int i = 1; i <= value; i++)
 		{
@@ -191,7 +185,583 @@ public:
 	}
 };
 	
+class Creature {
+protected:
+	string name;
+	int health;
+	int maxHealth;
+	int attack;
+	string appearance;
+public:
+	Creature() {
+		name="";
+		health = 0;
+		attack = 0;
+		appearance ="";
+	}
+	void setName(string x) {
+		name=x;
+	}
+	string getName() {
+		return name;
+	}
+	int getHealth() {
+		return health;
+	}
+	int getMaxHealth() {
+		return maxHealth;
+	}
+	void setHealth(int x) {
+		health = x;
+		maxHealth = x;
+	}
+	void takeDamage(int x) {
+		health -= x;
+	}
+	void setAppearance(string x) {
+		appearance = x;
+	}
+	int Attack() {
+		return rand() % attack + 1;
+	}
+	string getAppearance() {
+		return appearance;
+	}
+	void setAttack(int x) {
+		attack = x;
+	}
+	void displayHealthBar()
+	{
+		int value = health/10;
+		cout << name << "'s Health: [";
+		for(int i = 1; i <= value; i++)
+		{
+			cout << "=";
+		}
+		for(int i = value; i < maxHealth/10; i++)
+		{
+			cout << " ";
+		}
+		cout << "]" << endl;
+		cout << "   " << name << "'s Health: " << health << endl;
+	}
+};
+class Incorperal: public Creature {
+public:
+	void takeDamage(int x) {
+		health -= x / 2;
+	}
+	int Attack() {
+		return (rand() % attack + 1) * 3 / 2;
+	}
+};
 
+class Undead : public Creature {
+public:
+	void takeDamage(int x) {
+		if (health - x <= 0) {
+			if (rand() % 4 == 1) health-=x;
+			cout << "You're weapon is deflected!\n You do no damage!" << endl;
+		}
+		else health -= x;
+	}
+};
+	
+class riddle {
+private:
+	string answer;
+	string question;
+public:
+	void setAnswer(string x) {
+		answer = x;
+	}
+	void setQuestion(string x) {
+		question = x;
+	}
+	string askRiddle() {
+		return question;
+	}
+	bool checkAnswer(string x) {
+		if (x.compare(answer)==0) return true;
+		else return false;
+	}
+};
+	
+
+	
+void stage3(Hero x) {
+	string input; //following lines stet up objects that will be constantly used
+	Creature Mon = Creature();
+	riddle rid;
+	int placeholder;
+	bool itemOne = false;
+	bool itemTwo = false;
+	bool itemThree = false;
+	bool block = false; //following line is the description of the initial area
+	cout << "------------ The Plague ------------\nUpon exit through the portal, you are left standing in a small, empty village.\n\nIt appears rather bleak out for mid-day, as it is overcast.\nThe shadow of clouds is oppressing over the wooden domiciles.\nThe sickening smell of disease lingers here.\n\nWhat do you do? (type help for suggestions)\nProbably the most important command ^^.\n";
+	do { //begins user interface for town
+		cout << "> ";
+		cin >> input;
+		cout << "\n";
+		if (input.compare("investigate") == 0) block = true;
+		else if (input.compare("help") == 0) {
+			cout << "Available options: " << endl;
+			cout << "investigate - search around the town to understand the situation.\n";
+		}
+		else {
+			cout << "I don't understand what " << input << " means.\n"; //resets the loop
+		}
+	} while (!block);
+	block = false; //makes block usable for the next loops
+	cout << "\n"; //following line explains investigation of the town
+	cout << "On closer examination, you notice that the villagers are locked in their homes.\nAbout 5 minutes pass during your inspection, and you see a hunched over figure inside an alley.\n";
+	do { //dialogue with the elder
+		cout << "> ";
+		cin >> input;
+		cout << "\n";
+		if (input.compare("approach") == 0) {
+			cout << "On the approach, the figure looks up at you. You see a frail elderly man with pox markings over his sullen face.\n\"What is it that you're here for?\" he asks. \"I would welcome you more properly, if the circustances weren't more dire.\"\nWhat would you like to ask him?\n";
+			do {
+				cout << "> ";
+				cin >> input;
+				cout << "\n";
+				if (input.compare("leave") == 0) {
+					cout << "You walk away from the village elder.\n";
+					block = true;
+				}
+				else if (input.compare("plague") == 0) { //must be used to continue
+					cout << "He looks at you with a sorrow filled expression.\n\"We have been battling this disease for so long,\" he begins,\n\"None of us, however, had the strength to go to the caves,\nas we know that's the source.\"\n";
+					itemOne = true;
+				}
+				else if (input.compare("elder") == 0) {
+					cout << "\"I have been the leader of these people for many years,\nand this is not the first time we have felt the plague.\"\nHe gestures towards the pox markings.\n";
+				}
+				else if (input.compare("village") == 0) {
+					cout << "He goes on to explain the difficulties of running a\nanarcho-syndicalist commune.\n";
+				}
+				else if (input.compare("help") == 0) {
+					cout << "Available options: " << endl;
+					cout << "plague - ask about the plague\nelder - ask about himself\nvillage - ask about the village\nleave - leave the elder.\n";
+				}
+				else {
+					cout << "I don't understand what " << input << " means.\n";
+				}
+			} while (!block);
+			block = false;
+		}
+		else if (input.compare("caves") == 0 && itemOne) { //must be used to continue stage
+			block = true;
+		}
+		else if (input.compare("help") == 0) {
+			cout << "Available options: " << endl;
+			if (itemOne) cout << "caves - travel to the source of the plague.\n";
+			cout << "approach - approach the man\n";
+		}
+		else {
+			cout << "I don't understand what " << input << " means.\n";
+		}
+	} while (!block);
+	block = false;
+	itemOne = false;
+	cout << "After about an hour's sojourn, you arrive at the mouth of a cavern.\nThere appears to be writting hastily scrawled on the outside wall.\n"; //description of cave entrance
+	rid.setQuestion("What has roots as nobody sees, is taller than trees up up up it goes, and yet never grows? onutinam"); //all riddles are a reference to Tolkien's Hobbit
+	rid.setAnswer("mountain");
+	do {
+		cout << "> ";
+		cin >> input;
+		cout << "\n"; //following lines used to navigate dialogue
+		if (input.compare("help") == 0) {
+			cout << "Available options: " << endl;
+			cout << "read - read what's written on the wall\nenter - enter the cave\n";
+		}
+		else if (input.compare("read") == 0) {
+			cout << rid.askRiddle() << "\nThe last part appears to be mixed up.\n";
+		}
+		else if (input.compare("enter") == 0) {
+			block = true;
+		}
+		else {
+			cout << "I don't understand what " << input << " means.\n";
+		}
+	} while (!block);
+	block = false; //following line is the description begining the encounter for the Bugbear
+	cout << "A familiar stench assaults your nostrils. This is without a doubt the source of the plague.\nThe walls of the cave are cold against your hand, as they guide your descent into the dark below.\nAn unnatural light begins to illuminate the path ahead. An opening in the cave appears, lit by a few torches.\nInside is a furry creature about the size of a man. It turns to face you. You recognize this to be a Bugbear\nThe creature howls at you \"PREPARE FOR COMBAT!\" and lifts his Warhammer.\n";
+	Mon.setHealth(50);
+	Mon.setAttack(20);
+	Mon.setName("Bugbear");
+	Mon.setAppearance("An impossing figure of Dark Brown fur and teeth is staring at you with glowing red eyes.\n");
+	do {
+		cout << "------ " << x.getName() << " vs. " << Mon.getName() << " ------\n";
+		Mon.displayHealthBar();
+		x.displayHealthBar();
+		if (x.getHealth() <= 0) {
+			cout << "Your final moments were spent on the cold hard ground before you were slain with one last blow from the Bugbear's Warhammer.\n";
+			x.setHealth(0);
+		}
+		cout << "1. Attack\n2. Defend\n3. Use Potion\n4. Inspect\n> ";
+		cin >> input;
+		cout << "\n";
+		if (input.compare("1") == 0 || input.compare("Attack") == 0) { //attacking
+			if (block) { //attacking with blocking
+				block = false;
+				Mon.takeDamage(x.getAttack() * 3);
+				cout << "------ Results of last Action ------\n";
+				cout << "The Bugbear was unable to brace himself and took " << x.getAttack() * 3 << " damage!\n";
+				if (Mon.getHealth() <= 0) { //kills bugbear
+					cout << "After one last attack, the Bugbear falls to the ground defeated.\n\n";
+				}
+				else {
+					cout << "He was unable to retaliate to your attack, but now he appears ready.\n\n";
+				}
+			}
+			else { //attacking without blocking
+				Mon.takeDamage(x.getAttack());
+				cout << "------ Results of last Action ------\n";
+				cout << "You hit the Bugbear for " << x.getAttack() << " damage!\n";
+				if (Mon.getHealth() > 0) {//lets the bugbear attack
+					placeholder = Mon.Attack();
+					x.takeDamage(placeholder);
+					cout << "The Bugbear hits you for " << placeholder << " damage!\n\n";
+				}
+				else { //kills bugbear
+					cout << "After one last attack, the Bugbear falls to the ground defeated.\n\n";
+				}
+			}
+		}
+		else if (input.compare("2") == 0 || input.compare("Defend") == 0) { //blocks
+			block = true;
+			placeholder = Mon.Attack();
+			x.takeDamage(placeholder / 2);
+			cout << "------ Results of last Action ------\n";
+			cout << "The Bugbear hits you for " << placeholder / 2 << " damage!\nThe Bugbear appears staggered due to your block. He has left himself open!\n";
+		}
+		else if (input.compare("3") == 0 || input.compare("Use Potion") == 0) { //uses potion
+		cout << "------ Results of last Action ------\n";
+			x.usePotion();
+		}
+		else if (input.compare("4") == 0 || input.compare("Inspect") == 0) { //inspects bugbear and gives insight on health
+		cout << "------ Results of last Action ------\n";
+			cout << Mon.getAppearance() + "\n";
+			if (Mon.getHealth() < (Mon.getMaxHealth() / 2)) cout << "The Bugbear appears to be hobbling.\n\n";
+		}
+		else if (input.compare("help") == 0) { //gives help about the encounter
+		cout << "------ Results of last Action ------\n";
+			cout << "You cry out for help... but no one responds.\nYou remember about the writing on the wall prior to this room.\n\n";
+		}
+		else if (rid.checkAnswer(input)) { //solves riddle
+			cout << "The Bugbear jumps back and lowers his Warhammer.\n\"Finally,\" he begins, \"someone actually read that carving.\"He steps forward.\n\"Although I most likely won't remember you Human, take these. They will help you with the tasks ahead.\"\nIn your hands is a small metal cage with what appears to be a small bag of holding inside.\nThe Bugbear walks off without another word.";
+			itemOne = true;
+			Mon.setHealth(0);
+		}
+		else { //base case
+			cout << "The Bugbear gives you a puzzled look, almost as though it knows you didn't put in a 1, 2, 3, 4, or 5 when prompted.\n";
+		}
+	} while (Mon.getHealth() > 0 && x.getHealth() > 0); //fixed
+	block = false;
+	if (x.getHealth() > 0) {//checks if dead
+		cout << "You take time to rest after your encounter with the Bugbear. Regained full health!\n";
+		x.setHealth(x.getMaxHealth());
+		Mon = Incorperal(); //sets up next monster
+		Mon.setAppearance("The ghastly face of a wraith haunts you with its unnatural appearance.\n");
+		Mon.setAttack(20);
+		Mon.setHealth(40);
+		Mon.setName("Wraith");
+		cout << "The cave continues to extend deeper underground, and, again, there is writting on the wall.\n"; //description
+		rid.setAnswer("map"); //sets up next riddle
+		rid.setQuestion("I have seas with no water, coast with no sand, towns without people, mountains without land. What am I? Three letters long, lower case");
+		do {
+			cout << "> ";
+			cin >> input; //allows player to read or ignore. They must input enter
+			cout << "\n";
+			if (input.compare("help") == 0) {
+				cout << "Available options: " << endl;
+				cout << "read - read what's written on the wall\n";
+				cout << "enter - enter the next part of the cave\n";
+			}
+			else if (input.compare("read") == 0) {
+				cout << rid.askRiddle() << "\n";
+				cout << "The last part appears to be a hint.\n";
+			}
+			else if (input.compare("enter") == 0) {
+				block = true;
+			}
+			else {
+				cout << "I don't understand what " << input << " means.\n";
+			}
+		} while (!block); // next line sets up wraith
+		block = false;
+		cout << "Enter through the next opening and into a crypt.\nThe hairs on the back of your neck stand as a rush of cold air passes over you.\nAn unearthly wail coming from behind startles you, and you grab your weapon.\nA wraith floats menacingly in your direction. Prepare for combat.\n";
+		do {
+			cout << "------ " << x.getName() << " vs. " << Mon.getName() << " ------\n";
+			Mon.displayHealthBar();
+			x.displayHealthBar();
+			if (x.getHealth() <= 0) { //death
+				cout << "Your final moments were spent on the cold hard ground before your very essence was consumed by the Wraith.\n";
+				x.setHealth(0);
+			}
+			cout << "1. Attack\n2. Defend\n3. Use Potion\n4. Inspect\n> ";
+			cin >> input;
+			cout << "\n";
+			if (input.compare("1") == 0 || input.compare("Attack") == 0) { //attack (same as previous)
+				if (block) {
+					block = false;
+					Mon.takeDamage(x.getAttack() * 3);
+					cout << "------ Results of last Action ------\n";
+					cout << "The Wraith was unable to brace himself and took " << x.getAttack() * 3 << " damage!\n";
+					if (Mon.getHealth() <= 0) {
+						cout << "After one last attack, the Wraith disperses into the air.\n\n";
+					}
+					else {
+						cout << "It was unable to retaliate to your attack, but now it appears ready.\n\n";
+					}
+				}
+				else {
+					cout << "------ Results of last Action ------\n";
+					Mon.takeDamage(x.getAttack());
+					cout << "The Wraith is hit with " << x.getAttack() << " damage!\n";
+					if (Mon.getHealth() > 0) {
+						placeholder = Mon.Attack();
+						x.takeDamage(placeholder);
+						cout << "The Wraith hits you for " << placeholder << " damage!\n\n";
+					}
+					else {
+						cout << "After one last attack, the Wraith disperses into the air.\n\n";
+					}
+				}
+			}
+			else if (input.compare("2") == 0 || input.compare("Defend") == 0) { //blocking
+				block = true;
+				placeholder = Mon.Attack();
+				x.takeDamage(placeholder / 2);
+				cout << "------ Results of last Action ------\n";
+				cout << "The Wraith hits you for " << placeholder / 2 << " damage!\nThe Wraith appears staggered due to your block. He has left himself open!\n\n";
+			}
+			else if (input.compare("3") == 0 || input.compare("Use Potion") == 0) { //use a potion
+				x.usePotion();
+			}
+			else if (input.compare("4") == 0 || input.compare("Inspect") == 0) { //inspects the enemy
+			cout << "------ Results of last Action ------\n";
+				cout << Mon.getAppearance() + "\n";
+				if (Mon.getHealth() < (Mon.getMaxHealth() / 2)) cout << "The Wraith appears gravely wounded.\n\n";
+			}
+			else if (input.compare("help") == 0) { //gives help
+			cout << "------ Results of last Action ------\n";
+				cout << "You cry out for help... but no one responds.\nYou remember about the writing on the wall prior to this room.\n\n";
+			}
+			else if (rid.checkAnswer(input)) { //solves riddle
+				cout << "The Wraith lowers its arms.\nIt extends a ghostly hand and drops an item at your feet.\n\"Huuuuumaaan...\" it utters before disappearing as quickly as it came.\nYou now have something that resembles a javelin.\n";
+				itemTwo = true;
+				Mon.setHealth(0);
+			}
+			else {
+				cout << "The Wraith gives you a puzzled look, almost as though it knows you didn't put in a 1, 2, 3, 4, or 5 when prompted.\n";
+			}
+		} while (Mon.getHealth() > 0 && x.getHealth() > 0);//fixed
+		if (x.getHealth() > 0) { //checks if dead
+			block = false;
+			cout << "You take time to rest after your encounter with the Wraith. Regained full health!\n";
+			x.setHealth(x.getMaxHealth());
+			Mon = Creature();//sets up next opponent
+			Mon.setAppearance("It appears to be the living embodiment of everything frightening about a bear and an owl.\n");
+			Mon.setAttack(42);
+			Mon.setHealth(50);
+			Mon.setName("Owlbear");
+			cout << "";
+			rid.setAnswer("teeth"); //sets up next riddle
+			cout << "The cave continues to extend deeper underground,\nand, again (again), there is writting on the wall.\n";
+			rid.setQuestion("Thirty white horses on a red hill,\nfirst they champ, then they stamp,\nthen they stamp, then they stand still. eteht\n");
+			do { //allows player to read riddle, then go to the next combatant
+				cout << "> ";
+				cin >> input;
+				cout << "\n";
+				if (input.compare("help") == 0) {
+					cout << "Available options: " << endl;
+					cout << "read - read what's written on the wall\n";
+					cout << "enter - enter the next part of the cave\n";
+				}
+				else if (input.compare("read") == 0) {
+					cout << rid.askRiddle() << "\n";
+					cout << "The last part appears scrambled.\n";
+				}
+				else if (input.compare("enter") == 0) {
+					block = true;
+				}
+				else {
+					cout << "I don't understand what " << input << " means.\n";
+				}
+			} while (!block);//following is a description of the owlbear encounter
+			block = false;
+			cout << "The next room that you enter reeks with the smell of death.\nFrom out of the shadows, a figure rises.\nWith the size of a grizzly, but the strangeness of a hawk,\nThe Owlbear roars at you...\nPrepare for combat.\n";
+			do {
+				cout << "------ " << x.getName() << " vs. " << Mon.getName() << " ------\n";
+				Mon.displayHealthBar();
+				x.displayHealthBar();
+				if (x.getHealth() <= 0) { //death
+					cout << "Your final moments were spent on the cold hard ground before you were devoured by the Owlbear\n";
+					x.setHealth(0);
+				}
+				cout << "1. Attack\n2. Defend\n3. Use Potion\n4. Inspect\n> ";
+				cin >> input;
+				cout << "\n";
+				if (input.compare("1") == 0 || input.compare("Attack") == 0) { //attack
+					if (block) {
+						block = false;
+						Mon.takeDamage(x.getAttack() * 3);
+						cout << "------ Results of last Action ------\n";
+						cout << "The Owlbear was unable to brace himself and took " << x.getAttack() * 3 << " damage!\n";
+						if (Mon.getHealth() <= 0) {
+							cout << "After one last attack, the Owlbear falls to the ground defeated.\n\n";
+						}
+						else {
+							cout << "He was unable to retaliate to your attack, but now he appears ready.\n\n";
+						}
+					}
+					else {
+						Mon.takeDamage(x.getAttack());
+						cout << "------ Results of last Action ------\n";
+						cout << "The Owlbear is hit with " << x.getAttack() << " damage!\n";
+						if (Mon.getHealth() > 0) {
+							placeholder = Mon.Attack();
+							x.takeDamage(placeholder);
+							cout << "The Owlbear hits you for " << placeholder << " damage!\n\n";
+						}
+						else {
+							cout << "After one last attack, the Owlbear falls to the ground defeated.\n\n";
+						}
+					}
+				}
+				else if (input.compare("2") == 0 || input.compare("Defend") == 0) { //defend
+					block = true;
+					placeholder = Mon.Attack();
+					x.takeDamage(placeholder / 2);
+					cout << "------ Results of last Action ------\n";
+					cout << "The Owlbear hits you for " << placeholder / 2 << " damage!\nThe Owlbear appears staggered due to your block. He has left himself open!\n";
+				}
+				else if (input.compare("3") == 0 || input.compare("Use Potion") == 0) {//use potion
+					cout << "------ Results of last Action ------\n";
+					x.usePotion();
+				}
+				else if (input.compare("4") == 0 || input.compare("Inspect") == 0) {//inspect owlbear
+					cout << "------ Results of last Action ------\n";
+					cout << Mon.getAppearance() + "\n";
+					if (Mon.getHealth() < Mon.getMaxHealth() / 2)cout << "The Owlbear is bearly hanging on.\n\n";
+				}
+				else if (input.compare("help") == 0) { //gives advice
+					cout << "------ Results of last Action ------\n";
+					cout << "You cry out for help... but no one responds.\nYou remember about the writing on the wall prior to this room.\n";
+				}
+				else if (rid.checkAnswer(input)) { //solves riddle, gives item
+					cout << "The Owlbear cocks its head and steps back.\nIt then begins to rapidly move its head back and forth and makes a horrifying sound.\nThe Owlbear has regurgitated an item...\nYou now have a portable hole.\n";
+					itemThree = true;
+					Mon.setHealth(0);
+				}
+				else { //base case
+					cout << "The Owlbear gives you a puzzled look, almost as though it knows you didn't put in a 1, 2, 3, 4, or 5 when prompted.\n";
+				}
+			} while (Mon.getHealth() > 0 && x.getHealth() > 0);
+			block = false;
+			if (x.getHealth() > 0) { //checks death
+				cout << "You take time to rest after your encounter with the Owlbear. Regained full health!\n\n";
+				x.setHealth(x.getMaxHealth());
+				Mon = Undead(); //sets up final enemy
+				Mon.setAppearance("Clad in steel and unable to feel, this Death Knight is bad to the bone.\n");
+				Mon.setAttack(40);
+				Mon.setHealth(100);
+				Mon.setName("Death Knight");
+				cout << "Pestilence is near.\nYou continue descending deeper into the bowels of this cavern.\nEventually, you arrive in a room illuminated in a sickly green light.\nYou hear bones rub upon steel.\nSlowly marching towards you is a skeleton in armor.\nIt must be the cause of this disease.\nThe skeleton raises its greatsword... Prepare for combat.\n";
+				do { //fight begins
+					cout << "------ " << x.getName() << " vs. " << Mon.getName() << " ------\n";
+					Mon.displayHealthBar();
+					x.displayHealthBar();
+					if (x.getHealth() <= 0) { //death
+						cout << "Your final moments were spent on the cold hard ground before you were diced by the Death Knight's Greatsword.\n";
+						x.setHealth(0);
+					}
+					cout << "1. Attack\n2. Defend\n3. Use Potion\n4. Inspect\n";
+					if (itemOne && itemTwo && itemThree) cout << "5. FINISHHIM!\n"; //instant kill
+					cout << "> ";
+					cin >> input;
+					cout << "\n";
+					if (input.compare("1") == 0 || input.compare("Attack") == 0) { //attack
+						if (block) {
+							block = false;
+							Mon.takeDamage(x.getAttack() * 3);
+							cout << "------ Results of last Action ------\n";
+							cout << "The Death Knight was unable to brace himself and took " << x.getAttack() * 3 << " damage!\n";
+							if (Mon.getHealth() <= 0) {
+								cout << "After one last attack, the Death Knight falls to the ground defeated.\n\n";
+							}
+							else {
+								cout << "He was unable to retaliate to your attack, but now he appears ready.\n\n";
+							}
+						}
+						else {
+							Mon.takeDamage(x.getAttack());
+							cout << "------ Results of last Action ------\n";
+							cout << "The Death Knight is hit with " << x.getAttack() << " damage!\n";
+							if (Mon.getHealth() > 0) {
+								placeholder = Mon.Attack();
+								x.takeDamage(placeholder);
+								cout << "The Death Knight hits you for " << placeholder << " damage!\n\n";
+							}
+							else {
+								cout << "After one last attack, the Death Knight falls to the ground defeated.\n\n";
+							}
+						}
+					}
+					else if (input.compare("2") == 0 || input.compare("Defend") == 0) { //defend
+						block = true;
+						placeholder = Mon.Attack();
+						x.takeDamage(placeholder / 2);
+						cout << "------ Results of last Action ------\n";
+						cout << "The Death Knight hits you for " << placeholder / 2 << " damage!\n The Death Knight appears staggered due to your block. He has left himself open!\n";
+					}
+					else if (input.compare("3") == 0 || input.compare("Use Potion") == 0) {//use potion
+						cout << "------ Results of last Action ------\n";
+						x.usePotion();
+					}
+					else if (input.compare("4") == 0 || input.compare("Inspect") == 0) {//inspect death knight
+						cout << "------ Results of last Action ------\n";
+						cout << Mon.getAppearance() + "\n";
+						if (Mon.getHealth() < Mon.getMaxHealth() / 2)cout << "That being said, he's almost dead. Time to usurp his throne.\n";
+					}
+					else if (input.compare("help") == 0) { //gives advice
+						cout << "------ Results of last Action ------\n";
+						cout << "You cry out for help... but no one responds.\n If only you picked up some items to help you here.\n";
+					}
+					else if (itemOne && itemTwo && itemThree && input.compare("5") == 0 || itemOne && itemTwo && itemThree && input.compare("FINISHHIM!") == 0) { //instant kill
+						cout << "Relizing you have all the items you need,\nyou fashion a makeshift throwing spear... with a warhead consisting of\na portable hole being pushed into a bag of holding.\nYou throw the spear, and it lands true.\nThe Death Knight explodes into a burst of fire and smoke,\nleaving nothing but a crater of where it stood.\n";
+						Mon.setHealth(0);
+					}
+					else { //base case
+						cout << "The Death Knight smiles at your unwillingness to attack.\nIt might also be worth noting that skeletons can't stop smiling.\n";
+					}
+				} while (Mon.getHealth() > 0 && x.getHealth() > 0);
+				if (x.getHealth() <= 0) { //checks dead
+					cout << "It appears you have been slain!\n";
+				}
+				else { //wonnered
+					cout << "After defeating the Death Knight, you return to the town.\nPeople are running through the streets, laughing and smiling.\nAmongst them is the village elder that grins when he sees you.\n\"Hero!\" he proclaims \"We are forever in your debt for curing this village.\"\n\"Here, take this.\" His hand extends and give you a brass horn.\n\"Use this and we will help you, as you helped us.\"\nYou travel back to the mountain.\n";
+					x.setGold(x.getGold() + 100);
+					cout << "You recieve 100 gold.\n";
+				}
+				block = false;
+
+			}
+			else { //owl
+				cout << "It appears you have been slain!\n";
+			}
+		}
+		else { //wraith
+			cout << "It appears you have been slain!\n";
+		}
+	}
+	else { //bug
+		cout << "It appears you have been slain!\n";
+	}
+};
+	
+	
 //Wei Wei's code begin
 
 //Monster class - allows creation of different monsters
@@ -1260,205 +1830,7 @@ void fightMonster(Hero& h)
 	
 	
 
-//Ana's code START
 
-class Teacher {
-
-	private:
-		string name;
-		string answer;
-		int attack;
-                int incorrect_count;
-                
-
-    int calculate_value(int x, int y, int op){
-
-	switch(op) {
-		case 0: return x + y;
-		case 1: return x - y;
-		case 2: return x * y;
-		case 3: return x / y;
-		case 4: return x % y;
-		default: return 0; 
-		}
-	}
-
-	string print_op(int x, int y, int op){ 
-		stringstream convert;
-		switch(op) {
-			case 0: convert <<  x << "+" << y; break;
-			case 1: convert <<  x << "-" << y; break;
-			case 2: convert <<  x << "*" << y; break;
-			case 3: convert <<  x << "/" << y; break;
-			case 4: convert <<  x << "%" << y; break;
-			default: convert << "ERROR"; 
-		}
-		return convert.str();
-	}
-
-		string print_op(int y, int op){
-
-     			stringstream convert;
-
-      			switch(op) {
-                		case 0: convert <<   "+" << y; break;
-                		case 1: convert <<   "-" << y; break;
-                		case 2: convert <<  "*" << y; break;
-                		case 3: convert <<  "/" << y; break;
-                		case 4: convert <<  "%" << y; break;
-                		default: convert << "ERROR";
-      			}
-
-     	 		return convert.str();
-		}
-
-
-	public:
-
-		Teacher(){ 
-			name = "Clarissa";
-			cout << "Hello! I am your Teacher, " << name << endl;
-			incorrect_count=0;
-		}
-				/*
-                Teacher(string name){
-
-                       this.name = name; 
-		       cout << "Hello! I am your Teacher, " <<name<< std::endl;			
-                       incorrect_count=0;
-                }
-				*/
-
-		void setName(string x) {
-			 name = x;
-
-		}
-                string getName(string name) {
-		       return name;
-	        }
-                bool get_answer(Hero student,string answer){
- 
-                       if( this->answer==answer) {
-                          
-                          cout<<"Your answer is correct!"<<endl;
-                          incorrect_count=0;
-                          return true;
-                       }
-               
-                       else{
-                          cout<<" Your answer is incorrect!"<<endl;
-                          incorrect_count++;
-                          if(incorrect_count==3){
-                             student.takeDamage(attack);
-                          }
-                          return false;
-                       }
-                       
-                }
-                
-      
-                void set_attack(int attack){
-                       this->attack=attack;
-                }
-
-                int get_attack(){
-                      return attack;
-                }
-
-                string get_question(){
-                      int subject =  rand()%3;
-                      switch(subject){
-                             case 0: return get_question_history();
-                             case 1: return get_question_literature();
-                             default: return get_question_math();
-                      }
-                }
- 
-                string get_question_history(){
-                       string questions [] = { "Which year did WWI start?",
-                                               " When did Columbus discover America?"};
-                       string answers [] = {"1914",
-                                            "1492"};
-                       int number_of_questions = 2; //formula
-                       // kako se odredjuje koliko ima elemnata u array
-                        //size of questions /size of string = tacno
-                   
-                       int choice = rand()% number_of_questions;
-       
-                       answer = answers[choice];
-
-                       return questions[choice];
-                }
- 
-                string get_question_literature(){
-
-                       string questions [] = { "What is the name of the author who wrote Brothers Karamazov?",
-                                               " Who was the fater of Transdentalism?"};
-                       string answers [] = {"Fyodor Dostoyevsky.",
-                                            "Ralph Wlado Emerson"};
-                       int number_of_questions = 2;
-                   
-                       int choice = rand()% number_of_questions;
-       
-                       answer = answers[choice];
-
-                       return questions[choice];
-                        
-  
-                }
-                string get_question_math(){
-
-          		string question = "";
-			int int_answer;
-                        
-                        stringstream convert;
-
-			int value_0;
-			int value_1;
-        		int op;
-        		
-			int number_of_nesting = rand() % 2 + 1;
-
-	
-			value_0 = rand() % 10;
-			value_1 = rand() % 10;
-	
-			op = rand() % 5;
-
-			while (op == 3 && value_1 == 0) 
-				value_1 = rand() % 100;
-
-        		question = "(" + print_op(value_0, value_1, op) + ")";
-        		int_answer = calculate_value(value_0, value_1, op);
-
-        		for (int i = 0; i < number_of_nesting; i++) {
-	      			value_1 = rand() % 10;
-
-              			op = rand() % 5;
-
-              			while (op == 3 && value_1 == 0)
-                  			value_1 = rand() % 10;
-
-              			question = "(" + question;
-             		 	question += print_op(value_1, op);
-              			question += ")";
-              			int_answer = calculate_value(int_answer, value_1, op);
-                        
-			}
-        		//cout << question << endl;
-        		//cout << answer << endl;
-                        
-                        convert<<int_answer;
-                        answer = convert.str();
-        		return question;
-	
-		}
-
-        
-};
-
-
-//Ana's code END
 
 
 void characterCreation(Hero& x){
@@ -1596,7 +1968,7 @@ public:
 };
 
 void visitEnchanter(Hero& x, Enchanter& y){
-	cout << "---------- The Enchanter's Tent ----------" << endl;
+	cout << "\n---------- The Enchanter's Tent ----------\n" << endl;
 	cout << "You walk over to a small tent near the outskirts of town" << endl;
 	cout << "An intense aroma of incense washes over you as you pull aside the entrance flap." << endl;
 	cout << "From the depths of the tent you hear a soft ominous voice" << endl;
@@ -1625,20 +1997,17 @@ public:
 	{
 		
 		int value = health/10;
-		cout << "Health: " << health << endl;
-		cout << "maxHealth: " << maxhealth << endl;
-		cout << "Value: " << value << endl;
-		cout << "Health: [";
+		cout << name << "'s Health: [";
 		for(int i = 1; i <= value; i++)
 		{
-			cout << "=";
+			cout << ">";
 		}
 		for(int i = value; i < maxhealth/10; i++)
 		{
 			cout << " ";
 		}
-		
-		cout << "]";
+		cout << "]" << endl;
+		cout << "   " << name << "'s Health: " << health << endl;
 	}
 	void BossBattle(Hero& Stoner) //Needs to use the Hero class
 	{
@@ -1665,6 +2034,7 @@ public:
 			try
 			{
 				cin >> strtemp; //input your choice
+				cout << "------------------------------------" << endl;
 			}
 			catch(exception e)
 			{
@@ -1698,8 +2068,10 @@ public:
 				cout << "You must use everything you have learned thus far to defeat the dragon.\n";
 				while(getHealth() != 0 && Stoner.getHealth() != 0) //While the dragon and hero are alive
 				{
-					cout << "\nYour health is: " << Stoner.getHealth() <<endl; //shows how much health the dragon and hero have
-					cout << "The dragon's health is: " << getHealth() << endl;
+					//cout << "\nYour health is: " << Stoner.getHealth() <<endl; //shows how much health the dragon and hero have
+					Stoner.displayHealthBar();
+					//cout << "The dragon's health is: " << getHealth() << endl;
+					displayHealthBar();
 					cout << "\n";
 					question = 0;
 					while(question == 0) //To test if the input is correct
@@ -1711,6 +2083,7 @@ public:
 						try
 						{
 							cin >> strtemp; //your choice
+							cout << "------------------------------------" << endl;
 						}
 						catch(exception e)
 						{
@@ -1719,26 +2092,7 @@ public:
 
 						if(strtemp == "1") //use a potion
 						{
-							if(Stoner.getPotion() != 0) //checks if hero has potions available
-							{
-								temp = Stoner.getMaxHealth() * .50; //the amount of health the hero will gain
-								Stoner.setHealth(Stoner.getHealth() + temp);
-								if(Stoner.getHealth() > Stoner.getMaxHealth()) //health can't gain more health than the max health
-								{
-									Stoner.setHealth(Stoner.getMaxHealth()); 
-								}
-								cout << endl;
-								cout << "You have gained " << temp << " health.\n"; //prints how much health the hero gains
-								cout << "You now have " << Stoner.getHealth() << " health." << endl;
-								temp = Stoner.getPotion();
-								Stoner.setPotion(temp - 1); //decreases amount of potions
-								question = 1;
-							}
-							else //hero has no potions 
-							{
-								cout << "You have no potions to use.\n";
-								cout << endl;
-							}
+							Stoner.usePotion();
 						}
 						else if(strtemp == "2") //Hero attacks the dragon
 						{
@@ -1756,12 +2110,14 @@ public:
 								if(getHealth() < 0) //Dragon's health can't be negative, will be set to 0
 								{
 									health = 0;
-									cout << "The dragon's health is now: " << getHealth() << "\n";
+									//cout << "The dragon's health is now: " << getHealth() << "\n";
+									displayHealthBar();
 									EndGame(Stoner);
 									beak = true;
 									break;
 								}
-								cout << "The dragon's health is now: " << getHealth() << "\n";
+								//cout << "The dragon's health is now: " << getHealth() << "\n";
+								displayHealthBar();
 								question = 1;
 							}
 						}
@@ -1933,6 +2289,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -1974,6 +2331,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2014,6 +2372,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2054,6 +2413,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2095,6 +2455,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2134,6 +2495,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2175,6 +2537,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2216,6 +2579,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2256,6 +2620,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2297,6 +2662,7 @@ public:
 				try
 				{
 					cin >> strtemp;
+					cout << "------------------------------------" << endl;
 				}
 				catch(exception e)
 				{
@@ -2347,6 +2713,7 @@ public:
 			try
 			{
 				cin >> strtemp; //choice
+				cout << "------------------------------------" << endl;
 			}
 			catch(exception e)
 			{
@@ -2418,8 +2785,8 @@ public:
 				if(dodgeChance() <= 20)
 				{
 					cout << "You pull out a magical drink out of your satchel." << endl;
-					cout << "You were told this give a second chance when your in most need of it." << endl;
-					cout << "Drinking the bottle you feel queasy, and lose your balance." << endl;
+					cout << "You were told this gives you a second chance when you are in most need of it." << endl;
+					cout << "Drinking the bottle, you feel queasy, and lose your balance." << endl;
 					cout << "You open your eyes to find yourself back on your feet.  The dragon is awaiting your next attack." << endl;
 					cout << endl;
 					question = 1;
@@ -2428,8 +2795,8 @@ public:
 				else
 				{
 					cout << "You pull out a magical drink out of your satchel." << endl;
-					cout << "You were told this give a second chance when your in most need of it." << endl;
-					cout << "Drinking the bottle you feel queasy, and lose your balance. " << endl;
+					cout << "You were told this gives you a second chance when you are in most need of it." << endl;
+					cout << "Drinking the bottle, you feel queasy, and lose your balance. " << endl;
 					cout << "Nothing happens. The dragon's tail swoops in to hit you, dealing 20 damage." << endl;
 					cout << endl;
 					x.takeDamage(20);
@@ -2465,6 +2832,7 @@ public:
 			try
 			{
 				cin >> strtemp;
+				cout << "------------------------------------" << endl;
 			}
 			
 			catch(exception e)
@@ -2502,7 +2870,7 @@ public:
 	void EndGame(Hero& Stoner)
 	{
 		cout << endl; //narration afte defeating dragon
-		cout << "You have defeated the dragon! Congratulations " << Stoner.getName() << endl;
+		cout << "You have defeated the dragon! Congratulations " << Stoner.getName() << "!" << endl;
 		cout << "In honor of your brave conquest, the townsfolk would like to make you their new king.\n";
 		cout << "All hail King " << Stoner.getName() << "!\n";
 		cout << endl;
@@ -2512,6 +2880,7 @@ public:
 	}
 
 };
+
 
 
 class Merchant {
@@ -2542,30 +2911,67 @@ public:
 		return cost;
 	}
 	void sellPotion(Hero& x){
-		x.incPotion();
+		if(x.decreaseGold(50) == true)
+		{
+			x.incPotion();
+			cout << "\nYou have purchased 1 potion" << endl;
+			cout << "you now have " << x.getPotion() << " potion(s)\n" << endl;
+		}
 	}
 	void sellWeapon(Hero& x){
 		int input;
-		cout << "Which weapon would you like hero?" << endl;
-			for (int i = 0; i < 5; i++){
-					cout << i+1 << ": " << inventory[i] << endl;
+		cout << "\nWhich weapon would you like hero?" << endl;
+		for (int i = 0; i < 5; i++)
+		{
+			cout << i+1 << ": " << inventory[i] << endl;
+		}
+		cout << "0: Nevermind" << endl;
+		cin >> input;
+		if(input == 1){
+			if(x.decreaseGold(25) == true)
+			{
+				x.setWeapon(inventory[0]);
+				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-			cout << "0: Nevermind" << endl;
-				cin >> input;
-				if(input == 1 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[0]);
-				} else if(input == 2 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[1]);
-				} else if(input == 3 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[2]);
-				} else if(input == 4 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[3]);
-				} else if(input == 5 && x.decreaseGold(25)==true){
-					x.setWeapon(inventory[4]);
-				} else {
-					//do nothing
-				}
-		
+		} else if(input == 2){
+			if(x.decreaseGold(25) == true)
+			{
+				x.setWeapon(inventory[1]);
+				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
+			}
+		} else if(input == 3){
+			if(x.decreaseGold(25) == true)
+			{
+				x.setWeapon(inventory[2]);
+				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
+			}
+		} else if(input == 4){
+			if(x.decreaseGold(25) == true)
+			{
+				x.setWeapon(inventory[3]);
+				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
+			}
+		} else if(input == 5){
+			if(x.decreaseGold(25) == true)
+			{
+				x.setWeapon(inventory[4]);
+				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
+			}
+		} else if(input == 0){
+			cout << "\nWell if you're sure..." << endl;
+		} else {
+			cout << "\nThat is an invalid input\n" << endl;
+		}
+	}
+	void sellHealthTonic(Hero& Stoner)
+	{
+		if(Stoner.decreaseGold(100) ==  true)
+		{
+			Stoner.setMaxHealth(Stoner.getMaxHealth()+20);
+			Stoner.setHealth(Stoner.getMaxHealth());
+			cout << "\nYou have increased your health by 20" << endl;
+			cout << "You now have " << Stoner.getMaxHealth() << " max health.\n" << endl;
+		}
 	}
 };
 
@@ -2584,7 +2990,7 @@ public:
 	bool exitFlag2 = false;
 	int input = 0;
 	int herosBet;
-	cout << "------ Magic Cup Game ------" << endl;
+	cout << "\n------ Magic Cup Game ------\n" << endl;
 		while(exitFlag == false)
 		{
 			cout << "You wish to play the magic cup game! How much are you will to gamble?" << endl;
@@ -2615,7 +3021,7 @@ public:
 					if(input == 1){
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
-						Stoner.setGold(herosBet*2);
+						Stoner.setGold(Stoner.getGold()+herosBet*2);
 					} else{
 						cout << "\nOh I'm sorry, that's wrong" << endl;
 						cout << "You have lost: " << herosBet << endl;
@@ -2627,7 +3033,7 @@ public:
 					if(input == 2){
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
-						Stoner.setGold(herosBet*2);
+						Stoner.setGold(Stoner.getGold()+herosBet*2);
 					} else{
 						cout << "\nOh I'm sorry, that's wrong" << endl;
 						cout << "You have lost: " << herosBet << endl;
@@ -2639,7 +3045,7 @@ public:
 					if(input == 3){
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
-						Stoner.setGold(herosBet*2);
+						Stoner.setGold(Stoner.getGold()+herosBet*2);
 					} else{
 						cout << "\nOh I'm sorry, that's wrong" << endl;
 						cout << "You have lost: " << herosBet << endl;
@@ -2649,11 +3055,12 @@ public:
 			} else {
 				cout << "\nThat is an invalid input" << endl;
 			}
+			cout << "You have " << Stoner.getGold() << " gold" << endl;
 			if(input == 0)
 			{
 				exitFlag = true;
 			}
-			cout << "\n Would you like to try again?" << endl;
+			cout << "\nWould you like to try again?" << endl;
 			cout << "1: Yes" << endl;
 			cout << "2: No" << endl;
 			bool x = false;
@@ -2671,10 +3078,7 @@ public:
 				}
 			}
 		}
-			showAllCups();
-			showCup1();
-			showCup2();
-			showCup3();
+			
 	}
 	void showAllCups(){
 		cout << "cup:  1      2      3  " << endl;
@@ -2762,8 +3166,9 @@ void visitMerchant(Hero& x, Merchant& y){
 	while(exitFlag == false)
 	{
 		cout << "How can I help you?, the merchant chirps." << endl;
-		cout << "1: to buy a potion" << endl;
-		cout << "2: to buy a weapon" << endl;
+		cout << "1: to buy a potion (50 gold)" << endl;
+		cout << "2: to buy a weapon (25 gold)" << endl;
+		cout << "3: to buy a health tonic to increase max health by 20 (100 gold)" << endl;
 		cout << "0: Leave merchant" << endl;
 		cin >> input;
 		if (input == 1)
@@ -2772,6 +3177,9 @@ void visitMerchant(Hero& x, Merchant& y){
 		} else if (input ==  2)
 		{
 			y.sellWeapon(x);
+		} else if (input == 3)
+		{
+			y.sellHealthTonic(x);
 		} else if(input == 0)
 		{
 			exitFlag = true;
@@ -2791,10 +3199,5 @@ void visitDealer(Hero& Stoner, Dealer& dealerObj)
 
 
 
-
-/*
-		int temp = x.getHealth();
-		x.setHealth(temp-10); //Tiger does 10 damage
-*/
 
 #endif

@@ -16,16 +16,20 @@ int main(){
 	FinalBoss Mithaldra;
 	Dealer dealerObj;
 	
-	Stoner.setGold(0);
+	Stoner.setGold(10000);
 	Stoner.setPotion(200);
 	int input;
+	
 	while(1)
 	{		
+		//characterCreation(Stoner);
+		cout << "\n---------- Evil Mountain ----------\n" << endl;
 		cout << "You arrive at a mountain top and overlook the land of Gainesville, NOT FL" << endl;
 		cout << "Where do you decide to go?" << endl;
 		cout << "1: Anvil (Local town)" << endl;
 		cout << "2: Deadlands (Stage 1)" << endl;
-		cout << "3: Dragon's Lair (Final Stage)" << endl;
+		cout << "3: The Plague (Stage 2)" << endl;
+		cout << "4: Dragon's Lair (Final Stage)" << endl;
 		
 		cin >> input;
 		if(input == 1)
@@ -36,46 +40,14 @@ int main(){
 			fightMonster(Stoner);
 		} else if(input == 3)
 		{
+			stage3(Stoner);
+		} else if(input == 4)
+		{
 			Mithaldra.BossBattle(Stoner);
 		} else {
 			cout << "\nThat is an invalid input, please try again" << endl;
-		}
-		
-		
-		
+		}	
 	}
-	//take in user input to know where to travel.
-	/*
-	while(a){
-		if(input == 1){
-			visitHUB(Hero, W.);
-		}else if(input == 2){
-			visitFinalBost();
-		}
-	}
-	while(hub==true){
-		//menu where you wanna go?
-		//if you want to  go to innkepper
-		visitInnKeeper(Stoner, innKeeper);	
-	}
-	
-	*/
-	//characterCreation(Stoner);
-	cout << "Check outside the function" << endl;
-	Stoner.printAll();
-	
-	cout << "Do damage to hero" << endl;
-	Stoner.setHealth(5);
-	Stoner.printAll();
-	cout << "Go to the Inn" << endl;
-	visitInn(Stoner, innKeeperObj);
-	Stoner.printAll();
-	cout << "Visiting the merchant" << endl;
-	visitMerchant(Stoner, merchantObj);
-	Stoner.printAll();
-	visitEnchanter(Stoner, enchanterObj);
-
-	Mithaldra.BossBattle(Stoner);
 	return 0;
 }
 

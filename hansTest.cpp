@@ -119,6 +119,105 @@ void visitMerchant(Hero& x, Merchant& y){
 		}
 	}
 }
+
+
+
+class Enchanter{
+private:
+	string name;
+public:
+	Enchanter()
+	{
+		name = "Catlyn";
+	}
+	void greeting()
+	{
+		cout << "Care to buy an enchantment hero?" << endl;
+	}
+	void provideEnchantment(Hero& x)
+	{
+		int input;
+		bool exitFlag = false;
+		while(exitFlag == false)
+		{	
+			int currentAttack = x.getAttack();	
+			cout << "\nI can empower your weapon, for a price\n" << endl;
+			cout << "1: Add 5 to your weapon's attack for 500 gold" << endl;
+			cout << "2: Add 10 to your weapon's attack for 1000 gold" << endl;
+			cout << "3: Add 15 to your weapon's attack for 1500 gold" << endl;
+			cout << "4: Add 20 to your weapon's attack for 2000 gold" << endl;
+			cout << "5: Add 25 to your weapon's attack for 2500 gold" << endl;
+			cout << "0: Return to town" << endl;
+			cin >> input;
+			if(input == 1)
+			{
+				if(x.decreaseGold(500) == true)
+				{
+					x.setAttack(currentAttack+5);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if (input == 2)
+			{
+				if(x.decreaseGold(1000) == true)
+				{
+					x.setAttack(currentAttack+10);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if (input == 3)
+			{
+				if(x.decreaseGold(1500) == true)
+				{
+					x.setAttack(currentAttack+15);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if (input == 4)
+			{
+				if(x.decreaseGold(2000) == true)
+				{
+					x.setAttack(currentAttack+20);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if(input == 5)
+			{
+				if(x.decreaseGold(2500) == true)
+				{
+					x.setAttack(currentAttack+25);
+					cout << "Your weapon hums with power as its attack increases" << endl;
+					cout << "You attack rating is now: " << x.getAttack() << endl;
+				}
+			}else if(input == 0)
+			{
+				cout << "\nYou leave the tent" << endl;
+				exitFlag = true;
+			} else {
+				cout << "\nInvalid Input" << endl;
+			}
+		}
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 	return 0;
