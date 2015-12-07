@@ -2843,7 +2843,7 @@ public:
 		cout << "In honor of your brave conquest, the townsfolk would like to make you their new king.\n";
 		cout << "All hail King " << Stoner.getName() << "!\n";
 		cout << endl;
-		cout << "Thank you for playing.\n";
+		cout << "Thank you for playing. Please feel free to replay any levels!\n";
 		cout << endl;
 		end = true;
 	}
