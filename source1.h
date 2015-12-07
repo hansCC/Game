@@ -3164,10 +3164,10 @@ This function facilitates the town for the hero. It allows the hero to check his
 restore his health, visit the merchant, the enchanter, and the dealer.
 */
 void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter& enchanterObj, Dealer& dealerObj){ //Town
-	int input;
+	string input;
 	bool exitFlag = false;
 	cout << "\n---------- Welcome to the city of Anvil ----------" << endl;
-	
+
 	while (exitFlag == false){//Stay in town until user wishes to leave
 		cout << "\nWhere in Anvil would you like to go?" << endl;
 		cout << "1: Inn" << endl;
@@ -3176,32 +3176,49 @@ void HUB(Hero& Stoner, InnKeeper& innKeeperObj, Merchant& merchantObj, Enchanter
 		cout << "4: Dealer" << endl;
 		cout << "9: Check Inventory" << endl;
 		cout << "0: Exit Anvil" << endl;
+
 		cin >> input;
-		if (input == 1) //visit inn
+		
+		if(input.compare("1") == 0) //visit inn
 		{
 			visitInn(Stoner, innKeeperObj);
-		} else if (input == 2) //visit merchant
+		}
+
+		else if(input.compare("2") == 0) //visit merchant
 		{
 			visitMerchant(Stoner, merchantObj);
-		} else if (input == 3)  //visit enchanter
+		}
+
+		else if(input.compare("3") == 0)  //visit enchanter
 		{
 			visitEnchanter(Stoner, enchanterObj);
-		}else if(input == 4) //visit dealer
+		}
+
+		else if(input.compare("4") == 0) //visit dealer
 		{
 			visitDealer(Stoner, dealerObj);
-		}else if(input == 9) //prints inventory
+		}
+
+		else if(input.compare("9") == 0) //prints inventory
 		{
 			Stoner.printAll();
-		} else if(input == 0) //exits town
+		}
+
+		else if(input.compare("0") == 0) //exits town
 		{
 			exitFlag = true;
 			cout << "You venture out into the wilds" << endl;
-		} else //invalid input
+		}
+
+		else //invalid input
 		{
 			cout << "\nInvalid input" << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
 }
+
 
 /*
 This function facilitates the interaction between the hero and merchant
@@ -3209,7 +3226,7 @@ It allows the hero to buy potions, weapons, and health tonics to
 increase his max health
 */
 void visitMerchant(Hero& x, Merchant& y){
-	int input;
+	string input;
 	bool exitFlag = false;
 	cout << "\nYou walk into a small shop by the Inn" << endl;
 	while(exitFlag == false)
@@ -3220,21 +3237,23 @@ void visitMerchant(Hero& x, Merchant& y){
 		cout << "3: to buy a health tonic to increase max health by 20 (100 gold)" << endl;
 		cout << "0: Leave merchant" << endl;
 		cin >> input;
-		if (input == 1)//sell potion
+		if (input.compare("1") == 0)//sell potion
 		{
 			y.sellPotion(x);
-		} else if (input ==  2)//sell weapon
+		} else if (input.compare("2") == 0)//sell weapon
 		{
 			y.sellWeapon(x);
-		} else if (input == 3)//increase max health
+		} else if (input.compare("3") == 0)//increase max health
 		{
 			y.sellHealthTonic(x);
-		} else if(input == 0)//leave merchant
+		} else if(input.compare("0") == 0)//leave merchant
 		{
 			exitFlag = true;
 		} else //invalid input
 		{
 			cout << "That is an invalid input" << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
 }
