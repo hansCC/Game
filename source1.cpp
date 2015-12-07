@@ -16,7 +16,7 @@ int main(){
 	FinalBoss Mithaldra;
 	Dealer dealerObj;
 	
-	Stoner.setGold(0);
+	Stoner.setGold(10000);
 	Stoner.setPotion(200);
 	string input;
 	/*

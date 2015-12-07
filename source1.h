@@ -1772,7 +1772,7 @@ void characterCreation(Hero& x){
 		cout << " \n-------------- Welcome to Team 8's Text Based RPG --------------" << endl;
 		cout << "It is time to customize your character and begin your journey!" << endl;
 		
-		cout << "Please enter yor characters name: "; //set name
+		cout << "Please enter your character's name: "; //set name
 		cin >> tempString;
 		x.setName(tempString);
 		
