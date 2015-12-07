@@ -50,6 +50,8 @@ int main(){
 			Mithaldra.BossBattle(Stoner);
 		} else { //error capture
 			cout << "\nThat is an invalid input, please try again" << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}	
 	}
 	return 0;
