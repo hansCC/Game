@@ -902,6 +902,7 @@ class Monster {
 
 
 //function controls all mechanisms of the level
+
 void fightMonster(Hero& h)
 {
 	cout << "------ The Deadlands ------" << endl;
@@ -916,32 +917,13 @@ void fightMonster(Hero& h)
 	while (numMon > 0)	//stay in while loop until monsters are all defeated
 	{
 		cout << "\n You are walking in a dimly lit area. Do you turn (1) left or (2) right?" << endl;
-		int input = 0;
+		string input;
 		cin >> input;
-		bool err = true;	//input validation - checks for type and range
-		while (err)
+
+		while(input.compare("1") != 0 && input.compare("2") != 0)		//input validation - checks for type and range
 		{
-			if(!cin)
-			{
-				cout << "Oh no, you can't move that way! Do you turn (1) left or (2) right?" << endl;
-				cin.clear();
-				cin.ignore(256, '\n');
-				cin >> input;
-				err = true;
-			}
-			else
-			{
-				if(input != 1 && input != 2)
-				{
-					cout << "Oh no, you can't move that way! Do you turn (1) left or (2) right?" << endl;
-					cin >> input;
-					err = true;
-				}
-				else
-				{
-					err = false;
-				}
-			}
+			cout << "Oh no, you can't move that way! Do you turn (1) left or (2) right?" << endl;
+			cin >> input;
 		}
 
 		int chance = rand() % 100;	//sets up different probabilities that hero will encounter different scenarios
@@ -962,33 +944,13 @@ void fightMonster(Hero& h)
 				cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
 				cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
 				cin >> input;
-				err = true;		//input validation - checks type and range
-				while(err)
+				while(input.compare("1") != 0 && input.compare("2") != 0 && input.compare("3") != 0 && input.compare("4") != 0)		//input validation - checks for type and range
 				{
-					if(!cin)
-					{
-						cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-						cin.clear();
-						cin.ignore(256, '\n');
-						cin >> input;
-						err = true;
-					}
-					else
-					{
-						if(input < 1 || input > 4)
-						{
-							cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-							cin >> input;
-							err = true;
-						}
-						else
-						{
-							err = false;
-						}
-					}
+					cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+					cin >> input;
 				}
 				cout << "----- Result of last action -------" << endl;
-				if (input == 1)
+				if (input.compare("1") == 0)
 				{
 					//hero attacks
 					srand(time(0));
@@ -1010,16 +972,16 @@ void fightMonster(Hero& h)
 				}
 				else
 				{
-					if (input == 2)
+					if (input.compare("2") == 0)
 					{
 						//hero uses potion
 						h.usePotion();
-						
+
 					}
 					else
 					{
 						//hero tries to pay off monster
-						if (input == 3)
+						if (input.compare("3") == 0)
 						{
 							if (h.getGold() == 0)	//if hero has no gold, hero can't pay off monster
 							{
@@ -1029,53 +991,62 @@ void fightMonster(Hero& h)
 							{
 								cout << "You want give gold to " << t->getName() << ". How much gold to you want to give? \n";
 								cin >> input;
-								err = true;
-								while(err)		//input validation - checks for range and type
+								bool errT = true;
+								bool isNum = false;
+								while(errT)
 								{
-									if(!cin)
+									for(std::string::iterator it=input.begin(); it!=input.end(); it++)
 									{
-										cout << "You can't give that amount of gold! How much d you want to actually give? \n";
-										cin.clear();
-										cin.ignore(256, '\n');
-										cin >> input;
-										err = true;
+										if(!isdigit(*it))
+										{
+											isNum = false;
+											break;
+										}
+										isNum = true;
 									}
-									else
+
+									if(isNum)
 									{
-										if (input > h.getGold() || input < 0)
+										//change to int
+										int gT = std::atoi(input.c_str());
+										if (gT > h.getGold() || gT < 0)
 										{
 											cout << "You can't give that amount of gold! How much do you want to actually give? \n";
 											cin >> input;
-											err = true;
+											errT = true;
 										}
 										else
 										{
-											err = false;
+											srand(time(0));
+											int gTOdds = rand() % 20;
+											if(gTOdds == 0)
+											{
+												t->setHealth(0);
+												cout << t->getName() << " stomps away with your gold. You are alone again. \n";
+												h.setGold(h.getGold() - gT);
+												break;
+											}
+											else
+											{
+												cout << "You give " << t->getName() << " " << input << " piece(s) of gold. \n";
+												h.setGold(h.getGold() - gT);
+											}
+											errT = false;
 										}
 									}
-								}
+									else
+									{
+										cout << "You can't give that amount of gold! How much do you want to actually give? \n";
+										cin >> input;
+										errT = true;
+									}
 
-								if (input >= 50)	//troll requires a one time payment of at least 50 gold pieces for this to work
-								{
-									t->setHealth(0);
-									cout << t->getName() << " stomps away with your gold. You are alone again. \n";
-									h.setGold(h.getGold() - input);
-									break;
 								}
-								if(input == 1)
-								{
-									cout << "You give " << t->getName() << " " << input << " piece of gold. \n";
-								}
-								else
-								{
-									cout << "You give " << t->getName() << " " << input << " pieces of gold. \n";
-								}
-								h.setGold(h.getGold() - input);
 							}
 						}
 						else
 						{
-							if (input == 4)
+							if (input.compare("4") == 0)
 							{
 								//hero tries to run away
 								srand(time(0));
@@ -1121,7 +1092,6 @@ void fightMonster(Hero& h)
 				z->setName("Zombie");
 				z->setMaxHealth(std::max(h.getHealth() * 4 / 5, 13));
 				cout << "I am a " << z->getName() << "! \n";
-				int goldZ = 30;
 				while (h.getHealth() > 0 && z->getHealth() > 0)	//continue loop until zombie or hero dies
 				{
 					cout << "----- " << z->getName() << " vs. " << h.getName() << " -------" << endl;
@@ -1130,33 +1100,13 @@ void fightMonster(Hero& h)
 					cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
 					cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
 					cin >> input;
-					err = true;
-					while(err)		//input validation - checks for range and type
+					while(input.compare("1") != 0 && input.compare("2") != 0 && input.compare("3") != 0 && input.compare("4") != 0)		//input validation - checks for type and range
 					{
-						if(!cin)
-						{
-							cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-							cin.clear();
-							cin.ignore(256, '\n');
-							cin >> input;
-							err = true;
-						}
-						else
-						{
-							if(input < 1 || input > 4)
-							{
-								cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-								cin >> input;
-								err = true;
-							}
-							else
-							{
-								err = false;
-							}
-						}
+						cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+						cin >> input;
 					}
 					cout << "----- Result of last action -------" << endl;
-					if (input == 1)
+					if (input.compare("1") == 0)
 					{
 						//hero attacks
 						srand(time(0));
@@ -1177,19 +1127,19 @@ void fightMonster(Hero& h)
 					}
 					else
 					{
-						if (input == 2)
+						if (input.compare("2") == 0)
 						{
 							//hero uses potion
 							h.usePotion();
-							
+
 
 						}
 						else
 						{
-							if (input == 3)
+							if (input.compare("3") == 0)
 							{
 								//hero tries to pay off monster
-								if (h.getGold() == 0)		//if hero has no money, then nothing happens
+								if (h.getGold() == 0)	//if hero has no gold, hero can't pay off monster
 								{
 									cout << "Uh-oh, you don't have any gold to give..." << endl;
 								}
@@ -1197,52 +1147,62 @@ void fightMonster(Hero& h)
 								{
 									cout << "You want give gold to " << z->getName() << ". How much gold to you want to give? \n";
 									cin >> input;
-									err = true;
-									while(err)		//input validation - checks for type and range
+									bool errT = true;
+									bool isNum = false;
+									while(errT)
 									{
-										if(!cin)
+										for(std::string::iterator it=input.begin(); it!=input.end(); it++)
 										{
-											cout << "You can't give that amount of gold! How much d you want to actually give? \n";
-											cin.clear();
-											cin.ignore(256, '\n');
-											cin >> input;
-											err = true;
+											if(!isdigit(*it))
+											{
+												isNum = false;
+												break;
+											}
+											isNum = true;
 										}
-										else
+
+										if(isNum)
 										{
-											if (input > h.getGold() || input < 0)
+											//change to int
+											int gT = std::atoi(input.c_str());
+											if (gT > h.getGold() || gT < 0)
 											{
 												cout << "You can't give that amount of gold! How much do you want to actually give? \n";
 												cin >> input;
-												err = true;
+												errT = true;
 											}
 											else
 											{
-												err = false;
+												srand(time(0));
+												int gTOdds = rand() % 15;
+												if(gTOdds == 0)
+												{
+													z->setHealth(0);
+													cout << z->getName() << " is distracted by your gold. You manage to escape! \n";
+													h.setGold(h.getGold() - gT);
+													break;
+												}
+												else
+												{
+													cout << "You give " << z->getName() << " " << input << " piece(s) of gold. \n";
+													h.setGold(h.getGold() - gT);
+												}
+												errT = false;
 											}
 										}
-									}
-									if(input == 1)
-									{
-										cout << "You give " << z->getName() << " " << input << " piece of gold. \n";
-									}
-									else
-									{
-										cout << "You give " << z->getName() << " " << input << " pieces of gold. \n";
-									}
-									goldZ -= input;		//must pay zombie at least 30 pieces of gold (cumulative) to escape
-									h.setGold(h.getGold() - input);
-									if (goldZ <= 0)
-									{
-										z->setHealth(0);
-										cout << z->getName() << " becomes distracted by all the gold you gave it. You manage to run away, and you are once again alone. \n";
-										break;
+										else
+										{
+											cout << "You can't give that amount of gold! How much do you want to actually give? \n";
+											cin >> input;
+											errT = true;
+										}
+
 									}
 								}
 							}
 							else
 							{
-								if (input == 4)
+								if (input.compare("4") == 0)
 								{
 									//hero tries to run away
 									srand(time(0));
@@ -1296,33 +1256,13 @@ void fightMonster(Hero& h)
 						cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
 						cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
 						cin >> input;
-						err = true;
-						while(err)		//input validation - checks for range and type
+						while(input.compare("1") != 0 && input.compare("2") != 0 && input.compare("3") != 0 && input.compare("4") != 0)		//input validation - checks for type and range
 						{
-							if(!cin)
-							{
-								cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-								cin.clear();
-								cin.ignore(256, '\n');
-								cin >> input;
-								err = true;
-							}
-							else
-							{
-								if(input < 1 || input > 4)
-								{
-									cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-									cin >> input;
-									err = true;
-								}
-								else
-								{
-									err = false;
-								}
-							}
+							cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+							cin >> input;
 						}
 						cout << "----- Result of last action -------" << endl;
-						if (input == 1)
+						if (input.compare("1") == 0)
 						{
 							//hero attacks
 							srand(time(0));
@@ -1343,21 +1283,21 @@ void fightMonster(Hero& h)
 						}
 						else
 						{
-							if (input == 2)
+							if (input.compare("2") == 0)
 							{
 								//hero uses potion
 								h.usePotion();
 							}
 							else
 							{
-								if (input == 3)
+								if (input.compare("3") == 0)
 								{
 									//can't pay off the velociraptors
 									cout << "So silly, why would a velociraptor want gold? Oh well, too bad for you :P" << endl;
 								}
 								else
 								{
-									if (input == 4)
+									if (input.compare("4") == 0)
 									{
 										//try to run away
 										srand(time(0));
@@ -1398,7 +1338,6 @@ void fightMonster(Hero& h)
 					if (chance >= 35)
 					{
 						numMon--;
-						int goldE = 20;
 						Monster* e = new Monster();
 						e->setName("Vampire");
 						e->setMaxHealth(std::max(h.getHealth() / 2, 13));
@@ -1411,33 +1350,13 @@ void fightMonster(Hero& h)
 							cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
 							cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
 							cin >> input;
-							err = true;
-							while(err)		//input validation - checks for type and range
+							while(input.compare("1") != 0 && input.compare("2") != 0 && input.compare("3") != 0 && input.compare("4") != 0)		//input validation - checks for type and range
 							{
-								if(!cin)
-								{
-									cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-									cin.clear();
-									cin.ignore(256, '\n');
-									cin >> input;
-									err = true;
-								}
-								else
-								{
-									if(input < 1 || input > 4)
-									{
-										cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-										cin >> input;
-										err = true;
-									}
-									else
-									{
-										err = false;
-									}
-								}
+								cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+								cin >> input;
 							}
 							cout << "----- Result of last action -------" << endl;
-							if (input == 1)
+							if (input.compare("1") == 0)
 							{
 								//hero attacks
 								srand(time(0));
@@ -1458,7 +1377,7 @@ void fightMonster(Hero& h)
 							}
 							else
 							{
-								if (input == 2)
+								if (input.compare("2") == 0)
 								{
 									//hero uses potion
 									h.usePotion();
@@ -1466,10 +1385,10 @@ void fightMonster(Hero& h)
 								}
 								else
 								{
-									if (input == 3)
+									if (input.compare("3") == 0)
 									{
 										//hero tries to pay off monster
-										if (h.getGold() == 0)
+										if (h.getGold() == 0)	//if hero has no gold, hero can't pay off monster
 										{
 											cout << "Uh-oh, you don't have any gold to give..." << endl;
 										}
@@ -1477,52 +1396,62 @@ void fightMonster(Hero& h)
 										{
 											cout << "You want give gold to " << e->getName() << ". How much gold to you want to give? \n";
 											cin >> input;
-											err = true;
-											while(err)
+											bool errT = true;
+											bool isNum = false;
+											while(errT)
 											{
-												if(!cin)
+												for(std::string::iterator it=input.begin(); it!=input.end(); it++)
 												{
-													cout << "You can't give that amount of gold! How much d you want to actually give? \n";
-													cin.clear();
-													cin.ignore(256, '\n');
-													cin >> input;
-													err = true;
+													if(!isdigit(*it))
+													{
+														isNum = false;
+														break;
+													}
+													isNum = true;
 												}
-												else
+
+												if(isNum)
 												{
-													if (input > h.getGold() || input < 0)
+													//change to int
+													int gT = std::atoi(input.c_str());
+													if (gT > h.getGold() || gT < 0)
 													{
 														cout << "You can't give that amount of gold! How much do you want to actually give? \n";
 														cin >> input;
-														err = true;
+														errT = true;
 													}
 													else
 													{
-														err = false;
+														srand(time(0));
+														int gTOdds = rand() % 20;
+														if(gTOdds == 0)
+														{
+															e->setHealth(0);
+															cout << e->getName() << " is distracted by the gold. You manage to escape! \n";
+															h.setGold(h.getGold() - gT);
+															break;
+														}
+														else
+														{
+															cout << "You give " << e->getName() << " " << input << " piece(s) of gold. \n";
+															h.setGold(h.getGold() - gT);
+														}
+														errT = false;
 													}
 												}
-											}
-											if(input == 1)
-											{
-												cout << "You give " << e->getName() << " " << input << " piece of gold. \n";
-											}
-											else
-											{
-												cout << "You give " << e->getName() << " " << input << " pieces of gold. \n";
-											}
-											goldE -= input;		//need at least 20 gold pieces (cumulative) to pay off vampire
-											h.setGold(h.getGold() - input);
-											if (goldE <= 0)
-											{
-												e->setHealth(0);
-												cout << e->getName() << " becomes distracted by all the gold you gave it. You manage to run away, and you are once again alone. \n";
-												break;
+												else
+												{
+													cout << "You can't give that amount of gold! How much do you want to actually give? \n";
+													cin >> input;
+													errT = true;
+												}
+
 											}
 										}
 									}
 									else
 									{
-										if (input == 4)
+										if (input.compare("4") == 0)
 										{
 											//tries to run away
 											srand(time(0));
@@ -1575,33 +1504,13 @@ void fightMonster(Hero& h)
 								cout << "   " << h.getName() << "'s Potion Count: " << h.getPotion() << endl;
 								cout << "\n What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
 								cin >> input;
-								err = true;
-								while(err)		//input validation - checks for range and type
+								while(input.compare("1") != 0 && input.compare("2") != 0 && input.compare("3") != 0 && input.compare("4") != 0)		//input validation - checks for type and range
 								{
-									if(!cin)
-									{
-										cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-										cin.clear();
-										cin.ignore(256, '\n');
-										cin >> input;
-										err = true;
-									}
-									else
-									{
-										if(input < 1 || input > 4)
-										{
-											cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
-											cin >> input;
-											err = true;
-										}
-										else
-										{
-											err = false;
-										}
-									}
+									cout << "That's not a choice! What will you do: \n\t (1) Attack \n\t (2) Use Potion \n\t (3) Give Gold \n\t (4) Run Away" << endl;
+									cin >> input;
 								}
 								cout << "----- Result of last action -------" << endl;
-								if (input == 1)
+								if (input.compare("1") == 0)
 								{
 									//hero attacks
 									srand(time(0));
@@ -1622,7 +1531,7 @@ void fightMonster(Hero& h)
 								}
 								else
 								{
-									if (input == 2)
+									if (input.compare("2") == 0)
 									{
 										//hero uses potion
 										h.usePotion();
@@ -1630,10 +1539,10 @@ void fightMonster(Hero& h)
 									}
 									else
 									{
-										if (input == 3)
+										if (input.compare("3") == 0)
 										{
 											//hero tries to pay off monster
-											if (h.getGold() == 0)
+											if (h.getGold() == 0)	//if hero has no gold, hero can't pay off monster
 											{
 												cout << "Uh-oh, you don't have any gold to give..." << endl;
 											}
@@ -1641,46 +1550,63 @@ void fightMonster(Hero& h)
 											{
 												cout << "You want give gold to " << g->getName() << ". How much gold to you want to give? \n";
 												cin >> input;
-												err = true;
-												while(err)
+												bool errT = true;
+												bool isNum = false;
+												while(errT)
 												{
-													if(!cin)
+													for(std::string::iterator it=input.begin(); it!=input.end(); it++)
 													{
-														cout << "You can't give that amount of gold! How much d you want to actually give? \n";
-														cin.clear();
-														cin.ignore(256, '\n');
-														cin >> input;
-														err = true;
+														if(!isdigit(*it))
+														{
+															isNum = false;
+															break;
+														}
+														isNum = true;
 													}
-													else
+
+													if(isNum)
 													{
-														if (input > h.getGold() || input < 0)
+														//change to int
+														int gT = std::atoi(input.c_str());
+														if (gT > h.getGold() || gT < 0)
 														{
 															cout << "You can't give that amount of gold! How much do you want to actually give? \n";
 															cin >> input;
-															err = true;
+															errT = true;
 														}
 														else
 														{
-															err = false;
+															srand(time(0));
+															int gTOdds = rand() % 20;
+															if(gTOdds == 0)
+															{
+																g->setHealth(0);
+																cout << g->getName() << " disappears with your gold. You are alone again. \n";
+																h.setGold(h.getGold() - gT);
+																break;
+															}
+															else
+															{
+																cout << "You give " << g->getName() << " " << input << " piece(s) of gold. \n";
+																h.setGold(h.getGold() - gT);
+															}
+															errT = false;
 														}
 													}
+													else
+													{
+														cout << "You can't give that amount of gold! How much do you want to actually give? \n";
+														cin >> input;
+														errT = true;
+													}
+
 												}
-												if (input >= 2) 		//need at least 2 gold pieces at any time to escape
-												{
-													g->setHealth(0);
-													cout << g->getName() << " disappears with your gold. You are alone again. \n";
-													h.setGold(h.getGold() - input);
-													break;
-												}
-												cout << "You give " << g->getName() << " " << input << " pieces of gold. \n";
-												h.setGold(h.getGold() - input);
 											}
 
 										}
 										else
 										{
-											if (input == 4)
+											if (input.compare("4") == 0)
 											{
 												//try to run away
 												srand(time(0));
@@ -1715,7 +1641,7 @@ void fightMonster(Hero& h)
 								g->Attack(h, 999, 30);
 							}
 						}
-						else 
+						else
 						{
 							//20% not encountering monsters, different scenarios for no monsters
 							srand(time(0));
@@ -1789,35 +1715,16 @@ void fightMonster(Hero& h)
 	else
 	{	//receive reward if completed level
 		cout << "You suddenly see three chests in front of you. Do you choose (1) the left chest, (2) the middle chest, or (3) the right chest?" << endl;
-		int chest = 0;
+		string chest;
 		cin >> chest;
-		bool errEnd = true;
-		while(errEnd)
+		while(chest.compare("1") != 0 && chest.compare("2") != 0 && chest.compare("3") != 0)		//input validation - checks for type and range
 		{
-			if(!cin)
-			{
-				cout << "Ummm, that's not an option...Did you mean (1) the left chest, (2) the middle chest, or (3) the right chest?" << endl;
-				cin.clear();
-				cin.ignore(256, '\n');
-				cin >> chest;
-				errEnd = true;
-			}
-			else
-			{
-				if (chest < 1 || chest > 3)
-				{
-					cout << "Ummm, that's not an option...Did you mean (1) the left chest, (2) the middle chest, or (3) the right chest?" << endl;
-					cin >> chest;
-					errEnd = true;
-				}
-				else
-				{
-					errEnd = false;
-				}
-			}
+			cout << "Ummm, that's not an option...Did you mean (1) the left chest, (2) the middle chest, or (3) the right chest?" << endl;
+			cin >> chest;
 		}
 
-		if (chest == 1)
+
+		if (chest.compare("1") == 0)
 		{
 			int goldGift = rand() % 10 + 11;
 			cout << "You chose the left chest. You open it and find " << goldGift << " pieces!" << endl;
@@ -1825,7 +1732,7 @@ void fightMonster(Hero& h)
 		}
 		else
 		{
-			if(chest == 2)
+			if(chest.compare("2") == 0)
 			{
 				int pGift = rand() % 3 + 1;
 				cout << "You chose the middle chest. You open it and find " << pGift << " potions!" << endl;
@@ -1844,6 +1751,7 @@ void fightMonster(Hero& h)
 }
 
 
+
 //end Wei's code
 	
 	
@@ -1858,9 +1766,10 @@ game.
 void characterCreation(Hero& x){
 	string tempString;
 	string input = "no";
-	while(input == "no" && input != "yes") //allows user to repeat creation if desired
+	bool exitFlag = false;
+	while(exitFlag == false) //allows user to repeat creation if desired
 	{
-		cout << " -------------- Welcome to Team 8's Text Based RPG --------------" << endl;
+		cout << " \n-------------- Welcome to Team 8's Text Based RPG --------------" << endl;
 		cout << "It is time to customize your character and begin your journey!" << endl;
 		
 		cout << "Please enter yor characters name: "; //set name
@@ -1879,7 +1788,28 @@ void characterCreation(Hero& x){
 		cout << "Gender: " << x.getGender() << endl;
 		cout << "Weapon: " << x.getWeapon() << endl;
 		cout << "If this is correct enter 'yes', otherwise enter 'no' " << endl;
-		cin >> input;
+		
+		bool exitFlag2 = false;
+		while (exitFlag2 == false)
+		{
+			cin >> input;
+			if(input.compare("yes") == 0)
+			{
+				exitFlag = true;
+				exitFlag2 = true;
+			} else if (input.compare("no") == 0)
+			{
+				exitFlag = false;
+				exitFlag2 = true;
+			} else {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				exitFlag = false;
+				exitFlag2 = false;
+				cout << "\nThat is an invalid input, please try again\n" << endl;
+			}
+		}
+		
 	}
 }
 
@@ -1935,7 +1865,7 @@ public:
 	}
 	void provideEnchantment(Hero& x)
 	{
-		int input;
+		string input;
 		bool exitFlag = false;
 		while(exitFlag == false) //keeps user in menu until they want to leave.
 		{	
@@ -1948,7 +1878,7 @@ public:
 			cout << "5: Add 25 to your weapon's attack for 2500 gold" << endl;
 			cout << "0: Return to town" << endl;
 			cin >> input;
-			if(input == 1) //adds 5 attack for 500 gold
+			if(input.compare("1") == 0) //adds 5 attack for 500 gold
 			{
 				if(x.decreaseGold(500) == true)
 				{
@@ -1956,7 +1886,7 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if (input == 2) //adds 10 attack for 1000 gold
+			}else if (input.compare("2") == 0) //adds 10 attack for 1000 gold
 			{
 				if(x.decreaseGold(1000) == true)
 				{
@@ -1964,7 +1894,7 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if (input == 3)//adds 15 attack for 1500 gold
+			}else if (input.compare("3") == 0)//adds 15 attack for 1500 gold
 			{
 				if(x.decreaseGold(1500) == true)
 				{
@@ -1972,7 +1902,7 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if (input == 4) //adds 20 attack for 2000 gold
+			}else if (input.compare("4") == 0) //adds 20 attack for 2000 gold
 			{
 				if(x.decreaseGold(2000) == true)
 				{
@@ -1980,7 +1910,7 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if(input == 5)//adds 25 attack for 2500 gold
+			}else if(input.compare("5") == 0)//adds 25 attack for 2500 gold
 			{
 				if(x.decreaseGold(2500) == true)
 				{
@@ -1988,12 +1918,14 @@ public:
 					cout << "Your weapon hums with power as its attack increases" << endl;
 					cout << "You attack rating is now: " << x.getAttack() << endl;
 				}
-			}else if(input == 0) //leaves the enchanter
+			}else if(input.compare("0") == 0) //leaves the enchanter
 			{
 				cout << "\nYou leave the tent" << endl;
 				exitFlag = true;
 			} else { //error catching
 				cout << "\nInvalid Input" << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 		}
 	}
@@ -2057,7 +1989,7 @@ public:
 		{
 			int x = Stoner.getGold(); //see how much gold the hero has
 			int temp = 0; //initialize temporary value
-			cout << "\nCongratulations on completing all 3 stages. Now you are ready to face the ultimate test.\n"; //narration
+			cout << "\nYou should complete all previous stages to ensure you are ready to face the ultimate test.\n"; //narration
 			cout << Stoner.getName() << " enters the Cave of Destruction. You see a weird inscription on the ground and proceed to investigate.\n";
 			cout << "During investigation of the inscription, you hear a loud roar.\n";
 			cout << "Out of the darkness, a one-eyed creature drops from the ceiling, blocking your escape.\n";
@@ -2957,7 +2889,7 @@ public:
 		}
 	}
 	void sellWeapon(Hero& x){ //sells weapon
-		int input;
+		string input;
 		cout << "\nWhich weapon would you like hero?" << endl;
 		for (int i = 0; i < 5; i++) //print inventory
 		{
@@ -2965,40 +2897,42 @@ public:
 		}
 		cout << "0: Nevermind" << endl;
 		cin >> input;
-		if(input == 1){ //sell a Golden Gun
+		if(input.compare("1") == 0){ //sell a Golden Gun
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[0]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 2){//sell a Grand Battle Axe
+		} else if(input.compare("2") == 0){//sell a Grand Battle Axe
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[1]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 3){//sell a Bow and Arrow
+		} else if(input.compare("3") == 0){//sell a Bow and Arrow
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[2]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 4){ //sell a Golden Short Bow
+		} else if(input.compare("4") == 0){ //sell a Golden Short Bow
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[3]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 5){ //sell a Bronze Pole Arm
+		} else if(input.compare("5") == 0){ //sell a Bronze Pole Arm
 			if(x.decreaseGold(25) == true)
 			{
 				x.setWeapon(inventory[4]);
 				cout << "Your weapon is now a " << x.getWeapon() << endl << endl;
 			}
-		} else if(input == 0){
+		} else if(input.compare("6") == 0){
 			cout << "\nWell if you're sure..." << endl;
 		} else {
 			cout << "\nThat is an invalid input\n" << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
 	void sellHealthTonic(Hero& Stoner) //increases the hero's health by 20 for 100 gold
@@ -3031,23 +2965,90 @@ public:
 	int cupNum = 0;
 	bool exitFlag = false;
 	bool exitFlag2 = false;
-	int input = 0;
+	string input;
+	string betInput;
 	int herosBet;
 	cout << "\n------ Magic Cup Game ------\n" << endl;
 		while(exitFlag == false)
 		{
 			cout << "You wish to play the magic cup game! How much are you will to gamble?" << endl;
+			cout << "1: to bet 10 gold" << endl;
+			cout << "2: to bet 20 gold" << endl;
+			cout << "3: to bet 50 gold" << endl;
+			cout << "4: to bet 100 gold" << endl;
+			cout << "5: to bet 1000 gold" << endl;
+			cout << "6: to bet 10000 gold" << endl;
+			cout << "0: to bet nothing (play for fun)" << endl;
 			while(exitFlag2 == false){//takes in a valid bet amount. the hero cannot bet money he doesn't have.
-			cin >> herosBet;
-				if (herosBet > Stoner.getGold()){
-					cout << "You don't have that much gold, try gambling a different amount" << endl;
+			
+				cin >> betInput;
+				if(betInput.compare("1") == 0){
+					
+					if (10 > Stoner.getGold()){
+						cout << "You don't have that much gold, try gambling a different amount" << endl;
+						exitFlag2 = false;
+					} else {
+						herosBet = 10;
+						exitFlag2 = true;
+					}
+				} else if (betInput.compare("2") == 0){
+					
+					if (20 > Stoner.getGold()){
+						cout << "You don't have that much gold, try gambling a different amount" << endl;
+						exitFlag2 = false;
+					} else {
+						herosBet = 20;
+						exitFlag2 = true;
+					}
+				} else if (betInput.compare("3") == 0){
+					
+					if (50 > Stoner.getGold()){
+						cout << "You don't have that much gold, try gambling a different amount" << endl;
+						exitFlag2 = false;
+					} else {
+						herosBet = 50;
+						exitFlag2 = true;
+					}
+				} else if (betInput.compare("4") == 0){
+					
+					if (100 > Stoner.getGold()){
+						cout << "You don't have that much gold, try gambling a different amount" << endl;
+						exitFlag2 = false;
+					} else {
+						herosBet = 100;
+						exitFlag2 = true;
+					}
+				} else if (betInput.compare("5") == 0){
+					
+					if (1000 > Stoner.getGold()){
+						cout << "You don't have that much gold, try gambling a different amount" << endl;
+						exitFlag2 = false;
+					} else {
+						herosBet = 1000;
+						exitFlag2 = true;
+					}
+				} else if(betInput.compare("6") == 0){
+					
+					if (10000 > Stoner.getGold()){
+						cout << "You don't have that much gold, try gambling a different amount" << endl;
+						exitFlag2 = false;
+					} else {
+						herosBet = 10000;
+						exitFlag2 = true;
+					}
+				} else if(betInput.compare("0") == 0){
+					cout << "\nYou leave" << endl;
+					herosBet = 0;
+					exitFlag2=true;
+					exitFlag=true;
 				} else {
-					exitFlag2 = true;
+					cout << "\nThat is an invalid input, please try again" << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					exitFlag2 = false;
 				}
 			}
-			exitFlag2 = false;
-				
-				
+			exitFlag2 = false;	
 			showAllCups();//displays cups
 			cout << "1: The ball is beneath cup 1" << endl;
 			cout << "2: The ball is beneath cup 2" << endl;
@@ -3056,12 +3057,12 @@ public:
 			
 			cupNum = rand() % 3 + 1; //hides the ball under a random cup
 			cin >> input;
-			if(input == 1 || input == 2 || input == 3) //takes in Hero's guess.
+			if(input.compare("1") == 0 || input.compare("2") == 0 || input.compare("3") == 0) //takes in Hero's guess.
 			{
 				if(cupNum == 1) //ball location
 				{
 					showCup1();//show ball location
-					if(input == 1){ //correct guess
+					if(input.compare("1") == 0){ //correct guess
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
 						Stoner.setGold(Stoner.getGold()+herosBet*2);
@@ -3073,7 +3074,7 @@ public:
 				}else if(cupNum == 2)//ball location
 				{
 					showCup2();//show ball location
-					if(input == 2){//correct guess
+					if(input.compare("2") == 0){//correct guess
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
 						Stoner.setGold(Stoner.getGold()+herosBet*2);
@@ -3085,7 +3086,7 @@ public:
 				}else if(cupNum == 3)//ball location
 				{
 					showCup3();//show ball location
-					if(input == 3){//correct guess
+					if(input.compare("3") == 0){//correct guess
 						cout << "\nYou guessed correctly Hero!" << endl;
 						cout << "You have won: " << herosBet*2 << endl;
 						Stoner.setGold(Stoner.getGold()+herosBet*2);
@@ -3099,7 +3100,7 @@ public:
 				cout << "\nThat is an invalid input" << endl;
 			}
 			cout << "You have " << Stoner.getGold() << " gold" << endl;
-			if(input == 0)//breaks back to town if user wishes
+			if(input.compare("0") == 0)//breaks back to town if user wishes
 			{
 				exitFlag = true;
 			}
@@ -3110,14 +3111,16 @@ public:
 			while (x == false)//allows hero do decide if he wants to play again or not
 			{
 				cin >> input;
-				if(input == 1){
+				if(input.compare("1") == 0){
 					exitFlag = false;
 					x = true;
-				} else if(input == 2){
+				} else if(input.compare("2") == 0){
 					exitFlag = true;
 					x = true;
 				} else {
 					cout << "That is an invalid input" << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
 			}
 		}

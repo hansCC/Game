@@ -16,9 +16,9 @@ int main(){
 	FinalBoss Mithaldra;
 	Dealer dealerObj;
 	
-	Stoner.setGold(10000);
+	Stoner.setGold(0);
 	Stoner.setPotion(200);
-	int input;
+	string input;
 	/*
 	This while loop allows the user to navigate between levels.
 	It also serves as the respawn point in the event the user dies.
@@ -36,16 +36,16 @@ int main(){
 		cout << "4: Dragon's Lair (Final Stage)" << endl;
 		
 		cin >> input; //Take in input to know where to go
-		if(input == 1) //Go to the town(HUB area)
+		if(input.compare("1") == 0) //Go to the town(HUB area)
 		{
 			HUB(Stoner, innKeeperObj, merchantObj, enchanterObj, dealerObj);	
-		} else if(input == 2)//Go to Deadlands
+		} else if(input.compare("2") == 0)//Go to Deadlands
 		{
 			fightMonster(Stoner);
-		} else if(input == 3)//Go to The Plague
+		} else if(input.compare("3") == 0)//Go to The Plague
 		{
 			stage3(Stoner);
-		} else if(input == 4)//Face the final boss
+		} else if(input.compare("4") == 0)//Face the final boss
 		{
 			Mithaldra.BossBattle(Stoner);
 		} else { //error capture

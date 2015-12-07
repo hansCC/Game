@@ -203,7 +203,17 @@ public:
 
 
 
-
+if (herosBet > Stoner.getGold()){
+					cout << "You don't have that much gold, try gambling a different amount" << endl;
+					exitFlag2 = false;
+				} else if(!(herosBet > Stoner.getGold())){
+					exitFlag2 = true;
+				} else {
+					exitFlag2 = false;
+					cout << "\nYour input is invalid\n" << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
 
 
 
